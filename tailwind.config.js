@@ -1,6 +1,9 @@
 module.exports = {
 	content: [ "./src/**/*.{js,jsx,ts,tsx}" ],
 	theme: {
+		fontFamily: {
+			"sans": [ "Montserrat", "ui-sans-serif", "sans-serif" ]
+		},
 		colors: {
 			black: "#000000",
 			white: "#ffffff",
