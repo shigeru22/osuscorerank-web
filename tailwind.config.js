@@ -19,6 +19,11 @@ module.exports = {
 				80: "#8faabd",
 				100: "#bed2dd"
 			}
+		},
+		extend: {
+			borderWidth: {
+				1: "1px"
+			}
 		}
 	},
 	plugins: []
