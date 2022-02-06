@@ -26,6 +26,9 @@ module.exports = {
 		extend: {
 			borderWidth: {
 				1: "1px"
+			},
+			padding: {
+				1.5: "0.375rem"
 			}
 		}
 	},

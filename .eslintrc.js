@@ -137,6 +137,7 @@ module.exports = {
 			"allowBlockStart": true,
 			"allowObjectStart": true
 		} ],
+		"multiline-ternary": [ "warn", "always-multiline" ],
 		"no-mixed-spaces-and-tabs": "error",
 		"no-multi-spaces": [ "warn", {
 			"ignoreEOLComments": false,
@@ -160,7 +161,6 @@ module.exports = {
 			"ExportDeclaration": { "multiline": false }
 		} ],
 		"object-curly-spacing": [ "warn", "always" ],
-		"operator-linebreak": [ "warn", "none" ],
 		"padded-blocks": [ "warn", "never" ],
 		"quotes": [ "warn", "double" ],
 		"rest-spread-spacing": "warn",
