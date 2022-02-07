@@ -21,6 +21,16 @@ module.exports = {
 				60: "#315a7c",
 				80: "#8faabd",
 				100: "#bed2dd"
+			},
+			danger: {
+				light: {
+					DEFAULT: "#f73b4e",
+					active: "#d0091e"
+				},
+				dark: {
+					DEFAULT: "#9d0716",
+					active: "#c3091c"
+				}
 			}
 		},
 		extend: {
