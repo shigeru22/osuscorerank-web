@@ -1,14 +1,13 @@
-import React from "react";
-import StatsCard from "../../components/shared/StatsCard";
+import React, { useState } from "react";
+import Pagination from "../../components/shared/Pagination";
 
 function Country() {
+	const [ activePage, setActivePage ] = useState(1);
+
 	return (
 		<div className="p-4">
 			<h1>Country page</h1>
-			<div className="flex items-start gap-x-4">
-				<StatsCard title="Statistics Title" data="5" subtitle="+ 1 since last month" />
-				<StatsCard title="Statistics Title" data="5" />
-			</div>
+			<Pagination active={ activePage } total={ 10 } setValue={ setActivePage } />
 		</div>
 	);
 }
