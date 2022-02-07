@@ -1,22 +1,13 @@
-import React, { useState } from "react";
-import Button from "../../components/shared/inputs/Button";
+import React from "react";
+import StatsCard from "../../components/shared/StatsCard";
 
 function Country() {
-	function logToConsole(value: string) {
-		console.log(value);
-	}
-
-	function logErrorToConsole(value: string) {
-		console.error(value);
-	}
-
 	return (
 		<div className="p-4">
 			<h1>Country page</h1>
-			<div className="flex flex-col gap-y-2">
-				<Button label="Button" onClick={ () => logToConsole("Hello") } />
-				<Button type="primary" label="Button" onClick={ () => logToConsole("It's me") } />
-				<Button type="danger" label="Button" onClick={ () => logErrorToConsole("Pippi! Get that cookie out of your mouth - it could be dirty...") } />
+			<div className="flex items-start gap-x-4">
+				<StatsCard title="Statistics Title" data="5" subtitle="+ 1 since last month" />
+				<StatsCard title="Statistics Title" data="5" />
 			</div>
 		</div>
 	);
