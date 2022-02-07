@@ -1,25 +1,13 @@
 import React, { useState } from "react";
-import Dropdown from "../../components/shared/inputs/Dropdown";
-import { IDropdownData } from "../../types/components/Dropdown";
+import Checkbox from "../../components/shared/inputs/Checkbox";
 
 function Country() {
-	const [ selected, setSelected ] = useState(-1);
-
-	const dropdownData: IDropdownData[] = [
-		{
-			id: 1,
-			name: "Score"
-		},
-		{
-			id: 2,
-			name: "pp"
-		}
-	];
+	const [ isChecked, setChecked ] = useState(false);
 
 	return (
 		<div className="p-4">
 			<h1>Country page</h1>
-			<Dropdown name="sort" label="Sort" data={ dropdownData } value={ selected } setValue={ setSelected } />
+			<Checkbox name="test" label="Item 1" value={ isChecked } setValue={ setChecked } />
 		</div>
 	);
 }
