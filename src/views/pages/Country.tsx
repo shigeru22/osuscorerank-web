@@ -112,7 +112,7 @@ function Country() {
 					<RankingList data={ displayedRankingData } />
 					<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingData, 5) } setValue={ setRankingPage } />
 				</div>
-				<div className="flex flex-col gap-y-4">
+				<div className="flex flex-col gap-y-4 pt-1.25">
 					<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
 					<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
 				</div>
