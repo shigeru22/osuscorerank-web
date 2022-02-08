@@ -31,6 +31,10 @@ module.exports = {
 					DEFAULT: "#9d0716",
 					active: "#c3091c"
 				}
+			},
+			success: {
+				light: "#008f18",
+				dark: "#00b21d"
 			}
 		},
 		extend: {
@@ -42,6 +46,13 @@ module.exports = {
 			},
 			maxHeight: {
 				26: "6.5rem"
+			},
+			lineHeight: {
+				42: "10.5rem"
+			},
+			width: {
+				22: "5.5rem",
+				54: "13.5rem"
 			}
 		}
 	},
