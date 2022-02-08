@@ -101,7 +101,10 @@ function Global() {
 
 	return (
 		<div className="px-14 py-12 space-y-6">
-			<h1 className="font-semibold text-3xl text-light-100">Global</h1>
+			<div className="flex justify-between items-start">
+				<h1 className="font-semibold text-3xl text-light-100">Global</h1>
+				<h2 className="font-semibold text-light-60">Last updated: 2022/01/27</h2>
+			</div>
 			<h3 className="font-semibold text-2xl text-light-100">Statistics</h3>
 			<div className="flex items-start gap-x-4">
 				<StatsCard title="Recently Inactive" data="16" subtitle="+ 1 since last month" />
