@@ -1,3 +1,5 @@
+import { IRankingListData } from "../types/components/RankingList";
+
 export function numberToSeparatedThousandsString(num: number) {
 	/*
 	 * regex taken from:
@@ -5,4 +7,8 @@ export function numberToSeparatedThousandsString(num: number) {
 	 */
 
 	return num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function getRankingListTotalPages(data: IRankingListData[], itemsPerPage: number) {
+	return Math.ceil(data.length / itemsPerPage);
 }
