@@ -15,7 +15,7 @@ function Sidebar({ active }: { active: string }) {
 	}
 
 	return (
-		<div className="w-32 h-screen py-16 bg-light-20">
+		<div className="w-32 min-w-32 h-screen py-16 bg-light-20">
 			<div className="flex flex-col justify-between items-center gap-y-12 h-full mx-auto">
 				<div className="flex flex-col gap-y-16">
 					<div className="relative">
