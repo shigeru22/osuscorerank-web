@@ -105,7 +105,7 @@ function Country() {
 			<h3 className="font-semibold text-2xl text-light-100">Statistics</h3>
 			<div className="flex items-start gap-x-4">
 				<StatsCard title="Recently Inactive" data="2" subtitle="+ 1 since last month" />
-				<StatsCard title="Total Inactive" data="33" subtitle="+ 2 since last month" />
+				<StatsCard title="Total Inactives" data="33" subtitle="+ 2 since last month" />
 			</div>
 			<div className="flex items-start gap-x-6">
 				<div className="flex flex-col justify-between items-center h-64">
