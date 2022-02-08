@@ -59,6 +59,7 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 					{
 						data.length > 0
 							? data.map(item => (
+								!_.isUndefined(item) &&
 								<tr key={ item.id } className="group">
 									<td className="pl-4 group-hover:bg-light-20 font-medium text-light-100 rounded-l-lg cursor-default">{ item.rank }</td>
 									<td className="group-hover:bg-light-20 font-medium text-light-100 cursor-default">{ item.userName }</td>
