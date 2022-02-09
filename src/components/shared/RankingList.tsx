@@ -36,21 +36,21 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 			<table className="text-left leading-8">
 				<thead>
 					<tr>
-						<th className="w-20 pl-4 font-medium text-light-80 cursor-default">Rank</th>
-						<th className="w-48 font-medium text-light-80 cursor-default">Username</th>
+						<th className="w-20 xl:w-28 2xl:w-32 pl-4 font-medium text-light-80 cursor-default">Rank</th>
+						<th className="w-48 xl:w-52 font-medium text-light-80 cursor-default">Username</th>
 						{
 							!_.isUndefined(onDeleteClick) ?
 								<>
-									<th className="w-56 font-medium text-light-80 cursor-default">Score</th>
-									<th className="w-36 font-medium text-light-80 cursor-default">pp</th>
-									<th className="w-22 font-medium text-light-80 cursor-default">Delta</th>
+									<th className="w-56 xl:w-64 font-medium text-light-80 cursor-default">Score</th>
+									<th className="w-36 xl:w-42 font-medium text-light-80 cursor-default">pp</th>
+									<th className="w-22 xl:w-28 font-medium text-light-80 cursor-default">Delta</th>
 									<th className="pr-8 font-medium text-light-80 cursor-default" />
 								</>
 								:
 								<>
-									<th className="w-64 font-medium text-light-80 cursor-default">Score</th>
-									<th className="w-36 font-medium text-light-80 cursor-default">pp</th>
-									<th className="pr-11 font-medium text-light-80 cursor-default">Delta</th>
+									<th className="w-64 xl:w-72 2xl:w-80 font-medium text-light-80 cursor-default">Score</th>
+									<th className="w-36 xl:w-44 2xl:w-52 font-medium text-light-80 cursor-default">pp</th>
+									<th className="w-12 xl:w-16 2xl:w-28 pr-11 font-medium text-light-80 cursor-default">Delta</th>
 								</>
 						}
 					</tr>
