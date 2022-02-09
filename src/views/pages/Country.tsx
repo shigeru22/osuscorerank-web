@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _ from "lodash";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import StatsCard from "../../components/shared/StatsCard";
 import RankingList from "../../components/shared/RankingList";
@@ -6,12 +7,16 @@ import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import { getRankingListTotalPages } from "../../utils/Number";
+import { getTableRowsFromHeight } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
 import { IDropdownData } from "../../types/components/Dropdown";
 
 function Country() {
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(1);
+	const [ tableRowsPerPage, setTableRowsPerPage ] = useState(getTableRowsFromHeight());
+
+	const [ updateDebounce, setUpdateDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 	const [ rankingPage, setRankingPage ] = useState(1);
 	const [ rankingData, setRankingData ] = useState<IRankingListData[]>([]);
@@ -27,13 +32,39 @@ function Country() {
 	];
 
 	useEffect(() => {
+		const updateWindowDimensions = () => {
+			if(!_.isUndefined(updateDebounce)) {
+				clearTimeout(updateDebounce);
+			}
+
+			setUpdateDebounce(setTimeout(() => {
+				setTableRowsPerPage(getTableRowsFromHeight());
+			}, 200));
+		};
+
+		window.addEventListener("resize", updateWindowDimensions);
+
+		return () => {
+			window.removeEventListener("resize", updateWindowDimensions);
+		};
+	}, [ updateDebounce ]);
+
+	useEffect(() => {
 		const temp: IRankingListData[] = [];
-		for(let i = (rankingPage - 1) * 5; i < rankingPage * 5; i++) {
+		for(let i = (rankingPage - 1) * tableRowsPerPage; i < rankingPage * tableRowsPerPage; i++) {
 			temp.push(rankingData[i]);
 		}
 
 		setDisplayedRankingData(temp);
-	}, [ rankingPage, rankingData ]);
+
+		if(!_.isUndefined(updateDebounce)) {
+			clearTimeout(updateDebounce);
+			setUpdateDebounce(undefined);
+		}
+
+	/* updateDebounce should not be its dependency */
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ rankingPage, rankingData, tableRowsPerPage ]);
 
 	useEffect(() => {
 		const data: IRankingListData[] = [
@@ -111,9 +142,9 @@ function Country() {
 				<StatsCard title="Total Inactives" data="33" subtitle="+ 2 since last month" />
 			</div>
 			<div className="flex items-start gap-x-6">
-				<div className="flex flex-col justify-between items-center h-64">
+				<div className="flex flex-col items-center gap-y-4">
 					<RankingList data={ displayedRankingData } />
-					<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingData, 5) } setValue={ setRankingPage } />
+					<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingData, tableRowsPerPage) } setValue={ setRankingPage } />
 				</div>
 				<div className="flex flex-col gap-y-4 pt-1.25">
 					<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
