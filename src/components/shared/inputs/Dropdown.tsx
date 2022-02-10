@@ -51,20 +51,20 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 
 	return (
 		<div className="w-56 space-y-2">
-			<label htmlFor={ name } className="font-medium text-light-80">{ label }</label>
+			<label htmlFor={ name } className="font-medium text-light-80 dark:text-dark-80">{ label }</label>
 			<div>
-				<button type="button" id={ name } onClick={ () => toggleDropdown() } ref={ refButton } className={ `flex flex-row justify-between items-center group w-full px-3 py-1.5 ${ isOpened ? "bg-light-40" : "bg-light-20" } rounded-lg` }>
-					<div className="font-medium text-light-100">{ getValueFromData(value) }</div>
-					<FontAwesomeIcon icon={ faChevronDown } className={ `text-2xl pl-3 ${ isOpened ? "text-light-80" : "text-light-60 group-hover:text-light-80" }` } />
+				<button type="button" id={ name } onClick={ () => toggleDropdown() } ref={ refButton } className={ `flex flex-row justify-between items-center group w-full px-3 py-1.5 ${ isOpened ? "bg-light-40 dark:bg-dark-60" : "bg-light-20 dark:bg-dark-40" } rounded-lg` }>
+					<div className="font-medium text-light-100 dark:text-dark-100">{ getValueFromData(value) }</div>
+					<FontAwesomeIcon icon={ faChevronDown } className={ `text-2xl pl-3 ${ isOpened ? "text-light-80 dark:text-dark-100" : "text-light-60 dark:text-dark-80 group-hover:text-light-80 dark:group-hover:text-dark-100" }` } />
 				</button>
 				{
 					isOpened &&
 					<div className="relative flex justify-center z-10">
-						<div className="absolute flex flex-col w-full m-2 p-3 bg-light-20 rounded-lg">
+						<div className="absolute flex flex-col w-full m-2 p-3 bg-light-20 dark:bg-dark-0 rounded-lg">
 							<div ref={ refDropdown } className="max-h-26 space-y-1 overflow-y-auto">
 								{
 									data.map(item => (
-										<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-2 py-1 font-medium ${ item.id === value ? "bg-light-60 text-white" : "hover:bg-light-40 text-light-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
+										<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-2 py-1 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
 									))
 								}
 							</div>
