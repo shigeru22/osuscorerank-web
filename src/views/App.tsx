@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 import Sidebar from "../components/shared/Sidebar";
 import { getSettingsData, setSettingsData } from "../utils/Storage";
@@ -18,9 +18,23 @@ function updateSettings(data: Settings) {
 
 function App() {
 	const [ settings ] = useState<Settings>(settingsContextValues.settings);
+	const [ themeId, setDarkMode ] = useState(settings.themeId);
+
+	useEffect(() => {
+		if(themeId === 3 || (themeId === 1 && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+			document.documentElement.classList.add("dark");
+		}
+		else {
+			const body = document.documentElement;
+
+			body.classList.remove("dark");
+			body.classList.length <= 0 && body.removeAttribute("class");
+		}
+	}, [ themeId ]);
 
 	function setSettings(data: Settings) {
 		updateSettings(data);
+		setDarkMode(data.themeId);
 	}
 
 	const location = useLocation();
