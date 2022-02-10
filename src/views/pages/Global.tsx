@@ -32,7 +32,7 @@ function Global() {
 	];
 
 	useEffect(() => {
-		const updateWindowDimensions = () => {
+		function updateWindowDimensions() {
 			if(!_.isUndefined(updateDebounce)) {
 				clearTimeout(updateDebounce);
 			}
@@ -40,7 +40,7 @@ function Global() {
 			setUpdateDebounce(setTimeout(() => {
 				setTableRowsPerPage(getTableRowsFromViewport());
 			}, 200));
-		};
+		}
 
 		window.addEventListener("resize", updateWindowDimensions);
 
