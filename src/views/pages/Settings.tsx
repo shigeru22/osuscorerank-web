@@ -87,42 +87,42 @@ function Settings() {
 
 	return (
 		<div className="px-14 py-12 space-y-6">
-			<h1 className="font-semibold text-3xl text-light-100">Starred</h1>
+			<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Starred</h1>
 			<div className="flex gap-x-12">
 				<div className="space-y-6">
 					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100">General</h3>
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">General</h3>
 						<div className="flex gap-x-12">
 							<Dropdown name="theme" label="Theme" data={ themeDropdownData } value={ themeId } setValue={ setThemeId } />
 							<Dropdown name="dateformat" label="Date format" data={ dateFormatDropdownData } value={ dateFormatId } setValue={ setDateFormatId } />
 						</div>
 					</div>
 					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100">Rankings</h3>
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
 						<div className="flex gap-x-12">
 							<Dropdown name="defaultcountry" label="Default country" data={ countryDropdownData } value={ defaultCountryId } setValue={ setDefaultCountryId } />
 							<Dropdown name="defaultsorting" label="Default sorting" data={ sortingDropdownData } value={ defaultSortingId } setValue={ setDefaultSortingId } />
 						</div>
 					</div>
 					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100">Starred</h3>
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Starred</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80">Total starred user: 15</h6>
-							<h6 className="font-medium text-light-80">Total starred user (including active): 17</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user: 15</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user (including active): 17</h6>
 							<Button type="danger" label="Reset all users" />
 						</div>
-						<h6 className="font-medium text-light-40">osu-inactive-score 1.0.0</h6>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
 					</div>
 				</div>
 				<div>
 					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100">API</h3>
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">API</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80">Details on external API access will be added soon.</h6>
-							<h6 className="font-medium text-light-80">API Status: Working normally</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Details on external API access will be added soon.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">API Status: Working normally</h6>
 							<Button type="primary" label="Check Status" />
 						</div>
-						<h6 className="font-medium text-light-40">osuinactive-api 1.0.0</h6>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api 1.0.0</h6>
 					</div>
 				</div>
 			</div>

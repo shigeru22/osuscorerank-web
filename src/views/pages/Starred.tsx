@@ -91,12 +91,12 @@ function Starred() {
 	return (
 		<div className="px-14 py-12 space-y-6">
 			<div className="flex justify-between items-start">
-				<h1 className="font-semibold text-3xl text-light-100">Starred</h1>
-				<h2 className="font-semibold text-light-60">Last updated: 2022/01/27</h2>
+				<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Starred</h1>
+				<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
 			</div>
 			<div className="2xl:flex 2xl:justify-between 2xl:gap-x-6 gap-y-6 space-y-6 2xl:space-y-0">
 				<div className="flex flex-col gap-y-6">
-					<h3 className="font-semibold text-2xl text-light-100">Statistics</h3>
+					<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
 					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4">
 						<StatsCard title="Starred" data="27" />
 						<StatsCard title="Recently Active" data="0" subtitle="+ 0 since last month" />
@@ -104,7 +104,7 @@ function Starred() {
 				</div>
 				<div className="flex items-start gap-x-6">
 					<div className="flex flex-col items-center gap-y-4">
-						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100">Rankings</h3>
+						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
 						<RankingList data={ displayedRankingData } />
 						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingData, 5) } setValue={ setRankingPage } />
 					</div>

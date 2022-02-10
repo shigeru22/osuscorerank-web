@@ -54,7 +54,7 @@ function App() {
 		<Provider value={ {
 			settings, setSettings
 		} }>
-			<div className="flex">
+			<div className="flex dark:bg-dark-20">
 				<Sidebar active={ routeSegments[1] } />
 				<div className="flex-grow h-screen overflow-y-auto">
 					<Outlet />
