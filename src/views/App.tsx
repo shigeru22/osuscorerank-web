@@ -34,6 +34,14 @@ function App() {
 
 	function setSettings(data: Settings) {
 		updateSettings(data);
+
+		/* TODO: find better solution */
+		settings.themeId = data.themeId;
+		settings.dateFormatId = data.dateFormatId;
+		settings.defaultCountryId = data.defaultCountryId;
+		settings.defaultSortingId = data.defaultSortingId;
+		settings.starredUserId = data.starredUserId;
+
 		setDarkMode(data.themeId);
 	}
 
