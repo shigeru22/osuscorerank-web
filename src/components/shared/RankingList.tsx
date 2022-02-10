@@ -9,26 +9,26 @@ import { numberToSeparatedThousandsString } from "../../utils/Number";
 function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDeleteClick?: (value: number) => void }) {
 	function DeltaItem({ delta }: { delta: number }) {
 		if(delta === 0) {
-			return <FontAwesomeIcon icon={ faEquals } className="text-light-100" />;
+			return <FontAwesomeIcon icon={ faEquals } className="text-light-100 dark:text-dark-100" />;
 		}
 		else if(delta < 0) {
 			return (
 				<div className="flex gap-x-2 items-center">
-					<Triangle className="w-3 h-3 rotate-180 fill-danger-light-active" />
-					<div className="font-medium text-light-100">{ Math.abs(delta) }</div>
+					<Triangle className="w-3 h-3 rotate-180 fill-danger-light-active dark:fill-danger-dark-active" />
+					<div className="font-medium text-light-100 dark:text-dark-100">{ Math.abs(delta) }</div>
 				</div>
 			);
 		}
 		else if(delta > 0) {
 			return (
 				<div className="flex gap-x-2 items-center">
-					<Triangle className="w-3 h-3 fill-success-light" />
-					<div className="font-medium text-light-100">{ Math.abs(delta) }</div>
+					<Triangle className="w-3 h-3 fill-success-light dark:fill-success-dark" />
+					<div className="font-medium text-light-100 dark:text-dark-100">{ Math.abs(delta) }</div>
 				</div>
 			);
 		}
 
-		return <div className="text-danger-light-active">Inf.</div>;
+		return <div className="font-medium text-danger-light-active">Inf.</div>;
 	}
 
 	return (
@@ -36,21 +36,21 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 			<table className="text-left leading-8">
 				<thead>
 					<tr>
-						<th className="w-20 xl:w-28 2xl:w-32 pl-4 font-medium text-light-80 cursor-default">Rank</th>
-						<th className="w-48 xl:w-52 font-medium text-light-80 cursor-default">Username</th>
+						<th className="w-20 xl:w-28 2xl:w-32 pl-4 font-medium text-light-80 dark:text-dark-80 cursor-default">Rank</th>
+						<th className="w-48 xl:w-52 font-medium text-light-80 dark:text-dark-80 cursor-default">Username</th>
 						{
 							!_.isUndefined(onDeleteClick) ?
 								<>
-									<th className="w-56 xl:w-64 font-medium text-light-80 cursor-default">Score</th>
-									<th className="w-36 xl:w-42 font-medium text-light-80 cursor-default">pp</th>
-									<th className="w-22 xl:w-28 font-medium text-light-80 cursor-default">Delta</th>
-									<th className="pr-8 font-medium text-light-80 cursor-default" />
+									<th className="w-56 xl:w-64 font-medium text-light-80 dark:text-dark-80 cursor-default">Score</th>
+									<th className="w-36 xl:w-42 font-medium text-light-80 dark:text-dark-80 cursor-default">pp</th>
+									<th className="w-22 xl:w-28 font-medium text-light-80 dark:text-dark-80 cursor-default">Delta</th>
+									<th className="pr-8 font-medium text-light-80 dark:text-dark-80 cursor-default" />
 								</>
 								:
 								<>
-									<th className="w-64 xl:w-72 2xl:w-80 font-medium text-light-80 cursor-default">Score</th>
-									<th className="w-36 xl:w-44 2xl:w-52 font-medium text-light-80 cursor-default">pp</th>
-									<th className="w-12 xl:w-16 2xl:w-28 pr-11 font-medium text-light-80 cursor-default">Delta</th>
+									<th className="w-64 xl:w-72 2xl:w-80 font-medium text-light-80 dark:text-dark-80 cursor-default">Score</th>
+									<th className="w-36 xl:w-44 2xl:w-52 font-medium text-light-80 dark:text-dark-80 cursor-default">pp</th>
+									<th className="w-12 xl:w-16 2xl:w-28 pr-11 font-medium text-light-80 dark:text-dark-80 cursor-default">Delta</th>
 								</>
 						}
 					</tr>
@@ -61,16 +61,16 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 							? data.map(item => (
 								!_.isUndefined(item) &&
 								<tr key={ item.id } className="group">
-									<td className="pl-4 group-hover:bg-light-20 font-medium text-light-100 rounded-l-lg cursor-default">{ item.rank }</td>
-									<td className="group-hover:bg-light-20 font-medium text-light-100 cursor-default">{ item.userName }</td>
-									<td className="group-hover:bg-light-20 font-medium text-light-100 cursor-default">{ numberToSeparatedThousandsString(item.score) }</td>
-									<td className="group-hover:bg-light-20 font-medium text-light-100 cursor-default">{ numberToSeparatedThousandsString(item.pp) }</td>
-									<td className={ `group-hover:bg-light-20 font-medium text-light-100 ${ _.isUndefined(onDeleteClick) && "rounded-r-lg" } cursor-default` }>
+									<td className="pl-4 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 rounded-l-lg cursor-default">{ item.rank }</td>
+									<td className="group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 cursor-default">{ item.userName }</td>
+									<td className="group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 cursor-default">{ numberToSeparatedThousandsString(item.score) }</td>
+									<td className="group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 cursor-default">{ numberToSeparatedThousandsString(item.pp) }</td>
+									<td className={ `group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 ${ _.isUndefined(onDeleteClick) && "rounded-r-lg" } cursor-default` }>
 										<DeltaItem delta={ item.delta } />
 									</td>
 									{
 										!_.isUndefined(onDeleteClick) &&
-										<td className={ `group-hover:bg-light-20 font-medium text-light-100 ${ !_.isUndefined(onDeleteClick) && "rounded-r-lg" } cursor-default` }>
+										<td className={ `group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 ${ !_.isUndefined(onDeleteClick) && "rounded-r-lg" } cursor-default` }>
 											<FontAwesomeIcon icon={ faTrash } onClick={ () => onDeleteClick(item.id) } className="text-danger-light active:text-danger-light-active cursor-pointer" />
 										</td>
 									}
