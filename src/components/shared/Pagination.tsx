@@ -84,7 +84,7 @@ function Pagination({ active, total, setValue }: { active: number, total: number
 
 	function PageItem({ value, label, active, htmlRef }: { value: number, label: number | string, active: boolean, htmlRef?: React.LegacyRef<HTMLButtonElement> }) {
 		return (
-			<button type="button" onClick={ () => handlePageClick(value) } ref={ htmlRef } className={ `flex justify-center items-center w-8 h-8 font-semibold ${ active ? "bg-light-80 text-white" : "hover:bg-light-40 text-light-100" } rounded-lg cursor-pointer` }>{ label }</button>
+			<button type="button" onClick={ () => handlePageClick(value) } ref={ htmlRef } className={ `flex justify-center items-center w-8 h-8 font-semibold ${ active ? "bg-light-80 dark:bg-dark-80 text-white dark:text-dark-0" : "hover:bg-light-40 dark:hover:bg-dark-40 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ label }</button>
 		);
 	}
 
@@ -104,10 +104,10 @@ function Pagination({ active, total, setValue }: { active: number, total: number
 										isOpened &&
 										<div className="relative flex justify-center">
 											<div className="absolute top-2">
-												<div className="flex justify-center gap-x-2 px-3 py-2 bg-light-40 rounded-lg" ref={ refPageDialog }>
-													<input type="number" min={ 1 } max={ total } value={ pageInput } onChange={ e => handlePageInputChange(e.target.value) } className={ `form-input w-20 px-3 py-1.5 font-medium bg-light-20 ring-danger-light focus:ring-danger-light text-light-100 caret-light-100 border-none ${ isPageError ? "ring-2 focus:ring-2" : "focus:ring-0" } rounded-md` } />
-													<button type="button" onClick={ () => handlePageInputSubmit() } className="flex justify-center items-center px-2 font-medium bg-light-20 active:bg-light-40 rounded-lg">
-														<FontAwesomeIcon icon={ faCheck } className="text-xl text-light-100" />
+												<div className="flex justify-center gap-x-2 px-3 py-2 bg-light-40 dark:bg-dark-0 rounded-lg" ref={ refPageDialog }>
+													<input type="number" min={ 1 } max={ total } value={ pageInput } onChange={ e => handlePageInputChange(e.target.value) } className={ `form-input w-20 px-3 py-1.5 font-medium bg-light-20 dark:bg-dark-40 ring-danger-light dark:ring-danger-dark focus:ring-danger-light dark:focus:ring-danger-dark text-light-100 dark:text-dark-100 caret-light-100 dark:caret-dark-100 border-none ${ isPageError ? "ring-2 focus:ring-2" : "focus:ring-0" } rounded-md` } />
+													<button type="button" onClick={ () => handlePageInputSubmit() } className="flex justify-center items-center px-2 font-medium bg-light-20 dark:bg-dark-20 active:bg-light-40 dark:active:bg-dark-40 rounded-lg">
+														<FontAwesomeIcon icon={ faCheck } className="text-xl text-light-100 dark:text-dark-100" />
 													</button>
 												</div>
 											</div>
