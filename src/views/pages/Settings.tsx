@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { settingsContext } from "../App";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
+import { Settings as SettingsData } from "../../types/context/Settings";
 import { IDropdownData } from "../../types/components/Dropdown";
 
 function Settings() {
-	const [ themeId, setThemeId ] = useState(1);
-	const [ dateFormatId, setDateFormatId ] = useState(3);
-	const [ defaultCountryId, setDefaultCountryId ] = useState(1);
-	const [ defaultSortingId, setDefaultSortingId ] = useState(1);
+	const { settings, setSettings } = useContext(settingsContext);
+
+	const [ themeId, setThemeId ] = useState(settings.themeId);
+	const [ dateFormatId, setDateFormatId ] = useState(settings.dateFormatId);
+	const [ defaultCountryId, setDefaultCountryId ] = useState(settings.defaultCountryId);
+	const [ defaultSortingId, setDefaultSortingId ] = useState(settings.defaultSortingId);
+
+	useEffect(() => {
+		const newSettings: SettingsData = {
+			themeId,
+			dateFormatId,
+			defaultCountryId,
+			defaultSortingId,
+			starredUserId: settings.starredUserId
+		};
+
+		setSettings(newSettings);
+	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
 
 	const themeDropdownData: IDropdownData[] = [
 		{
