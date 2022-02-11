@@ -4,6 +4,11 @@ mod list;
 use list::RankingListData;
 
 #[wasm_bindgen]
+pub fn greet() -> String {
+	"Hello, world!".to_string()
+}
+
+#[wasm_bindgen]
 pub fn sort_object(list: &RankingListData) {
 	println!("Test");
 }

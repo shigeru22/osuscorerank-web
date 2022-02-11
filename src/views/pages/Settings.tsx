@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { settingsContext } from "../App";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
+import init, { greet } from "../../sort-wasm/pkg/osuinactivescore_sort_wasm";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IDropdownData } from "../../types/components/Dropdown";
 
@@ -12,6 +13,12 @@ function Settings() {
 	const [ dateFormatId, setDateFormatId ] = useState(settings.dateFormatId);
 	const [ defaultCountryId, setDefaultCountryId ] = useState(settings.defaultCountryId);
 	const [ defaultSortingId, setDefaultSortingId ] = useState(settings.defaultSortingId);
+
+	const [ wasmMessage, setWasmMessage ] = useState("Testing...");
+
+	useEffect(() => {
+		getWasmGreetMessage();
+	}, []);
 
 	useEffect(() => {
 		const newSettings: SettingsData = {
@@ -85,6 +92,18 @@ function Settings() {
 		}
 	];
 
+	async function getWasmGreetMessage() {
+		try {
+			await init();
+
+			const message = greet();
+			setWasmMessage(message);
+		}
+		catch {
+			setWasmMessage("Wasm function failed!");
+		}
+	}
+
 	return (
 		<div className="px-14 py-12 space-y-6">
 			<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Starred</h1>
@@ -114,7 +133,7 @@ function Settings() {
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
 					</div>
 				</div>
-				<div>
+				<div className="space-y-6">
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">API</h3>
 						<div className="space-y-2">
@@ -123,6 +142,15 @@ function Settings() {
 							<Button type="primary" label="Check Status" />
 						</div>
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api 1.0.0</h6>
+					</div>
+					<div className="space-y-4">
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
+						<div className="space-y-2">
+							<h6 className="font-medium text-light-80 dark:text-dark-80">This runs greet() function from compiled Wasm module.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Message: { wasmMessage }</h6>
+							<Button type="primary" label="Test Again" />
+						</div>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-sort-wasm 1.0.0</h6>
 					</div>
 				</div>
 			</div>
