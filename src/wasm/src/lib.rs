@@ -1,3 +1,7 @@
+extern crate wasm_bindgen;
+extern crate serde_json;
+extern crate serde_derive;
+
 use wasm_bindgen::prelude::*;
 
 mod list;
@@ -9,8 +13,10 @@ pub fn greet() -> String {
 }
 
 #[wasm_bindgen]
-pub fn sort_object(list: &RankingListData) {
-	println!("Test");
+pub fn sort_object(list: &JsValue) -> String {
+	let data: Vec<RankingListData> = list.into_serde().unwrap();
+	let serialized = serde_json::to_string(&data).unwrap();
+	serialized
 }
 
 #[test]

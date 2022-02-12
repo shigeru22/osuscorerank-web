@@ -16,7 +16,7 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "lodash": "^4.17.21",
-    "osuinactivescore-sort-wasm": "file:src/sort-wasm/pkg",
+    "osuinactivescore-wasm": "file:src/wasm/pkg",
     "react": "^17.0.2",
     "react-country-flag": "^3.0.2",
     "react-dom": "^17.0.2",
@@ -30,7 +30,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-wasm": "cd ./src/sort-wasm && wasm-pack build --target web --out-dir pkg"
+    "build-wasm": "cd ./src/wasm && wasm-pack build --target web --out-dir pkg"
   },
   "browserslist": {
     "production": [

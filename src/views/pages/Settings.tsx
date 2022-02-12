@@ -2,9 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { settingsContext } from "../App";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
-import init, { greet } from "../../sort-wasm/pkg/osuinactivescore_sort_wasm";
+import init, { greet, sort_object as sortObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IDropdownData } from "../../types/components/Dropdown";
+import { IRankingListData } from "../../types/components/RankingList";
 
 function Settings() {
 	const { settings, setSettings } = useContext(settingsContext);
@@ -98,6 +99,27 @@ function Settings() {
 
 			const message = greet();
 			setWasmMessage(message);
+
+			const items: IRankingListData[] = [
+				{
+					id: 1,
+					rank: 1,
+					userName: "User 1",
+					score: 12345,
+					pp: 123,
+					delta: 0
+				},
+				{
+					id: 2,
+					rank: 2,
+					userName: "User 2",
+					score: 12344,
+					pp: 122,
+					delta: 0
+				}
+			];
+
+			console.log(sortObject(items));
 		}
 		catch {
 			setWasmMessage("Wasm function failed!");
