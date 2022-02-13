@@ -148,7 +148,7 @@ function Country() {
 					<div className="flex flex-col items-center gap-y-4">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
 						<RankingList data={ displayedRankingData } />
-						<Pagination active={ rankingPage } total={ 8 } setValue={ setRankingPage } />
+						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingData, tableRowsPerPage) } setValue={ setRankingPage } />
 					</div>
 					<div className="flex 2xl:hidden flex-col gap-y-4 pt-1.25">
 						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
