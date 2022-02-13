@@ -1,6 +1,7 @@
 use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 
+#[allow(non_snake_case)]
 #[wasm_bindgen]
 #[derive(Serialize, Deserialize)]
 pub struct RankingListData {
