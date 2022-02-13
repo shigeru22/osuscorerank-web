@@ -7,7 +7,7 @@ import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import { getRankingListTotalPages } from "../../utils/Number";
-import { getTableRowsFromViewport } from "../../utils/RankingList";
+import { getTableRowsFromViewport, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
 import { IDropdownData } from "../../types/components/Dropdown";
 
@@ -17,9 +17,11 @@ function Country() {
 	const [ tableRowsPerPage, setTableRowsPerPage ] = useState(getTableRowsFromViewport());
 
 	const [ updateDebounce, setUpdateDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
+	const [ searchDebounce, setSearchDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 	const [ rankingPage, setRankingPage ] = useState(1);
 	const [ rankingData, setRankingData ] = useState<IRankingListData[]>([]);
+	const [ rankingDataResults, setRankingDataResults ] = useState<IRankingListData[]>([]);
 	const [ displayedRankingData, setDisplayedRankingData ] = useState<IRankingListData[]>([]);
 
 	const sortOptions: IDropdownData[] = [
@@ -30,6 +32,24 @@ function Country() {
 			id: 2, name: "pp"
 		}
 	];
+
+	useEffect(() => {
+		if(_.isEmpty(searchQuery)) {
+			setRankingDataResults(rankingData);
+			return;
+		}
+
+		if(!_.isUndefined(searchDebounce)) {
+			clearTimeout(searchDebounce);
+		}
+
+		setSearchDebounce(setTimeout(async () => {
+			const result = await searchFromTableData(rankingData, searchQuery);
+			setRankingDataResults(result);
+			setRankingPage(1);
+		}, 250));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ searchQuery ]);
 
 	useEffect(() => {
 		function updateWindowDimensions() {
@@ -52,7 +72,7 @@ function Country() {
 	useEffect(() => {
 		const temp: IRankingListData[] = [];
 		for(let i = (rankingPage - 1) * tableRowsPerPage; i < rankingPage * tableRowsPerPage; i++) {
-			temp.push(rankingData[i]);
+			temp.push(rankingDataResults[i]);
 		}
 
 		setDisplayedRankingData(temp);
@@ -64,7 +84,7 @@ function Country() {
 
 	/* updateDebounce should not be its dependency */
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ rankingPage, rankingData, tableRowsPerPage ]);
+	}, [ rankingPage, rankingDataResults, tableRowsPerPage ]);
 
 	useEffect(() => {
 		const data: IRankingListData[] = [
@@ -128,6 +148,9 @@ function Country() {
 		];
 
 		setRankingData(data);
+
+		/* since this effect is run at page load, set as filtered data */
+		setRankingDataResults(data);
 	}, []);
 
 	return (
@@ -148,7 +171,7 @@ function Country() {
 					<div className="flex flex-col items-center gap-y-4">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
 						<RankingList data={ displayedRankingData } />
-						<Pagination active={ rankingPage } total={ 8 } setValue={ setRankingPage } />
+						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
 					</div>
 					<div className="flex 2xl:hidden flex-col gap-y-4 pt-1.25">
 						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
