@@ -7,7 +7,7 @@ import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import { getRankingListTotalPages } from "../../utils/Number";
-import { getTableRowsFromViewport } from "../../utils/RankingList";
+import { getTableRowsFromViewport, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
 import { IDropdownData } from "../../types/components/Dropdown";
 
@@ -17,9 +17,11 @@ function Starred() {
 	const [ tableRowsPerPage, setTableRowsPerPage ] = useState(getTableRowsFromViewport());
 
 	const [ updateDebounce, setUpdateDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
+	const [ searchDebounce, setSearchDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 	const [ rankingPage, setRankingPage ] = useState(1);
 	const [ rankingData, setRankingData ] = useState<IRankingListData[]>([]);
+	const [ rankingDataResults, setRankingDataResults ] = useState<IRankingListData[]>([]);
 	const [ displayedRankingData, setDisplayedRankingData ] = useState<IRankingListData[]>([]);
 
 	const sortOptions: IDropdownData[] = [
@@ -30,6 +32,24 @@ function Starred() {
 			id: 2, name: "pp"
 		}
 	];
+
+	useEffect(() => {
+		if(_.isEmpty(searchQuery)) {
+			setRankingDataResults(rankingData);
+			return;
+		}
+
+		if(!_.isUndefined(searchDebounce)) {
+			clearTimeout(searchDebounce);
+		}
+
+		setSearchDebounce(setTimeout(async () => {
+			const result = await searchFromTableData(rankingData, searchQuery);
+			setRankingDataResults(result);
+			setRankingPage(1);
+		}, 250));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ searchQuery ]);
 
 	useEffect(() => {
 		function updateWindowDimensions() {
@@ -52,7 +72,7 @@ function Starred() {
 	useEffect(() => {
 		const temp: IRankingListData[] = [];
 		for(let i = (rankingPage - 1) * tableRowsPerPage; i < rankingPage * tableRowsPerPage; i++) {
-			temp.push(rankingData[i]);
+			temp.push(rankingDataResults[i]);
 		}
 
 		setDisplayedRankingData(temp);
@@ -64,7 +84,7 @@ function Starred() {
 
 	/* updateDebounce should not be its dependency */
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ rankingPage, rankingData, tableRowsPerPage ]);
+	}, [ rankingPage, rankingDataResults, tableRowsPerPage ]);
 
 	useEffect(() => {
 		const data: IRankingListData[] = [
@@ -86,6 +106,7 @@ function Starred() {
 		];
 
 		setRankingData(data);
+		setRankingDataResults(data);
 	}, []);
 
 	return (

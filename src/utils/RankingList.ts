@@ -1,3 +1,6 @@
+import init, { search_object as searchObject } from "../wasm/pkg/osuinactivescore_wasm";
+import { IRankingListData } from "../types/components/RankingList";
+
 export function getTableRowsFromViewport() {
 	const width = window.innerWidth;
 	const height = window.innerHeight;
@@ -9,4 +12,16 @@ export function getTableRowsFromViewport() {
 	}
 
 	return baseRow;
+}
+
+export async function searchFromTableData(data: IRankingListData[], query: string): Promise<IRankingListData[]> {
+	try {
+		await init();
+
+		const result: IRankingListData[] = JSON.parse(searchObject(data, query));
+		return result;
+	}
+	catch {
+		return [];
+	}
 }
