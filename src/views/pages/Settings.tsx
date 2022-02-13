@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import _ from "lodash";
 import { settingsContext } from "../App";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
-import init, { greet, sort_object as sortObject } from "../../wasm/pkg/osuinactivescore_wasm";
+import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IDropdownData } from "../../types/components/Dropdown";
 import { IRankingListData } from "../../types/components/RankingList";
@@ -16,6 +17,7 @@ function Settings() {
 	const [ defaultSortingId, setDefaultSortingId ] = useState(settings.defaultSortingId);
 
 	const [ wasmMessage, setWasmMessage ] = useState("Testing...");
+	const [ wasmStatus, setWasmStatus ] = useState("Testing...");
 
 	useEffect(() => {
 		getWasmGreetMessage();
@@ -94,6 +96,9 @@ function Settings() {
 	];
 
 	async function getWasmGreetMessage() {
+		setWasmMessage("Testing...");
+		setWasmStatus("Testing...");
+
 		try {
 			await init();
 
@@ -102,27 +107,31 @@ function Settings() {
 
 			const items: IRankingListData[] = [
 				{
-					id: 1,
-					rank: 1,
-					userName: "User 1",
-					score: 12345,
-					pp: 123,
-					delta: 0
+					id: 1, rank: 1,	userName: "Beta",	score: 1223535,	pp: 324, delta: 0
 				},
 				{
-					id: 2,
-					rank: 2,
-					userName: "User 2",
-					score: 12344,
-					pp: 122,
-					delta: 0
+					id: 2, rank: 2, userName: "Alpha", score: 1123526, pp: 298, delta: 0
+				},
+				{
+					id: 3, rank: 3, userName: "Bubba", score: 1098272, pp: 277, delta: 0
 				}
 			];
+			const query = "b";
 
-			console.log(sortObject(items));
+			const result: IRankingListData[] = JSON.parse(searchObject(items, query));
+			if(result.length === 2 && (
+				_.isEqual(result[0], items[0]) &&
+				_.isEqual(result[1], items[2])
+			)) {
+				setWasmStatus("Passed");
+			}
+			else {
+				setWasmStatus("Failed");
+			}
 		}
 		catch {
-			setWasmMessage("Wasm function failed!");
+			setWasmMessage("Failed");
+			setWasmStatus("Failed");
 		}
 	}
 
@@ -168,9 +177,10 @@ function Settings() {
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80 dark:text-dark-80">This runs greet() function from compiled Wasm module.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">This runs greet() function and does a simple search test using compiled Wasm module.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">Message: { wasmMessage }</h6>
-							<Button type="primary" label="Test Again" />
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Search test: { wasmStatus }</h6>
+							<Button type="primary" label="Test Again" onClick={ () => getWasmGreetMessage() } />
 						</div>
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-sort-wasm 1.0.0</h6>
 					</div>
