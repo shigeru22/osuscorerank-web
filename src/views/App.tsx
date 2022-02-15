@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 import Sidebar from "../components/shared/Sidebar";
+import Navbar from "../components/shared/mobile/Navbar";
 import { getSettingsData, setSettingsData } from "../utils/Storage";
 import { Settings, SettingsContext } from "../types/context/Settings";
 
@@ -54,8 +55,13 @@ function App() {
 		<Provider value={ {
 			settings, setSettings
 		} }>
-			<div className="flex dark:bg-dark-20">
-				<Sidebar active={ routeSegments[1] } />
+			<div className="flex flex-col md:flex-row dark:bg-dark-20">
+				<div className="md:hidden">
+					<Navbar active={ routeSegments[1] } />
+				</div>
+				<div className="hidden md:block">
+					<Sidebar active={ routeSegments[1] } />
+				</div>
 				<div className="flex-grow h-screen overflow-y-auto">
 					<Outlet />
 				</div>
