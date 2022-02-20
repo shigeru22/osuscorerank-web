@@ -1,0 +1,12 @@
+{
+  "name": "osuinactivescore-wasm",
+  "version": "1.0.0",
+  "files": [
+    "osuinactivescore_wasm_bg.wasm",
+    "osuinactivescore_wasm.js",
+    "osuinactivescore_wasm.d.ts"
+  ],
+  "module": "osuinactivescore_wasm.js",
+  "types": "osuinactivescore_wasm.d.ts",
+  "sideEffects": false
+}
