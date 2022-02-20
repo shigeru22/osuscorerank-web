@@ -23,7 +23,11 @@ module.exports = {
 		"import",
 		"@typescript-eslint"
 	],
-	"ignorePatterns": [ "src/wasm/pkg/*.js" ],
+	"ignorePatterns": [
+		"node_modules/**",
+		"build/**",
+		"src/wasm/pkg/*.js"
+	],
 	"rules": {
 		/* possible problems */
 		"array-callback-return": "error",
