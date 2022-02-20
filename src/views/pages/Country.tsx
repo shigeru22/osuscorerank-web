@@ -154,15 +154,17 @@ function Country() {
 	}, []);
 
 	return (
-		<div className="px-14 py-12 space-y-6">
-			<div className="flex justify-between items-start">
-				<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Indonesia</h1>
-				<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
+		<div className="px-8 py-2 md:px-14 md:py-12 md:space-y-6">
+			<div className="hidden md:block space-y-6">
+				<div className="md:flex justify-between items-start">
+					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Indonesia</h1>
+					<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
+				</div>
 			</div>
 			<div className="2xl:flex 2xl:justify-between 2xl:gap-x-6 gap-y-6 space-y-6 2xl:space-y-0">
 				<div className="flex flex-col gap-y-6">
 					<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
-					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4">
+					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4 overflow-x-auto">
 						<StatsCard title="Recently Inactive" data="2" subtitle="+ 1 since last month" />
 						<StatsCard title="Total Inactives" data="33" subtitle="+ 2 since last month" />
 					</div>
@@ -173,7 +175,7 @@ function Country() {
 						<RankingList data={ displayedRankingData } />
 						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
 					</div>
-					<div className="flex 2xl:hidden flex-col gap-y-4 pt-1.25">
+					<div className="hidden md:flex 2xl:hidden flex-col gap-y-4 pt-1.25">
 						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
 						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
 					</div>
