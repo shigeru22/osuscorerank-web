@@ -50,11 +50,11 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 	}
 
 	return (
-		<div className="w-56 space-y-2">
+		<div className="flex md:block items-center w-56 gap-x-4 md:space-y-2">
 			<label htmlFor={ name } className="font-medium text-light-80 dark:text-dark-80">{ label }</label>
 			<div>
 				<button type="button" id={ name } onClick={ () => toggleDropdown() } ref={ refButton } className={ `flex flex-row justify-between items-center group w-full px-3 py-1.5 ${ isOpened ? "bg-light-40 dark:bg-dark-60" : "bg-light-20 dark:bg-dark-40" } rounded-lg` }>
-					<div className="font-medium text-light-100 dark:text-dark-100">{ getValueFromData(value) }</div>
+					<div className="min-w-24 font-medium text-left text-light-100 dark:text-dark-100">{ getValueFromData(value) }</div>
 					<FontAwesomeIcon icon={ faChevronDown } className={ `text-2xl pl-3 ${ isOpened ? "text-light-80 dark:text-dark-100" : "text-light-60 dark:text-dark-80 group-hover:text-light-80 dark:group-hover:text-dark-100" }` } />
 				</button>
 				{
