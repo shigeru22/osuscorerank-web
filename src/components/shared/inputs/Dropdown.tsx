@@ -1,18 +1,26 @@
 import React, { useState, useRef, useEffect } from "react";
+import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import _ from "lodash";
 import { IDropdownData } from "../../../types/components/Dropdown";
+import DimBackground from "./DimBackground";
 
 function Dropdown({ name, label, data, value, setValue }: { name: string, label: string, data: IDropdownData[], value?: number, setValue?: React.Dispatch<React.SetStateAction<number>> }) {
 	const [ isOpened, setOpened ] = useState(false);
 
 	const refButton = useRef<HTMLButtonElement>(null);
 	const refDropdown = useRef<HTMLDivElement>(null);
+	const refMobileDropdown = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
-			if(refDropdown.current && refButton.current && !refButton.current.contains(event.target as Element) && !refDropdown.current.contains(event.target as Element)) {
+			if(
+				refButton.current &&
+				!refButton.current.contains(event.target as Element) &&
+				!(
+					(refDropdown.current && refDropdown.current.contains(event.target as Element)) ||
+					(refMobileDropdown.current && refMobileDropdown.current.contains(event.target as Element))
+				)) {
 				setOpened(false);
 			}
 		}
@@ -59,17 +67,37 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 				</button>
 				{
 					isOpened &&
-					<div className="relative flex justify-center z-10">
-						<div className="absolute flex flex-col w-full m-2 p-3 bg-light-20 dark:bg-dark-0 rounded-lg">
-							<div ref={ refDropdown } className="max-h-26 space-y-1 overflow-y-auto">
-								{
-									data.map(item => (
-										<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-2 py-1 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
-									))
-								}
+					<>
+						<div className="md:hidden">
+							<DimBackground>
+								<div className="flex justify-center items-center w-full h-full">
+									<div ref={ refMobileDropdown } className="flex flex-col min-w-48 w-5/6 m-2 p-6 bg-light-20 dark:bg-dark-0 rounded-lg space-y-4">
+										<h3 className="font-semibold text-xl text-light-100 dark:text-dark-100">Sorting</h3>
+										<div className="max-h-[18.5rem] space-y-1 overflow-y-auto">
+											{
+												data.map(item => (
+													<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-4 py-4 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
+												))
+											}
+										</div>
+									</div>
+								</div>
+							</DimBackground>
+						</div>
+						<div className="hidden md:block">
+							<div className="relative flex justify-center z-10">
+								<div className="absolute flex flex-col w-full m-2 p-3 bg-light-20 dark:bg-dark-0 rounded-lg">
+									<div ref={ refDropdown } className="max-h-26 space-y-1 overflow-y-auto">
+										{
+											data.map(item => (
+												<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-2 py-1 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
+											))
+										}
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
+					</>
 				}
 			</div>
 		</div>
