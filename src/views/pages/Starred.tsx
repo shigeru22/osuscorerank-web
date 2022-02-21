@@ -126,9 +126,9 @@ function Starred() {
 					</div>
 				</div>
 				<div className="flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
-					<div className="flex flex-col md:items-center gap-y-4 w-full md:w-auto px-8 md:px-0 overflow-x-auto">
+					<div className="flex flex-col md:items-center gap-y-4 w-full md:w-auto">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
-						<div style={ { minHeight: getTableHeight(tableRowsPerPage) } }> { /* calculate table height programatically */ }
+						<div className="flex 2xl:flex-col items-start px-8 md:px-0 overflow-x-auto" style={ { minHeight: getTableHeight(tableRowsPerPage) } }> { /* calculate table height programatically */ }
 							<RankingList data={ displayedRankingData } />
 						</div>
 						<div className="hidden md:flex justify-center w-full">
