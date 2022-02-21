@@ -8,20 +8,21 @@ export function getTableRowsFromViewport() {
 	let baseRow = 5;
 
 	if(width <= 768) {
-		baseRow = 7;
+		baseRow = 6;
 	}
 	else if(width >= 1536) {
 		baseRow = 9;
 	}
 
 	if(height >= 600) {
-		return baseRow + Math.floor((height - 600) / 34);
+		return baseRow + Math.floor((height - 608) / 34);
 	}
 
 	return baseRow;
 }
 
 export function getTableHeight(rows: number) {
+	console.log(window.innerHeight);
 	return rows > 0 ? (rows + 1) * 34 : 0;
 }
 
