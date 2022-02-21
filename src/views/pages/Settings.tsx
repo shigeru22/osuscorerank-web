@@ -136,11 +136,11 @@ function Settings() {
 	}
 
 	return (
-		<div className="px-8 py-2 md:px-14 md:py-12 space-y-6">
-			<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Starred</h1>
-			<div className="flex flex-col md:flex-row gap-x-12 gap-y-4">
+		<div className="px-8 py-0 md:px-14 md:py-12 md:space-y-6">
+			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
+			<div className="flex flex-col md:flex-row gap-x-12 gap-y-4 pb-6">
 				<div className="space-y-6">
-					<div className="space-y-4">
+					<div className="pt-2 md:pt-0 space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">General</h3>
 						<div className="flex flex-col md:flex-row gap-x-12 gap-y-2">
 							<Dropdown name="theme" label="Theme" data={ themeDropdownData } value={ themeId } setValue={ setThemeId } />
@@ -148,10 +148,10 @@ function Settings() {
 						</div>
 					</div>
 					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Defaults</h3>
 						<div className="flex flex-col md:flex-row gap-x-12 gap-y-2">
-							<Dropdown name="defaultcountry" label="Default country" data={ countryDropdownData } value={ defaultCountryId } setValue={ setDefaultCountryId } />
-							<Dropdown name="defaultsorting" label="Default sorting" data={ sortingDropdownData } value={ defaultSortingId } setValue={ setDefaultSortingId } />
+							<Dropdown name="defaultcountry" label="Country" data={ countryDropdownData } value={ defaultCountryId } setValue={ setDefaultCountryId } />
+							<Dropdown name="defaultsorting" label="Sorting" data={ sortingDropdownData } value={ defaultSortingId } setValue={ setDefaultSortingId } />
 						</div>
 					</div>
 					<div className="space-y-4">
