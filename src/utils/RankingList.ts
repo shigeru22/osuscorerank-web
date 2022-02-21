@@ -22,7 +22,6 @@ export function getTableRowsFromViewport() {
 }
 
 export function getTableHeight(rows: number) {
-	console.log(window.innerHeight);
 	return rows > 0 ? (rows + 1) * 34 : 0;
 }
 
