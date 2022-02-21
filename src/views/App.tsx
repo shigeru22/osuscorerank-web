@@ -62,7 +62,7 @@ function App() {
 				<div className="hidden md:block">
 					<Sidebar active={ routeSegments[1] } />
 				</div>
-				<div className="flex-grow h-screen overflow-y-auto">
+				<div className="flex-grow overflow-y-auto">
 					<Outlet />
 				</div>
 			</div>
