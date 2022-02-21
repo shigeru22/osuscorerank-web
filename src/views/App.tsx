@@ -56,7 +56,7 @@ function App() {
 			settings, setSettings
 		} }>
 			<div className="flex flex-col md:flex-row">
-				<div className="md:hidden">
+				<div className="md:hidden h-16">
 					<Navbar active={ routeSegments[1] } />
 				</div>
 				<div className="hidden md:block">
