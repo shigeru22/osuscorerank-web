@@ -12,6 +12,14 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 	const refDropdown = useRef<HTMLDivElement>(null);
 	const refMobileDropdown = useRef<HTMLDivElement>(null);
 
+	function enableScrolling() {
+		const body = document.body;
+
+		body.classList.remove("overflow-hidden");
+		body.classList.remove("md:overflow-auto");
+		body.classList.length <= 0 && body.removeAttribute("class");
+	}
+
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
 			if(
@@ -22,6 +30,7 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 					(refMobileDropdown.current && refMobileDropdown.current.contains(event.target as Element))
 				)) {
 				setOpened(false);
+				enableScrolling();
 			}
 		}
 
@@ -32,7 +41,28 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 		};
 	}, []);
 
+	useEffect(() => {
+		function handleResizeWindow() {
+			setOpened(false);
+			enableScrolling();
+		}
+
+		window.addEventListener("resize", handleResizeWindow);
+
+		return () => {
+			window.addEventListener("resize", handleResizeWindow);
+		};
+	});
+
 	function toggleDropdown() {
+		if(!isOpened) {
+			document.body.classList.add("overflow-hidden");
+			document.body.classList.add("md:overflow-auto");
+		}
+		else {
+			enableScrolling();
+		}
+
 		setOpened(!isOpened);
 	}
 
