@@ -6,6 +6,7 @@ import RankingList from "../../components/shared/RankingList";
 import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
+import SearchButton from "../../components/shared/SearchButton";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
@@ -171,8 +172,9 @@ function Country() {
 					</div>
 				</div>
 				<div className="flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
-					<div className="flex md:hidden justify-between px-8">
+					<div className="flex md:hidden justify-between items-center w-full px-8">
 						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
+						<SearchButton value={ searchQuery } setValue={ setSearchQuery } />
 					</div>
 					<div className="flex flex-col md:items-center gap-y-4 w-full md:w-auto">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
