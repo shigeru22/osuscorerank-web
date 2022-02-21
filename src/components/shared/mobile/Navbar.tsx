@@ -13,7 +13,7 @@ function Navbar({ active }: { active: string }) {
 	}
 
 	return (
-		<div className="flex justify-between items-center w-full h-16 pl-4 pr-8">
+		<div className="fixed top-0 flex justify-between items-center w-full h-16 pl-4 pr-8 bg-white dark:bg-dark-20">
 			<div className="flex items-center gap-x-2">
 				<div className="flex justify-center items-center w-12 h-12">
 					<FontAwesomeIcon icon={ faBars } className="text-xl text-light-100 dark:text-dark-100" />
