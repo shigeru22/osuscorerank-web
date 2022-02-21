@@ -55,7 +55,7 @@ function App() {
 		<Provider value={ {
 			settings, setSettings
 		} }>
-			<div className="flex flex-col md:flex-row dark:bg-dark-20">
+			<div className="flex flex-col md:flex-row">
 				<div className="md:hidden">
 					<Navbar active={ routeSegments[1] } />
 				</div>
