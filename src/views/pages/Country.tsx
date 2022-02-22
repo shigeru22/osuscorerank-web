@@ -6,7 +6,7 @@ import RankingList from "../../components/shared/RankingList";
 import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
-import SearchButton from "../../components/shared/SearchButton";
+import SearchButton from "../../components/shared/mobile/SearchButton";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";

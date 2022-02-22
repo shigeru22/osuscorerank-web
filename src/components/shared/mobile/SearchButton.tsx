@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
-import DimBackground from "./inputs/DimBackground";
+import DimBackground from "../inputs/DimBackground";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
