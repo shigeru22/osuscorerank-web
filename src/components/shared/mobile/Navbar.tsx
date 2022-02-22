@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import ReactCountryFlag from "react-country-flag";
 import { Link } from "react-router-dom";
-import DimBackground from "../inputs/DimBackground";
+import DimBackground from "../DimBackground";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
