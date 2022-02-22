@@ -27,10 +27,12 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 
 	function closeDialog() {
 		setOpened(false);
+		setSearchQuery("");
 	}
 
 	function openDialog() {
 		setOpened(true);
+		setSearchQuery(value);
 	}
 
 	function handleTextChange(value: string) {
