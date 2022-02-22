@@ -61,7 +61,7 @@ function Navbar({ active }: { active: string }) {
 									<div className="flex justify-center items-center w-6">
 										<ReactCountryFlag countryCode="ID" svg className="text-xl rounded-md" />
 									</div>
-									<div className={ `font-semibold text-lg ${ index === 0 ? "text-light-60 dark:text-dark-100" : "text-dark-100" }` }>Country</div>
+									<div className={ `font-semibold text-lg ${ index === 0 ? "text-light-20 dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` }>Country</div>
 								</div>
 							</Link>
 							<Link to="/global" onClick={ () => handleMenuClick(1) }>
@@ -69,7 +69,7 @@ function Navbar({ active }: { active: string }) {
 									<div className="flex justify-center items-center w-6">
 										<FontAwesomeIcon icon={ faGlobeAmericas } className={ `text-xl ${ index === 1 ? "text-white dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` } />
 									</div>
-									<div className={ `font-semibold text-lg ${ index === 1 ? "text-light-60 dark:text-dark-100" : "text-dark-100" }` }>Global</div>
+									<div className={ `font-semibold text-lg ${ index === 1 ? "text-light-20 dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` }>Global</div>
 								</div>
 							</Link>
 							<Link to="/starred" onClick={ () => handleMenuClick(2) }>
@@ -77,7 +77,7 @@ function Navbar({ active }: { active: string }) {
 									<div className="flex justify-center items-center w-6">
 										<FontAwesomeIcon icon={ faStar } className={ `text-xl ${ index === 2 ? "text-white dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` } />
 									</div>
-									<div className={ `font-semibold text-lg ${ index === 2 ? "text-light-60 dark:text-dark-100" : "text-dark-100" }` }>Starred</div>
+									<div className={ `font-semibold text-lg ${ index === 2 ? "text-light-20 dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` }>Starred</div>
 								</div>
 							</Link>
 							<Link to="/settings" onClick={ () => handleMenuClick(3) }>
@@ -85,7 +85,7 @@ function Navbar({ active }: { active: string }) {
 									<div className="flex justify-center items-center w-6">
 										<FontAwesomeIcon icon={ faSlidersH } className={ `text-xl ${ index === 3 ? "text-white dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` } />
 									</div>
-									<div className={ `font-semibold text-lg ${ index === 3 ? "text-light-60 dark:text-dark-100" : "text-dark-100" }` }>Settings</div>
+									<div className={ `font-semibold text-lg ${ index === 3 ? "text-light-20 dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` }>Settings</div>
 								</div>
 							</Link>
 							<Link to="/help" onClick={ () => handleMenuClick(4) }>
@@ -93,7 +93,7 @@ function Navbar({ active }: { active: string }) {
 									<div className="flex justify-center items-center w-6">
 										<FontAwesomeIcon icon={ faQuestionCircle } className={ `text-xl ${ index === 4 ? "text-white dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` } />
 									</div>
-									<div className={ `font-semibold text-lg ${ index === 4 ? "text-light-60 dark:text-dark-100" : "text-dark-100" }` }>Help</div>
+									<div className={ `font-semibold text-lg ${ index === 4 ? "text-light-20 dark:text-dark-100" : "text-light-100 dark:text-dark-100" }` }>Help</div>
 								</div>
 							</Link>
 						</div>
