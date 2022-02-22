@@ -25,6 +25,18 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 		};
 	}, []);
 
+	useEffect(() => {
+		function handleResizeWindow() {
+			closeDialog();
+		}
+
+		window.addEventListener("resize", handleResizeWindow);
+
+		return () => {
+			window.removeEventListener("resize", handleResizeWindow);
+		};
+	});
+
 	function closeDialog() {
 		setOpened(false);
 		setSearchQuery("");
