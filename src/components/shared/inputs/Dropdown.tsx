@@ -103,7 +103,7 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 					<>
 						<div className="md:hidden">
 							<DimBackground>
-								<Dialog htmlRef={ refMobileDropdown } title={ label }>
+								<Dialog htmlRef={ refMobileDropdown } title={ label } onCancelClick={ () => setOpened(false) }>
 									{
 										data.map(item => (
 											<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-4 py-4 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
