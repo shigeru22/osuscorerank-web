@@ -113,7 +113,7 @@ function Navbar({ active }: { active: string }) {
 							<Link to="/" onClick={ () => handleMenuClick(0) }>
 								<div className={ `flex items-center gap-x-4 p-4 ${ index === 0 ? "bg-light-60 dark:bg-dark-60" : "hover:bg-light-40 dark:hover:bg-dark-40" } rounded-lg` }>
 									<div className="flex justify-center items-center w-6">
-										<ReactCountryFlag countryCode="ID" svg className="text-xl rounded-md" />
+										<ReactCountryFlag countryCode={ getCountryCodeById(activeCountryId) } svg className="text-xl rounded-md" />
 									</div>
 									<div className={ `font-semibold text-lg ${ index === 0 ? "text-light-20" : "text-light-100" } dark:text-dark-100` }>Country</div>
 								</div>
