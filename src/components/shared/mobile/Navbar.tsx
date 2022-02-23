@@ -160,7 +160,7 @@ function Navbar({ active }: { active: string }) {
 			{
 				isCountrySelectorOpened &&
 				<DimBackground>
-					<Dialog htmlRef={ refCountryMenu } title="Country">
+					<Dialog htmlRef={ refCountryMenu } title="Country" onCancelClick={ () => setCountrySelectorOpened(false) }>
 						{
 							countries.map(item => (
 								<div key={ item.id } onClick={ () => handleCountryChange(item.id) } className={ `flex items-center gap-x-4 px-4 py-4 ${ item.id === activeCountryId ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-40" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>
