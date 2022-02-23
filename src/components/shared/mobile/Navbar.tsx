@@ -1,16 +1,25 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import _ from "lodash";
 import ReactCountryFlag from "react-country-flag";
 import { Link } from "react-router-dom";
 import DimBackground from "../DimBackground";
+import Dialog from "./Dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { settingsContext } from "../../../views/App";
+import { ICountryData } from "../../../types/data/Country";
 
 function Navbar({ active }: { active: string }) {
+	const { activeCountryId, setActiveCountryId } = useContext(settingsContext);
+
 	const [ isOpened, setOpened ] = useState(false);
+	const [ isCountrySelectorOpened, setCountrySelectorOpened ] = useState(false);
 
 	const refHamburgerButton = useRef<HTMLButtonElement>(null);
 	const refSidebarMenu = useRef<HTMLDivElement>(null);
+
+	const refCountryButton = useRef<HTMLButtonElement>(null);
+	const refCountryMenu = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -26,7 +35,36 @@ function Navbar({ active }: { active: string }) {
 		};
 	}, []);
 
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if(refCountryMenu.current && refCountryButton.current && !refCountryButton.current.contains(event.target as Element) && !refCountryMenu.current.contains(event.target as Element)) {
+				setCountrySelectorOpened(false);
+			}
+		}
+
+		document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
 	const routes = [ "Country", "Global", "Starred", "Settings", "Help" ];
+
+	const countries: ICountryData[] = [
+		{
+			id: 1, name: "Indonesia", code: "ID"
+		},
+		{
+			id: 2, name: "Singapore", code: "SG"
+		},
+		{
+			id: 3, name: "Japan", code: "JP"
+		},
+		{
+			id: 4, name: "United States", code: "US"
+		}
+	];
 
 	let index = 0;
 	if(!_.isEmpty(active)) {
@@ -39,6 +77,22 @@ function Navbar({ active }: { active: string }) {
 		}
 	}
 
+	function handleCountryChange(id: number) {
+		setActiveCountryId(id);
+		setCountrySelectorOpened(false);
+	}
+
+	function getCountryCodeById(id: number) {
+		const index = _.findIndex(countries, country => country.id === id);
+
+		if(index >= 0) {
+			return countries[index].code;
+		}
+		else {
+			return "";
+		}
+	}
+
 	return (
 		<div className="fixed top-0 flex justify-between items-center w-full h-16 pl-4 pr-8 bg-white dark:bg-dark-20">
 			<div className="flex items-center gap-x-2">
@@ -47,10 +101,10 @@ function Navbar({ active }: { active: string }) {
 				</button>
 				<div className="font-semibold text-2xl text-light-100 dark:text-dark-100">{ routes[index] }</div>
 			</div>
-			<div className="flex justify-center items-center gap-x-2">
-				<ReactCountryFlag countryCode="ID" svg className="text-xl rounded-md" />
+			<button type="button" ref={ refCountryButton } onClick={ () => setCountrySelectorOpened(true) } className="flex justify-center items-center gap-x-2">
+				<ReactCountryFlag countryCode={ getCountryCodeById(activeCountryId) } svg className="text-xl rounded-md" />
 				<FontAwesomeIcon icon={ faChevronDown } className="text-light-100 dark:text-dark-100" />
-			</div>
+			</button>
 			{
 				isOpened &&
 				<DimBackground>
@@ -101,6 +155,21 @@ function Navbar({ active }: { active: string }) {
 							osu-inactive-score 1.0.0
 						</div>
 					</div>
+				</DimBackground>
+			}
+			{
+				isCountrySelectorOpened &&
+				<DimBackground>
+					<Dialog htmlRef={ refCountryMenu } title="Country">
+						{
+							countries.map(item => (
+								<div key={ item.id } onClick={ () => handleCountryChange(item.id) } className={ `flex items-center gap-x-4 px-4 py-4 ${ item.id === activeCountryId ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-40" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>
+									<ReactCountryFlag countryCode={ item.code } svg className="text-xl rounded-md" />
+									<div className={ `font-medium ${ item.id === activeCountryId ? "text-white" : "text-light-100" } dark:text-dark-100` }>{ item.name }</div>
+								</div>
+							))
+						}
+					</Dialog>
 				</DimBackground>
 			}
 		</div>
