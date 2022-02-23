@@ -101,7 +101,7 @@ function Navbar({ active }: { active: string }) {
 				</button>
 				<div className="font-semibold text-2xl text-light-100 dark:text-dark-100">{ routes[index] }</div>
 			</div>
-			<button type="button" ref={ refCountryButton } onClick={ () => setCountrySelectorOpened(true) } className={ `${ index === 0 || index === 1 || index === 2 ? "flex" : "hidden" } justify-center items-center gap-x-2` }>
+			<button type="button" ref={ refCountryButton } onClick={ () => setCountrySelectorOpened(true) } className={ `${ index === 0 ? "flex" : "hidden" } justify-center items-center gap-x-2` }>
 				<ReactCountryFlag countryCode={ getCountryCodeById(activeCountryId) } svg className="text-xl rounded-md" />
 				<FontAwesomeIcon icon={ faChevronDown } className="text-light-100 dark:text-dark-100" />
 			</button>
