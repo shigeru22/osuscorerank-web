@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import DimBackground from "../DimBackground";
+import Dialog from "./Dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -67,9 +68,8 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 			{
 				isOpened &&
 				<DimBackground>
-					<div className="fixed top-0 flex justify-center items-center w-full h-full z-10">
-						<div ref={ refSearchDialog } className="flex flex-col min-w-48 w-5/6 m-2 p-6 bg-white dark:bg-dark-0 rounded-lg space-y-4">
-							<h3 className="font-semibold text-xl text-light-100 dark:text-dark-100">Search</h3>
+					<Dialog htmlRef={ refSearchDialog } title="Search">
+						<div className="flex flex-col gap-y-4">
 							<div className="flex group">
 								<label htmlFor="search">
 									<div className="py-1.5 pl-3 bg-light-20 dark:bg-dark-40 rounded-l-md">
@@ -85,7 +85,7 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 								<button type="button" onClick={ () => closeDialog() } className="px-3 py-1 font-medium active:bg-light-40 dark:active:bg-dark-60 text-light-80 dark:text-dark-80 rounded-lg">Cancel</button>
 							</div>
 						</div>
-					</div>
+					</Dialog>
 				</DimBackground>
 			}
 		</>

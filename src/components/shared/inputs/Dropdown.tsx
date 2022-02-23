@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DimBackground from "../DimBackground";
+import Dialog from "../mobile/Dialog";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { IDropdownData } from "../../../types/components/Dropdown";
-import DimBackground from "../DimBackground";
 
-function Dropdown({ name, label, data, value, setValue }: { name: string, label: string, data: IDropdownData[], value?: number, setValue?: React.Dispatch<React.SetStateAction<number>> }) {
+function Dropdown({ name, label, data, value, setValue }: { name: string, label: string, data: IDropdownData[], value: number, setValue?: React.Dispatch<React.SetStateAction<number>> }) {
 	const [ isOpened, setOpened ] = useState(false);
 
 	const refButton = useRef<HTMLButtonElement>(null);
@@ -102,18 +103,13 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 					<>
 						<div className="md:hidden">
 							<DimBackground>
-								<div className="flex justify-center items-center w-full h-full">
-									<div ref={ refMobileDropdown } className="flex flex-col min-w-48 w-5/6 m-2 p-6 bg-light-20 dark:bg-dark-0 rounded-lg space-y-4">
-										<h3 className="font-semibold text-xl text-light-100 dark:text-dark-100">Sorting</h3>
-										<div className="max-h-[18.5rem] space-y-1 overflow-y-auto">
-											{
-												data.map(item => (
-													<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-4 py-4 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
-												))
-											}
-										</div>
-									</div>
-								</div>
+								<Dialog htmlRef={ refMobileDropdown } title={ label }>
+									{
+										data.map(item => (
+											<div key={ item.id } onClick={ () => handleValueChange(item.id) } className={ `px-4 py-4 font-medium ${ item.id === value ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-100" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>{ item.name }</div>
+										))
+									}
+								</Dialog>
 							</DimBackground>
 						</div>
 						<div className="hidden md:block">
