@@ -47,6 +47,7 @@ module.exports = {
 				13: "3.25rem"
 			},
 			maxHeight: {
+				4.625: "18.5rem",
 				26: "6.5rem"
 			},
 			lineHeight: {
