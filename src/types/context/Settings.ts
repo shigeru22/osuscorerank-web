@@ -8,5 +8,7 @@ export interface Settings {
 
 export type SettingsContext = {
 	settings: Settings,
-	setSettings: (data: Settings) => void
+	activeCountryId: number,
+	setSettings: (data: Settings) => void,
+	setActiveCountryId: (id: number) => void
 }

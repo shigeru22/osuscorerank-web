@@ -7,7 +7,9 @@ import { Settings, SettingsContext } from "../types/context/Settings";
 
 const settingsContextValues: SettingsContext = {
 	settings: getSettingsData(),
-	setSettings: (data: Settings) => updateSettings(data)
+	activeCountryId: getSettingsData().defaultCountryId,
+	setSettings: (data: Settings) => updateSettings(data),
+	setActiveCountryId: (id: number) => updateActiveCountryId(id)
 };
 
 const settingsContext = createContext<SettingsContext>(settingsContextValues);
@@ -17,8 +19,13 @@ function updateSettings(data: Settings) {
 	setSettingsData(data);
 }
 
+function updateActiveCountryId(id: number) {
+	settingsContextValues.activeCountryId = id;
+}
+
 function App() {
 	const [ settings ] = useState<Settings>(settingsContextValues.settings);
+	const [ activeCountryId, setActiveCountryId ] = useState(settingsContextValues.activeCountryId);
 	const [ themeId, setDarkMode ] = useState(settings.themeId);
 
 	useEffect(() => {
@@ -46,6 +53,11 @@ function App() {
 		setDarkMode(data.themeId);
 	}
 
+	function setActiveCountryStateId(id: number) {
+		updateActiveCountryId(id);
+		setActiveCountryId(id);
+	}
+
 	const location = useLocation();
 	const routeSegments = location.pathname.split("/");
 
@@ -53,7 +65,10 @@ function App() {
 
 	return (
 		<Provider value={ {
-			settings, setSettings
+			settings,
+			activeCountryId,
+			setSettings,
+			setActiveCountryId: setActiveCountryStateId
 		} }>
 			<div className="flex flex-col md:flex-row">
 				<div className="md:hidden h-16">

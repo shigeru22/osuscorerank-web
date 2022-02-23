@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import _ from "lodash";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import StatsCard from "../../components/shared/StatsCard";
@@ -7,12 +7,15 @@ import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import SearchButton from "../../components/shared/mobile/SearchButton";
+import { settingsContext } from "../App";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
 import { IDropdownData } from "../../types/components/Dropdown";
 
 function Country() {
+	const { activeCountryId } = useContext(settingsContext);
+
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(1);
 	const [ tableRowsPerPage, setTableRowsPerPage ] = useState(getTableRowsFromViewport());
