@@ -136,7 +136,7 @@ function Settings() {
 	}
 
 	return (
-		<div className="px-8 py-0 md:px-14 md:py-12 md:space-y-6">
+		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
 			<div className="flex flex-col md:flex-row gap-x-12 gap-y-4 pb-6">
 				<div className="space-y-6">
