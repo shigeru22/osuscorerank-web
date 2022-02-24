@@ -8,8 +8,8 @@ import Dropdown from "../../components/shared/inputs/Dropdown";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
+import { sortOptions } from "../../utils/Options";
 import { IRankingListData } from "../../types/components/RankingList";
-import { IDropdownData } from "../../types/components/Dropdown";
 
 function Starred() {
 	const [ searchQuery, setSearchQuery ] = useState("");
@@ -23,15 +23,6 @@ function Starred() {
 	const [ rankingData, setRankingData ] = useState<IRankingListData[]>([]);
 	const [ rankingDataResults, setRankingDataResults ] = useState<IRankingListData[]>([]);
 	const [ displayedRankingData, setDisplayedRankingData ] = useState<IRankingListData[]>([]);
-
-	const sortOptions: IDropdownData[] = [
-		{
-			id: 1, name: "Score"
-		},
-		{
-			id: 2, name: "pp"
-		}
-	];
 
 	useEffect(() => {
 		if(_.isEmpty(searchQuery)) {
