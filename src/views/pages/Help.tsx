@@ -2,7 +2,7 @@ import React from "react";
 
 function Help() {
 	return (
-		<div className="px-14 py-12 w-full space-y-6">
+		<div className="px-8 py-2 md:px-14 md:py-8 lg:py-12 w-full space-y-6">
 			<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Help</h1>
 			<div className="space-y-4">
 				<h2 className="font-semibold text-2xl text-light-100 dark:text-dark-100">What is this?</h2>

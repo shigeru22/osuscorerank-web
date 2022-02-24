@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import StatsCard from "../../components/shared/StatsCard";
 import RankingList from "../../components/shared/RankingList";
 import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getRankingListTotalPages } from "../../utils/Number";
-import { getTableRowsFromViewport, searchFromTableData } from "../../utils/RankingList";
+import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
 import { IDropdownData } from "../../types/components/Dropdown";
 
@@ -152,28 +152,40 @@ function Global() {
 	}, []);
 
 	return (
-		<div className="px-14 py-12 space-y-6">
-			<div className="flex justify-between items-start">
-				<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Global</h1>
-				<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
+		<div className="px-0 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
+			<div className="hidden md:block space-y-6">
+				<div className="flex justify-between items-start">
+					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Global</h1>
+					<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
+				</div>
 			</div>
 			<div className="2xl:flex 2xl:justify-between 2xl:gap-x-6 gap-y-6 space-y-6 2xl:space-y-0">
 				<div className="flex flex-col gap-y-6">
-					<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
-					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4">
+					<h3 className="px-8 pt-2 md:px-0 md:py-0 font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
+					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4 px-8 md:px-0 overflow-x-auto">
 						<StatsCard title="Recently Inactive" data="16" subtitle="+ 1 since last month" />
 						<StatsCard title="Total Inactives" data="143" subtitle="+ 5 since last month" />
 					</div>
 				</div>
-				<div className="flex items-start gap-x-6">
-					<div className="flex flex-col items-center gap-y-4">
-						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
-						<RankingList data={ displayedRankingData } />
-						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
+				<div className="flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
+					<div className="flex md:hidden justify-between px-8">
+						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
 					</div>
-					<div className="flex 2xl:hidden flex-col gap-y-4 pt-1.25">
+					<div className="flex flex-col md:items-center gap-y-4 w-full md:w-auto">
+						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
+						<div className="flex 2xl:flex-col items-start px-8 md:px-0 overflow-x-auto" style={ { minHeight: getTableHeight(tableRowsPerPage) } }> { /* calculate table height programatically */ }
+							<RankingList data={ displayedRankingData } />
+						</div>
+						<div className="hidden md:flex justify-center w-full">
+							<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
+						</div>
+					</div>
+					<div className="hidden md:flex 2xl:hidden flex-col gap-y-4 pt-1.25">
 						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
 						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
+					</div>
+					<div className="flex justify-center md:hidden w-full">
+						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
 					</div>
 				</div>
 				<div className="hidden 2xl:flex flex-col gap-y-4 pt-13">

@@ -1,9 +1,9 @@
 import React from "react";
+import _ from "lodash";
 import { Link } from "react-router-dom";
+import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas, faListOl, faStar, faSlidersH, faQuestionCircle, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import ReactCountryFlag from "react-country-flag";
-import _ from "lodash";
 import { ReactComponent as Shigeru } from "../../assets/shigeru.svg";
 
 function Sidebar({ active }: { active: string }) {
