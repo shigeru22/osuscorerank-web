@@ -5,6 +5,7 @@ import Button from "../../components/shared/inputs/Button";
 import { settingsContext } from "../App";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
+import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
 import { IDropdownData } from "../../types/components/Dropdown";
 import { IRankingListData } from "../../types/components/RankingList";
 
@@ -34,66 +35,6 @@ function Settings() {
 
 		setSettings(newSettings);
 	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
-
-	const themeDropdownData: IDropdownData[] = [
-		{
-			id: 1,
-			name: "System Default"
-		},
-		{
-			id: 2,
-			name: "Light"
-		},
-		{
-			id: 3,
-			name: "Dark"
-		}
-	];
-
-	const dateFormatDropdownData: IDropdownData[] = [
-		{
-			id: 1,
-			name: "DD/MM/YYYY"
-		},
-		{
-			id: 2,
-			name: "MM/DD/YYYY"
-		},
-		{
-			id: 3,
-			name: "YYYY/MM/DD"
-		}
-	];
-
-	const countryDropdownData: IDropdownData[] = [
-		{
-			id: 1,
-			name: "Indonesia"
-		},
-		{
-			id: 2,
-			name: "Singapore"
-		},
-		{
-			id: 3,
-			name: "Japan"
-		},
-		{
-			id: 4,
-			name: "United States"
-		}
-	];
-
-	const sortingDropdownData: IDropdownData[] = [
-		{
-			id: 1,
-			name: "Score"
-		},
-		{
-			id: 2,
-			name: "pp"
-		}
-	];
 
 	async function getWasmGreetMessage() {
 		setWasmMessage("Testing...");
@@ -135,6 +76,25 @@ function Settings() {
 		}
 	}
 
+	const countryOptions: IDropdownData[] = [
+		{
+			id: 1,
+			name: "Indonesia"
+		},
+		{
+			id: 2,
+			name: "Singapore"
+		},
+		{
+			id: 3,
+			name: "Japan"
+		},
+		{
+			id: 4,
+			name: "United States"
+		}
+	];
+
 	return (
 		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
@@ -143,15 +103,15 @@ function Settings() {
 					<div className="pt-2 md:pt-0 space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">General</h3>
 						<div className="flex flex-col lg:flex-row gap-x-12 gap-y-2">
-							<Dropdown name="theme" label="Theme" data={ themeDropdownData } value={ themeId } setValue={ setThemeId } />
-							<Dropdown name="dateformat" label="Date format" data={ dateFormatDropdownData } value={ dateFormatId } setValue={ setDateFormatId } />
+							<Dropdown name="theme" label="Theme" data={ themeOptions } value={ themeId } setValue={ setThemeId } />
+							<Dropdown name="dateformat" label="Date format" data={ dateFormatOptions } value={ dateFormatId } setValue={ setDateFormatId } />
 						</div>
 					</div>
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Defaults</h3>
 						<div className="flex flex-col lg:flex-row gap-x-12 gap-y-2">
-							<Dropdown name="defaultcountry" label="Country" data={ countryDropdownData } value={ defaultCountryId } setValue={ setDefaultCountryId } />
-							<Dropdown name="defaultsorting" label="Sorting" data={ sortingDropdownData } value={ defaultSortingId } setValue={ setDefaultSortingId } />
+							<Dropdown name="defaultcountry" label="Country" data={ countryOptions } value={ defaultCountryId } setValue={ setDefaultCountryId } />
+							<Dropdown name="defaultsorting" label="Sorting" data={ sortOptions } value={ defaultSortingId } setValue={ setDefaultSortingId } />
 						</div>
 					</div>
 					<div className="space-y-4">
