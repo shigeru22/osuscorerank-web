@@ -3,7 +3,7 @@ import React from "react";
 
 function Dialog({ htmlRef, title, children, onOkayClick, onCancelClick }: { htmlRef?: React.Ref<HTMLDivElement>, title: string, children: JSX.Element | JSX.Element[], onOkayClick?: () => void, onCancelClick: () => void }) {
 	return (
-		<div className="flex justify-center items-center w-full h-full">
+		<div className="flex justify-center items-center w-full h-full z-20">
 			<div ref={ htmlRef } className="flex flex-col gap-y-4 min-w-48 w-5/6 m-2 p-6 bg-white dark:bg-dark-0 rounded-lg">
 				<h3 className="font-semibold text-xl text-light-100 dark:text-dark-100">{ title }</h3>
 				<div className="max-h-4.625 space-y-1 overflow-y-auto">

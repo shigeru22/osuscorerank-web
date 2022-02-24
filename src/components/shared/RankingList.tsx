@@ -14,7 +14,7 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 		else if(delta < 0) {
 			return (
 				<div className="flex gap-x-2 items-center">
-					<Triangle className="w-3 h-3 rotate-180 fill-danger-light-active dark:fill-danger-dark-active" />
+					<Triangle className="w-3 h-3 rotate-180 fill-danger-light-active dark:fill-danger-dark-active -z-10" />
 					<div className="font-medium text-light-100 dark:text-dark-100">{ Math.abs(delta) }</div>
 				</div>
 			);
@@ -22,7 +22,7 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 		else if(delta > 0) {
 			return (
 				<div className="flex gap-x-2 items-center">
-					<Triangle className="w-3 h-3 fill-success-light dark:fill-success-dark" />
+					<Triangle className="w-3 h-3 fill-success-light dark:fill-success-dark -z-10" />
 					<div className="font-medium text-light-100 dark:text-dark-100">{ Math.abs(delta) }</div>
 				</div>
 			);
