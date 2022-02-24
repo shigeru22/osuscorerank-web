@@ -28,7 +28,7 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 
 	useEffect(() => {
 		function handleResizeWindow() {
-			closeDialog();
+			if(window.innerWidth >= 768) closeDialog();
 		}
 
 		window.addEventListener("resize", handleResizeWindow);
