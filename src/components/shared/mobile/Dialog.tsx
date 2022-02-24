@@ -1,5 +1,5 @@
-import _ from "lodash";
 import React from "react";
+import _ from "lodash";
 
 function Dialog({ htmlRef, title, children, onOkayClick, onCancelClick }: { htmlRef?: React.Ref<HTMLDivElement>, title: string, children: JSX.Element | JSX.Element[], onOkayClick?: () => void, onCancelClick: () => void }) {
 	return (

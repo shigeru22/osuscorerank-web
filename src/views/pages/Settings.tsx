@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import _ from "lodash";
-import { settingsContext } from "../App";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
-import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
+import { settingsContext } from "../App";
 import { Settings as SettingsData } from "../../types/context/Settings";
+import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import { IDropdownData } from "../../types/components/Dropdown";
 import { IRankingListData } from "../../types/components/RankingList";
 

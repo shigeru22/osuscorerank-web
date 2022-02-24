@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import StatsCard from "../../components/shared/StatsCard";
 import RankingList from "../../components/shared/RankingList";
 import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { IRankingListData } from "../../types/components/RankingList";
