@@ -70,11 +70,11 @@ function App() {
 			setSettings,
 			setActiveCountryId: setActiveCountryStateId
 		} }>
-			<div className="flex flex-col md:flex-row">
-				<div className="md:hidden h-16">
+			<div className="flex flex-col lg:flex-row">
+				<div className="lg:hidden h-16">
 					<Navbar active={ routeSegments[1] } />
 				</div>
-				<div className="hidden md:block">
+				<div className="hidden lg:block">
 					<Sidebar active={ routeSegments[1] } />
 				</div>
 				<div className="flex-grow overflow-y-auto">
