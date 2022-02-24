@@ -14,25 +14,24 @@ function Help() {
 					</p>
 					<p className="font-medium text-light-80 dark:text-dark-80">
 						In this site, you can:
-						<ul className="list-disc list-inside">
-							<li>Look at inactive users&apos; leaderboard</li>
-							<li>Find recently inactive users</li>
-							<li>And more to come.</li>
-						</ul>
 					</p>
+					<ul className="list-disc list-inside">
+						<li className="font-medium text-light-80 dark:text-dark-80">Look at inactive users&apos; leaderboard</li>
+						<li className="font-medium text-light-80 dark:text-dark-80">Find recently inactive users</li>
+						<li className="font-medium text-light-80 dark:text-dark-80">And more to come.</li>
+					</ul>
 					<p className="font-medium text-light-80 dark:text-dark-80">The data is fetched from osu! API on a weekly basis so some users might be missing.</p>
 				</div>
 				<h2 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Who made this?</h2>
 				<div className="space-y-2">
 					<p className="font-medium text-light-80 dark:text-dark-80">
 						Shigeru22.
-						<ul className="list-disc list-inside">
-							<li>osu! profile</li>
-							<li>GitHub</li>
-							<li>Discord: Shigeru#5061</li>
-						</ul>
 					</p>
-					<p className="font-medium text-light-80 dark:text-dark-80">The data is fetched from osu! API on a weekly basis so some users might be missing.</p>
+					<ul className="list-disc list-inside">
+						<li className="font-medium text-light-80 dark:text-dark-80">osu! profile</li>
+						<li className="font-medium text-light-80 dark:text-dark-80">GitHub</li>
+						<li className="font-medium text-light-80 dark:text-dark-80">Discord: Shigeru#5061</li>
+					</ul>
 				</div>
 				<h2 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Why there is no such country listed?</h2>
 				<div className="space-y-2">
