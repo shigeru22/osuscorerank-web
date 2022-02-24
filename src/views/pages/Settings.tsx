@@ -139,17 +139,17 @@ function Settings() {
 		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
 			<div className="flex flex-col md:flex-row gap-x-12 gap-y-4 pb-6">
-				<div className="space-y-6">
+				<div className="md:w-1/2 lg:w-auto space-y-6">
 					<div className="pt-2 md:pt-0 space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">General</h3>
-						<div className="flex flex-col md:flex-row gap-x-12 gap-y-2">
+						<div className="flex flex-col lg:flex-row gap-x-12 gap-y-2">
 							<Dropdown name="theme" label="Theme" data={ themeDropdownData } value={ themeId } setValue={ setThemeId } />
 							<Dropdown name="dateformat" label="Date format" data={ dateFormatDropdownData } value={ dateFormatId } setValue={ setDateFormatId } />
 						</div>
 					</div>
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Defaults</h3>
-						<div className="flex flex-col md:flex-row gap-x-12 gap-y-2">
+						<div className="flex flex-col lg:flex-row gap-x-12 gap-y-2">
 							<Dropdown name="defaultcountry" label="Country" data={ countryDropdownData } value={ defaultCountryId } setValue={ setDefaultCountryId } />
 							<Dropdown name="defaultsorting" label="Sorting" data={ sortingDropdownData } value={ defaultSortingId } setValue={ setDefaultSortingId } />
 						</div>
@@ -164,7 +164,7 @@ function Settings() {
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
 					</div>
 				</div>
-				<div className="space-y-6">
+				<div className="md:w-1/2 lg:w-auto space-y-6">
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">API</h3>
 						<div className="space-y-2">
