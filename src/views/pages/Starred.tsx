@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import _ from "lodash";
 import StatsCard from "../../components/shared/StatsCard";
 import RankingList from "../../components/shared/RankingList";
 import Pagination from "../../components/shared/Pagination";
 import TextInput from "../../components/shared/inputs/Text";
 import Dropdown from "../../components/shared/inputs/Dropdown";
+import SearchButton from "../../components/shared/mobile/SearchButton";
+import DimBackground from "../../components/shared/DimBackground";
+import ProfileDialog from "../../components/shared/ProfileDialog";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { settingsContext } from "../App";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { sortOptions } from "../../utils/Options";
 import { IRankingListData } from "../../types/components/RankingList";
+import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Starred() {
+	const { settings, setSettings } = useContext(settingsContext);
+
+	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
+
+	const [ showProfileDialog, setShowProfileDialog ] = useState(false);
+	const [ selectedUserId, setSelectedUserId ] = useState(0);
+
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(1);
 	const [ tableRowsPerPage, setTableRowsPerPage ] = useState(getTableRowsFromViewport());
@@ -23,6 +35,8 @@ function Starred() {
 	const [ rankingData, setRankingData ] = useState<IRankingListData[]>([]);
 	const [ rankingDataResults, setRankingDataResults ] = useState<IRankingListData[]>([]);
 	const [ displayedRankingData, setDisplayedRankingData ] = useState<IRankingListData[]>([]);
+
+	const refUserDialog = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if(_.isEmpty(searchQuery)) {
@@ -78,6 +92,20 @@ function Starred() {
 	}, [ rankingPage, rankingDataResults, tableRowsPerPage ]);
 
 	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if(refUserDialog.current && !refUserDialog.current.contains(event.target as Element)) {
+				setShowProfileDialog(false);
+			}
+		}
+
+		document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
+	useEffect(() => {
 		const data: IRankingListData[] = [
 			{
 				id: 1, rank: 1, userName: "User 1", score: 183259761552, pp: 5241, delta: 0
@@ -100,6 +128,31 @@ function Starred() {
 		setRankingDataResults(data);
 	}, []);
 
+	function handleUserClick(id: number) {
+		setSelectedUserId(id);
+		setShowProfileDialog(true);
+	}
+
+	function handleUserStarClick() {
+		const newSettings: SettingsData = {
+			themeId: settings.themeId,
+			dateFormatId: settings.dateFormatId,
+			defaultCountryId: settings.defaultCountryId,
+			defaultSortingId: settings.defaultSortingId,
+			starredUserId: settings.starredUserId
+		};
+
+		if(_.indexOf(settings.starredUserId, selectedUserId) < 0) {
+			newSettings.starredUserId.push(selectedUserId);
+		}
+		else {
+			newSettings.starredUserId = _.filter(newSettings.starredUserId, id => id !== selectedUserId);
+		}
+
+		setSettings(newSettings);
+		setStarredUsers([ ...newSettings.starredUserId ]);
+	}
+
 	return (
 		<div className="px-0 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<div className="hidden md:block space-y-6">
@@ -117,17 +170,24 @@ function Starred() {
 					</div>
 				</div>
 				<div className="flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
-					<div className="flex md:hidden justify-between px-8">
+					<div className="flex md:hidden justify-between items-center w-full px-8">
 						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
+						<SearchButton value={ searchQuery } setValue={ setSearchQuery } />
 					</div>
 					<div className="flex flex-col md:items-center gap-y-4 w-full md:w-auto">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
 						<div className="flex 2xl:flex-col items-start px-8 md:px-0 overflow-x-auto" style={ { minHeight: getTableHeight(tableRowsPerPage) } }> { /* calculate table height programatically */ }
-							<RankingList data={ displayedRankingData } />
+							<RankingList data={ displayedRankingData } onUserClick={ handleUserClick } /> { /* handle unclickable user */ }
 						</div>
 						<div className="hidden md:flex justify-center w-full">
 							<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
 						</div>
+						{
+							showProfileDialog &&
+							<DimBackground>
+								<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ _.indexOf(starredUsers, selectedUserId) >= 0 } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
+							</DimBackground>
+						}
 					</div>
 					<div className="hidden md:flex 2xl:hidden flex-col gap-y-4 pt-1.25">
 						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
