@@ -63,7 +63,13 @@ function Starred() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
-				setTableRowsPerPage(getTableRowsFromViewport());
+				const before = tableRowsPerPage;
+				const after = getTableRowsFromViewport();
+
+				if(before !== after) {
+					setRankingPage(1);
+					setTableRowsPerPage(getTableRowsFromViewport());
+				}
 			}, 200));
 		}
 
@@ -72,6 +78,8 @@ function Starred() {
 		return () => {
 			window.removeEventListener("resize", updateWindowDimensions);
 		};
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ updateDebounce ]);
 
 	useEffect(() => {
