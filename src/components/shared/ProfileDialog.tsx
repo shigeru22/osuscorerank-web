@@ -21,8 +21,6 @@ function ProfileDialog({ htmlRef, userId, starred, onCloseClick, onStarClick }: 
 	const [ globalPerformanceRank, setGlobalPerformanceRank ] = useState(0);
 
 	useEffect(() => {
-		console.log(`User ID: ${ userId }`);
-
 		setTimeout(() => {
 			setUserName("User 1");
 			setCountryName("Indonesia");
