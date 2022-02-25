@@ -48,7 +48,8 @@ module.exports = {
 			},
 			maxHeight: {
 				4.625: "18.5rem",
-				26: "6.5rem"
+				26: "6.5rem",
+				150: "37.4rem"
 			},
 			lineHeight: {
 				42: "10.5rem"
@@ -57,12 +58,21 @@ module.exports = {
 				22: "5.5rem",
 				54: "13.5rem"
 			},
+			height: {
+				93: "23.25rem"
+			},
 			minWidth: {
 				24: "6rem",
 				28: "7rem",
 				32: "8rem",
 				48: "12rem",
 				56: "14rem"
+			},
+			minHeight: {
+				14: "3.5rem"
+			},
+			strokeWidth: {
+				10: "10"
 			}
 		}
 	},
