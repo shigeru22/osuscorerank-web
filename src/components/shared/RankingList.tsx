@@ -6,7 +6,7 @@ import { ReactComponent as Triangle } from "../../assets/triangle.svg";
 import { IRankingListData } from "../../types/components/RankingList";
 import { numberToSeparatedThousandsString } from "../../utils/Number";
 
-function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDeleteClick?: (value: number) => void }) {
+function RankingList({ data, onUserClick, onDeleteClick }: { data: IRankingListData[], onUserClick?: (value: number) => void, onDeleteClick?: (value: number) => void }) {
 	function DeltaItem({ delta }: { delta: number }) {
 		if(delta === 0) {
 			return <FontAwesomeIcon icon={ faEquals } className="text-light-100 dark:text-dark-100" />;
@@ -60,7 +60,7 @@ function RankingList({ data, onDeleteClick }: { data: IRankingListData[], onDele
 						data.length > 0
 							? data.map(item => (
 								!_.isUndefined(item) &&
-								<tr key={ item.id } className="group group-hover:bg-light-20 dark:group-hover:bg-dark-40">
+								<tr key={ item.id } onClick={ () => !_.isUndefined(onUserClick) && onUserClick(item.id) } className={ `group group-hover:bg-light-20 dark:group-hover:bg-dark-40 ${ !_.isUndefined(onUserClick) && "cursor-pointer" }` }>
 									<td className="pl-4 pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 rounded-l-lg cursor-default">{ item.rank }</td>
 									<td className="pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 cursor-default">{ item.userName }</td>
 									<td className="pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 cursor-default">{ numberToSeparatedThousandsString(item.score) }</td>
