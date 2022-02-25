@@ -63,8 +63,13 @@ function Country() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
-				/* TODO: reset active page to 1 */
-				setTableRowsPerPage(getTableRowsFromViewport());
+				const before = tableRowsPerPage;
+				const after = getTableRowsFromViewport();
+
+				if(before !== after) {
+					setRankingPage(1);
+					setTableRowsPerPage(getTableRowsFromViewport());
+				}
 			}, 200));
 		}
 
@@ -73,6 +78,9 @@ function Country() {
 		return () => {
 			window.removeEventListener("resize", updateWindowDimensions);
 		};
+
+	/* tableRowsPerPage should not be its dependency */
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ updateDebounce ]);
 
 	useEffect(() => {
