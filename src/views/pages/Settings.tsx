@@ -12,7 +12,7 @@ import DimBackground from "../../components/shared/DimBackground";
 import Dialog from "../../components/shared/mobile/Dialog";
 
 function Settings() {
-	const { settings, setSettings } = useContext(settingsContext);
+	const { settings, countries, setSettings } = useContext(settingsContext);
 
 	const [ themeId, setThemeId ] = useState(settings.themeId);
 	const [ dateFormatId, setDateFormatId ] = useState(settings.dateFormatId);
@@ -97,25 +97,6 @@ function Settings() {
 		}
 	}
 
-	const countryOptions: IDropdownData[] = [
-		{
-			id: 1,
-			name: "Indonesia"
-		},
-		{
-			id: 2,
-			name: "Singapore"
-		},
-		{
-			id: 3,
-			name: "Japan"
-		},
-		{
-			id: 4,
-			name: "United States"
-		}
-	];
-
 	function handleResetStarredUsers() {
 		if(settings.starredUserId.length <= 0) {
 			setShowResetUsersDialog(false);
@@ -154,7 +135,7 @@ function Settings() {
 						<div className="space-y-4">
 							<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Defaults</h3>
 							<div className="flex flex-col lg:flex-row gap-x-12 gap-y-2">
-								<Dropdown name="defaultcountry" label="Country" data={ countryOptions } value={ defaultCountryId } setValue={ setDefaultCountryId } />
+								<Dropdown name="defaultcountry" label="Country" data={ countries } value={ defaultCountryId } setValue={ setDefaultCountryId } />
 								<Dropdown name="defaultsorting" label="Sorting" data={ sortOptions } value={ defaultSortingId } setValue={ setDefaultSortingId } />
 							</div>
 						</div>

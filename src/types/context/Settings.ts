@@ -1,3 +1,5 @@
+import { ICountryData } from "../data/Country";
+
 export interface Settings {
 	themeId: number;
 	dateFormatId: number;
@@ -8,6 +10,7 @@ export interface Settings {
 
 export type SettingsContext = {
 	settings: Settings,
+	countries: ICountryData[],
 	activeCountryId: number,
 	setSettings: (data: Settings) => void,
 	setActiveCountryId: (id: number) => void

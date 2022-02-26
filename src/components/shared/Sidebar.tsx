@@ -8,7 +8,7 @@ import { ReactComponent as Shigeru } from "../../assets/shigeru.svg";
 import { settingsContext } from "../../views/App";
 import { ICountryData } from "../../types/data/Country";
 
-function Sidebar({ active }: { active: string }) {
+function Sidebar({ active, countries }: { active: string, countries: ICountryData[] }) {
 	const { activeCountryId, setActiveCountryId } = useContext(settingsContext);
 
 	const [ isCountrySelectorOpened, setCountrySelectorOpened ] = useState(false);
@@ -36,21 +36,6 @@ function Sidebar({ active }: { active: string }) {
 	if(!_.isEmpty(active)) {
 		index = _.findIndex(routes, item => item === active);
 	}
-
-	const countries: ICountryData[] = [
-		{
-			id: 1, name: "Indonesia", code: "ID"
-		},
-		{
-			id: 2, name: "Singapore", code: "SG"
-		},
-		{
-			id: 3, name: "Japan", code: "JP"
-		},
-		{
-			id: 4, name: "United States", code: "US"
-		}
-	];
 
 	function handleCountryChange(id: number) {
 		setActiveCountryId(id);

@@ -4,9 +4,13 @@ import Sidebar from "../components/shared/Sidebar";
 import Navbar from "../components/shared/mobile/Navbar";
 import { getSettingsData, setSettingsData } from "../utils/Storage";
 import { Settings, SettingsContext } from "../types/context/Settings";
+import { getAllCountries } from "../utils/api/Countries";
+import { ICountryData } from "../types/data/Country";
+import _ from "lodash";
 
 const settingsContextValues: SettingsContext = {
 	settings: getSettingsData(),
+	countries: [],
 	activeCountryId: getSettingsData().defaultCountryId,
 	setSettings: (data: Settings) => updateSettings(data),
 	setActiveCountryId: (id: number) => updateActiveCountryId(id)
@@ -25,8 +29,27 @@ function updateActiveCountryId(id: number) {
 
 function App() {
 	const [ settings ] = useState<Settings>(settingsContextValues.settings);
+
 	const [ activeCountryId, setActiveCountryId ] = useState(settingsContextValues.activeCountryId);
 	const [ themeId, setDarkMode ] = useState(settings.themeId);
+
+	const [ countries, setCountries ] = useState<ICountryData[]>(settingsContextValues.countries);
+
+	useEffect(() => {
+		async function getCountries() {
+			const countries = await getAllCountries();
+
+			if(!_.isUndefined(countries.data)) {
+				setCountries(countries.data.countries.map(item => ({
+					id: item.countryId,
+					name: item.countryName,
+					code: item.countryCode
+				})));
+			}
+		}
+
+		getCountries();
+	}, []);
 
 	useEffect(() => {
 		if(themeId === 3 || (themeId === 1 && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
@@ -66,16 +89,17 @@ function App() {
 	return (
 		<Provider value={ {
 			settings,
+			countries,
 			activeCountryId,
 			setSettings,
 			setActiveCountryId: setActiveCountryStateId
 		} }>
 			<div className="flex flex-col lg:flex-row">
 				<div className="lg:hidden h-16">
-					<Navbar active={ routeSegments[1] } />
+					<Navbar active={ routeSegments[1] } countries={ countries } />
 				</div>
 				<div className="hidden lg:block">
-					<Sidebar active={ routeSegments[1] } />
+					<Sidebar active={ routeSegments[1] } countries={ countries } />
 				</div>
 				<div className="flex-grow overflow-y-auto">
 					<Outlet />

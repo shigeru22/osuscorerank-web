@@ -9,7 +9,7 @@ import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionC
 import { settingsContext } from "../../../views/App";
 import { ICountryData } from "../../../types/data/Country";
 
-function Navbar({ active }: { active: string }) {
+function Navbar({ active, countries }: { active: string, countries: ICountryData[] }) {
 	const { activeCountryId, setActiveCountryId } = useContext(settingsContext);
 
 	const [ isOpened, setOpened ] = useState(false);
@@ -50,21 +50,6 @@ function Navbar({ active }: { active: string }) {
 	}, []);
 
 	const routes = [ "Country", "Global", "Starred", "Settings", "Help" ];
-
-	const countries: ICountryData[] = [
-		{
-			id: 1, name: "Indonesia", code: "ID"
-		},
-		{
-			id: 2, name: "Singapore", code: "SG"
-		},
-		{
-			id: 3, name: "Japan", code: "JP"
-		},
-		{
-			id: 4, name: "United States", code: "US"
-		}
-	];
 
 	let index = 0;
 	if(!_.isEmpty(active)) {
