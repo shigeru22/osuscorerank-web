@@ -10,14 +10,14 @@ import DimBackground from "../../components/shared/DimBackground";
 import ProfileDialog from "../../components/shared/ProfileDialog";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../App";
-import { getRankingListTotalPages } from "../../utils/Number";
+import { getCountryIndexById, getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { sortOptions } from "../../utils/Options";
 import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Country() {
-	const { settings, activeCountryId, setSettings } = useContext(settingsContext);
+	const { settings, countries, activeCountryId, setSettings } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
@@ -206,11 +206,16 @@ function Country() {
 		setStarredUsers([ ...newSettings.starredUserId ]);
 	}
 
+	function getCountryName() {
+		const index = getCountryIndexById(countries, activeCountryId);
+		return !_.isUndefined(countries[index]) ? countries[index].name : "";
+	}
+
 	return (
 		<div className="px-0 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<div className="hidden md:block space-y-6">
 				<div className="md:flex justify-between items-start">
-					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Indonesia</h1>
+					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">{ getCountryName() }</h1>
 					<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
 				</div>
 			</div>
