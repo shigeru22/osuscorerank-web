@@ -8,23 +8,24 @@ import Dropdown from "../../components/shared/inputs/Dropdown";
 import SearchButton from "../../components/shared/mobile/SearchButton";
 import DimBackground from "../../components/shared/DimBackground";
 import ProfileDialog from "../../components/shared/ProfileDialog";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import Button from "../../components/shared/inputs/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../App";
 import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { sortOptions } from "../../utils/Options";
+import { getMultipleUserScores } from "../../utils/api/Scores";
 import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Starred() {
-	const { settings, logs, setSettings, addLogData } = useContext(settingsContext);
+	const { settings, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
 	const [ showProfileDialog, setShowProfileDialog ] = useState(false);
 	const [ selectedUserId, setSelectedUserId ] = useState(0);
-
-	const [ showErrorDialog, setShowErrorDialog ] = useState(true);
 
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(1);
@@ -33,10 +34,15 @@ function Starred() {
 	const [ updateDebounce, setUpdateDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 	const [ searchDebounce, setSearchDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
+	const [ isLoading, setLoading ] = useState(true);
+
 	const [ rankingPage, setRankingPage ] = useState(1);
 	const [ rankingData, setRankingData ] = useState<IRankingListData[]>([]);
 	const [ rankingDataResults, setRankingDataResults ] = useState<IRankingListData[]>([]);
 	const [ displayedRankingData, setDisplayedRankingData ] = useState<IRankingListData[]>([]);
+
+	const [ starred, setStarred ] = useState(0);
+	const [ recentlyActive, setRecentlyActive ] = useState(0);
 
 	const refUserDialog = useRef<HTMLDivElement>(null);
 
@@ -120,30 +126,38 @@ function Starred() {
 	}, []);
 
 	useEffect(() => {
-		const data: IRankingListData[] = [
-			{
-				id: 1, rank: 1, userName: "User 1", score: 183259761552, pp: 5241, delta: 0
-			},
-			{
-				id: 2, rank: 2, userName: "User 3", score: 162688120325, pp: 6230, delta: 0
-			},
-			{
-				id: 3, rank: 3, userName: "User 2", score: 132981738903, pp: 3984, delta: -1
-			},
-			{
-				id: 4, rank: 4, userName: "User 4", score: 128551301158, pp: 5241, delta: 0
-			},
-			{
-				id: 5, rank: 5, userName: "User 5", score: 117492522634, pp: 3682, delta: -1
+		async function getScores() {
+			const scores = await getMultipleUserScores(starredUsers, selectedSortId);
+
+			if(!_.isUndefined(scores.data)) {
+				const temp = scores.data.scores.map((item, index) => ({
+					id: item.scoreId,
+					rank: index + 1,
+					userName: item.user.userName,
+					score: _.isNumber(item.score) ? item.score : _.parseInt(item.score, 10),
+					pp: item.pp,
+					delta: 0
+				}));
+
+				setRankingData(temp);
+				setRankingDataResults(temp);
+
+				setStarred(scores.data.scores.length);
+				setRecentlyActive(starredUsers.length - scores.data.scores.length); // starred users - returned users
+
+				addLogData("Info", "Fetch starred users ranking success.");
 			}
-		];
+			else {
+				addLogData("Error", `Fetch starred users ranking failed: ${ scores.message }`);
+			}
+		}
 
 		addLogData("Info", "Fetching starred users data...");
-		setRankingData(data);
-		setRankingDataResults(data);
+		setLoading(true);
+		getScores();
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [ selectedSortId ]);
 
 	function handleUserClick(id: number) {
 		setSelectedUserId(id);
@@ -187,28 +201,48 @@ function Starred() {
 				<div className="flex flex-col gap-y-6">
 					<h3 className="px-8 pt-2 md:px-0 md:py-0 font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
 					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4 px-8 md:px-0 overflow-x-auto">
-						<StatsCard title="Starred" data="27" />
-						<StatsCard title="Recently Active" data="0" subtitle="+ 0 since last month" />
+						<StatsCard title="Starred" data={ starred.toString() } />
+						<StatsCard title="Recently Active" data={ recentlyActive.toString() } subtitle="+ 0 since last month" />
 					</div>
 				</div>
-				<div className="flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
+				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
 					<div className="flex md:hidden justify-between items-center w-full px-8">
 						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
 						<SearchButton value={ searchQuery } setValue={ setSearchQuery } />
 					</div>
-					<div className="flex flex-col md:items-center gap-y-4 w-full md:w-auto">
+					<div className="flex-grow flex flex-col md:items-center gap-y-4 w-full md:w-auto">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
-						<div className="flex 2xl:flex-col items-start px-8 md:px-0 overflow-x-auto" style={ { minHeight: getTableHeight(tableRowsPerPage) } }> { /* calculate table height programatically */ }
-							<RankingList data={ displayedRankingData } onUserClick={ handleUserClick } /> { /* handle unclickable user */ }
-						</div>
-						<div className="hidden md:flex justify-center w-full">
-							<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
-						</div>
 						{
-							showProfileDialog &&
-							<DimBackground>
-								<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ _.indexOf(starredUsers, selectedUserId) >= 0 } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
-							</DimBackground>
+							rankingDataResults.length > 0 ?
+								<>
+									<div className="flex 2xl:flex-col items-start px-8 md:px-0 overflow-x-auto" style={ { minHeight: getTableHeight(tableRowsPerPage) } }> { /* calculate table height programatically */ }
+										<RankingList data={ displayedRankingData } onUserClick={ handleUserClick } /> { /* handle unclickable user */ }
+									</div>
+									<div className="hidden md:flex justify-center w-full">
+										<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
+									</div>
+									{
+										showProfileDialog &&
+										<DimBackground>
+											<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ _.indexOf(starredUsers, selectedUserId) >= 0 } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
+										</DimBackground>
+									}
+								</>
+								:
+								<div className="flex justify-center items-center w-full h-full" style={ { height: getTableHeight(getTableRowsFromViewport()) } }>
+									<div className="flex flex-col justify-center items-center gap-y-2">
+										<FontAwesomeIcon icon={ isLoading ? faCircleNotch : faTimes } className={ `text-5xl text-light-60 dark:text-dark-80 ${ isLoading && "animate-spin" }` } />
+										<div className="font-medium text-center text-light-60 dark:text-dark-80 whitespace-pre">
+											{
+												isLoading ? "Loading data..." : "Failed to fetch data.\nTry refreshing the page."
+											}
+										</div>
+										{
+											!isLoading &&
+											<Button label="Error Details" onClick={ () => setShowErrorDialog(true) } />
+										}
+									</div>
+								</div>
 						}
 					</div>
 					<div className="hidden md:flex 2xl:hidden flex-col gap-y-4 pt-1.25">

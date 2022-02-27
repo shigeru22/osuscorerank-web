@@ -1,5 +1,5 @@
 import { ICountryData } from "../Country";
-import { IScoreData } from "../Score";
+import { IScoreData, IUserScoreData } from "../Score";
 
 export interface ICountryScoreResponseData {
   country: ICountryData;
@@ -8,4 +8,16 @@ export interface ICountryScoreResponseData {
     recentlyInactive: number;
   };
   total: number;
+}
+
+export interface IGlobalScoreResponseData {
+  rankings: IUserScoreData[];
+  inactives: {
+    recentlyInactive: number;
+  };
+  total: number;
+}
+
+export interface IMultipleUserResponseData {
+  scores: IUserScoreData[];
 }

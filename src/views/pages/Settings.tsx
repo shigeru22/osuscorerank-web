@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import _ from "lodash";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
-import { settingsContext } from "../App";
-import { Settings as SettingsData } from "../../types/context/Settings";
-import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
-import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
-import { IRankingListData } from "../../types/components/RankingList";
 import DimBackground from "../../components/shared/DimBackground";
 import Dialog from "../../components/shared/mobile/Dialog";
+import { settingsContext } from "../App";
+import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
+import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
+import { getGreetingData } from "../../utils/api/Main";
+import { getMultipleUserScores } from "../../utils/api/Scores";
+import { Settings as SettingsData } from "../../types/context/Settings";
+import { IRankingListData } from "../../types/components/RankingList";
 
 function Settings() {
 	const { settings, countries, setSettings, addLogData } = useContext(settingsContext);
@@ -21,8 +23,11 @@ function Settings() {
 	const [ wasmMessage, setWasmMessage ] = useState("Testing...");
 	const [ wasmStatus, setWasmStatus ] = useState("Testing...");
 
+	const [ inactiveUsers, setInactiveUsers ] = useState(-1);
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 	const [ showResetUsersDialog, setShowResetUsersDialog ] = useState(false);
+
+	const [ apiOnlineStatus, setApiOnlineStatus ] = useState(-1);
 
 	const refResetStarredDialog = useRef<HTMLDivElement>(null);
 
@@ -41,7 +46,8 @@ function Settings() {
 	}, []);
 
 	useEffect(() => {
-		getWasmGreetMessage();
+		getWasmGreetMessage(); // TODO: refactor into different functions
+		handleApiTest();
 
 	/* disable since only be run once */
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,6 +68,26 @@ function Settings() {
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
+
+	useEffect(() => {
+		async function getScores() {
+			const scores = await getMultipleUserScores(settings.starredUserId, 1); // well, any sort works
+
+			if(!_.isUndefined(scores.data)) {
+				setInactiveUsers(scores.data.scores.length);
+				addLogData("Info", "Fetch starred users ranking success.");
+			}
+			else {
+				addLogData("Error", `Fetch country ranking failed: ${ scores.message }`);
+			}
+		}
+
+		addLogData("Info", "Fetching number of inactive users...");
+		setInactiveUsers(-1);
+		getScores();
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ starredUsers ]);
 
 	async function getWasmGreetMessage() {
 		setWasmMessage("Testing...");
@@ -130,6 +156,34 @@ function Settings() {
 		setShowResetUsersDialog(false);
 	}
 
+	async function handleApiTest() {
+		addLogData("Info", "Checking API status...");
+		setApiOnlineStatus(-1);
+
+		const response = await getGreetingData();
+
+		if(_.isEqual(response.message, "Hello, world!")) {
+			addLogData("Info", "API status normal.");
+			setApiOnlineStatus(1);
+		}
+		else {
+			addLogData("Error", `Unable to connect to API: ${ response.message }`);
+			setApiOnlineStatus(0);
+		}
+	}
+
+	function getApiStatusString() {
+		let str = "Unknown status";
+
+		switch(apiOnlineStatus) {
+			case -1: str = "Checking..."; break;
+			case 0: str = "Error"; break;
+			case 1: str = "Working normally"; break;
+		}
+
+		return str;
+	}
+
 	return (
 		<>
 			<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
@@ -153,8 +207,8 @@ function Settings() {
 						<div className="space-y-4">
 							<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Starred</h3>
 							<div className="space-y-2">
-								<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user: 15</h6>
-								<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user (including active): 17</h6>
+								<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user: { inactiveUsers >= 0 ? inactiveUsers : "Checking..." }</h6>
+								<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user (including active): { starredUsers.length }</h6>
 								<Button type="danger" label="Reset all users" onClick={ () => setShowResetUsersDialog(true) } />
 							</div>
 							<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
@@ -165,8 +219,8 @@ function Settings() {
 							<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">API</h3>
 							<div className="space-y-2">
 								<h6 className="font-medium text-light-80 dark:text-dark-80">Details on external API access will be added soon.</h6>
-								<h6 className="font-medium text-light-80 dark:text-dark-80">API Status: Working normally</h6>
-								<Button type="primary" label="Check Status" />
+								<h6 className="font-medium text-light-80 dark:text-dark-80">API Status: { getApiStatusString() }</h6>
+								<Button type="primary" label="Check Status" onClick={ () => handleApiTest() } />
 							</div>
 							<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api 1.0.0</h6>
 						</div>
@@ -178,7 +232,7 @@ function Settings() {
 								<h6 className="font-medium text-light-80 dark:text-dark-80">Search test: { wasmStatus }</h6>
 								<Button type="primary" label="Test Again" onClick={ () => getWasmGreetMessage() } />
 							</div>
-							<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-sort-wasm 1.0.0</h6>
+							<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-wasm 1.0.0</h6>
 						</div>
 					</div>
 				</div>
