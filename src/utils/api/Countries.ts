@@ -1,15 +1,15 @@
 import axios from "axios";
 import _ from "lodash";
-import { ICountryData } from "../../types/api/Country";
+import { ICountryInactiveResponseData } from "../../types/api/Country";
 import { IResponseData } from "../../types/api/Response";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export async function getAllCountries(): Promise<IResponseData<ICountryData>> {
+export async function getAllCountries(): Promise<IResponseData<ICountryInactiveResponseData>> {
 	try {
 		const response = await axios.get(`${ API_URL }/countries`);
 
-		const ret = response.data as IResponseData<ICountryData>;
+		const ret = response.data as IResponseData<ICountryInactiveResponseData>;
 		return ret;
 	}
 	catch (e) {
@@ -19,7 +19,7 @@ export async function getAllCountries(): Promise<IResponseData<ICountryData>> {
 			message = e.message;
 		}
 
-		const ret: IResponseData<ICountryData> = {
+		const ret: IResponseData<ICountryInactiveResponseData> = {
 			message: message
 		};
 
