@@ -6,13 +6,12 @@ import { settingsContext } from "../App";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
-import { IDropdownData } from "../../types/components/Dropdown";
 import { IRankingListData } from "../../types/components/RankingList";
 import DimBackground from "../../components/shared/DimBackground";
 import Dialog from "../../components/shared/mobile/Dialog";
 
 function Settings() {
-	const { settings, countries, setSettings } = useContext(settingsContext);
+	const { settings, countries, setSettings, addLogData } = useContext(settingsContext);
 
 	const [ themeId, setThemeId ] = useState(settings.themeId);
 	const [ dateFormatId, setDateFormatId ] = useState(settings.dateFormatId);
@@ -43,9 +42,14 @@ function Settings() {
 
 	useEffect(() => {
 		getWasmGreetMessage();
+
+	/* disable since only be run once */
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
+		addLogData("Info", "Settings state changed. Updating local settings...");
+
 		const newSettings: SettingsData = {
 			themeId,
 			dateFormatId,
@@ -55,6 +59,8 @@ function Settings() {
 		};
 
 		setSettings(newSettings);
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
 
 	async function getWasmGreetMessage() {
@@ -85,13 +91,16 @@ function Settings() {
 				_.isEqual(result[0], items[0]) &&
 				_.isEqual(result[1], items[2])
 			)) {
+				addLogData("Info", "Test result assertion success.");
 				setWasmStatus("Passed");
 			}
 			else {
+				addLogData("Error", "Test result assertion failed.");
 				setWasmStatus("Failed");
 			}
 		}
 		catch {
+			addLogData("Error", "Wasm function failed to run.");
 			setWasmMessage("Failed");
 			setWasmStatus("Failed");
 		}
@@ -115,6 +124,8 @@ function Settings() {
 
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
+
+		addLogData("Info", "Settings updated.");
 
 		setShowResetUsersDialog(false);
 	}

@@ -17,12 +17,14 @@ import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Global() {
-	const { settings, setSettings } = useContext(settingsContext);
+	const { settings, logs, setSettings, addLogData } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
 	const [ showProfileDialog, setShowProfileDialog ] = useState(false);
 	const [ selectedUserId, setSelectedUserId ] = useState(0);
+
+	const [ showErrorDialog, setShowErrorDialog ] = useState(true);
 
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(1);
@@ -49,6 +51,8 @@ function Global() {
 		}
 
 		setSearchDebounce(setTimeout(async () => {
+			addLogData("Info", "searchDebounce timeout reached. Searching data...");
+
 			const result = await searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
 			setRankingPage(1);
@@ -63,6 +67,8 @@ function Global() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
+				addLogData("Info", "updateDebounce timeout reached. Updating display row count...");
+
 				const before = tableRowsPerPage;
 				const after = getTableRowsFromViewport();
 
@@ -174,8 +180,11 @@ function Global() {
 			}
 		];
 
+		addLogData("Info", "Fetching global ranking data...");
 		setRankingData(data);
 		setRankingDataResults(data);
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	function handleUserClick(id: number) {
@@ -201,6 +210,8 @@ function Global() {
 
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
+
+		addLogData("Info", `Added user ID ${ selectedUserId } to starred users list.`);
 	}
 
 	return (

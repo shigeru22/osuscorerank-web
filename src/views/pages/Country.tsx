@@ -180,8 +180,11 @@ function Country() {
 			starredUserId: settings.starredUserId
 		};
 
+		let added = false;
+
 		if(_.indexOf(settings.starredUserId, selectedUserId) < 0) {
 			newSettings.starredUserId.push(selectedUserId);
+			added = true;
 		}
 		else {
 			newSettings.starredUserId = _.filter(newSettings.starredUserId, id => id !== selectedUserId);
@@ -190,7 +193,7 @@ function Country() {
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
 
-		addLogData("Info", `Added user ID ${ selectedUserId } to starred users list.`);
+		addLogData("Info", `${ added ? "Added" : "Removed" } user ID ${ selectedUserId } to starred users list.`);
 	}
 
 	function getCountryName() {

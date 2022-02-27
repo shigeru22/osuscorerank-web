@@ -17,12 +17,14 @@ import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Starred() {
-	const { settings, setSettings } = useContext(settingsContext);
+	const { settings, logs, setSettings, addLogData } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
 	const [ showProfileDialog, setShowProfileDialog ] = useState(false);
 	const [ selectedUserId, setSelectedUserId ] = useState(0);
+
+	const [ showErrorDialog, setShowErrorDialog ] = useState(true);
 
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(1);
@@ -49,6 +51,8 @@ function Starred() {
 		}
 
 		setSearchDebounce(setTimeout(async () => {
+			addLogData("Info", "searchDebounce timeout reached. Searching data...");
+
 			const result = await searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
 			setRankingPage(1);
@@ -63,6 +67,8 @@ function Starred() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
+				addLogData("Info", "updateDebounce timeout reached. Updating display row count...");
+
 				const before = tableRowsPerPage;
 				const after = getTableRowsFromViewport();
 
@@ -132,8 +138,11 @@ function Starred() {
 			}
 		];
 
+		addLogData("Info", "Fetching starred users data...");
 		setRankingData(data);
 		setRankingDataResults(data);
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	function handleUserClick(id: number) {
@@ -150,8 +159,11 @@ function Starred() {
 			starredUserId: settings.starredUserId
 		};
 
+		let added = false;
+
 		if(_.indexOf(settings.starredUserId, selectedUserId) < 0) {
 			newSettings.starredUserId.push(selectedUserId);
+			added = true;
 		}
 		else {
 			newSettings.starredUserId = _.filter(newSettings.starredUserId, id => id !== selectedUserId);
@@ -159,6 +171,8 @@ function Starred() {
 
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
+
+		addLogData("Info", `${ added ? "Added" : "Removed" } user ID ${ selectedUserId } to starred users list.`);
 	}
 
 	return (
