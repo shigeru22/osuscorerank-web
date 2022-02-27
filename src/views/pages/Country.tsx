@@ -19,12 +19,14 @@ import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Country() {
-	const { settings, countries, activeCountryId, setSettings } = useContext(settingsContext);
+	const { settings, logs, countries, activeCountryId, setSettings, addLogData } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
 	const [ showProfileDialog, setShowProfileDialog ] = useState(false);
 	const [ selectedUserId, setSelectedUserId ] = useState(0);
+
+	const [ showErrorDialog, setShowErrorDialog ] = useState(true);
 
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(settings.defaultSortingId);
@@ -56,6 +58,8 @@ function Country() {
 		}
 
 		setSearchDebounce(setTimeout(async () => {
+			addLogData("Info", "searchDebounce timeout reached. Searching data...");
+
 			const result = await searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
 			setRankingPage(1);
@@ -70,6 +74,8 @@ function Country() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
+				addLogData("Info", "updateDebounce timeout reached. Updating display row count...");
+
 				const before = tableRowsPerPage;
 				const after = getTableRowsFromViewport();
 
@@ -142,13 +148,22 @@ function Country() {
 
 				setRecentlyInactive(scores.data.inactives.recentlyInactive);
 				setTotalInactives(scores.data.total);
+
+				addLogData("Info", "Fetch country ranking success.");
+			}
+			else {
+				addLogData("Error", `Fetch country ranking failed: ${ scores.message }`);
 			}
 
 			setLoading(false);
 		}
 
+		addLogData("Info", "Fetching country ranking data...");
 		setLoading(true);
 		getScores();
+
+	/* addLogData should not be its dependency */
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ activeCountryId, selectedSortId ]);
 
 	function handleUserClick(id: number) {
@@ -174,6 +189,8 @@ function Country() {
 
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
+
+		addLogData("Info", `Added user ID ${ selectedUserId } to starred users list.`);
 	}
 
 	function getCountryName() {
