@@ -28,8 +28,8 @@ function ErrorDialog({ htmlRef, data, onCancelClick }: { htmlRef?: React.Ref<HTM
 							isExpanded &&
 							<div className="flex flex-col max-h-26 px-3 py-1.5 bg-light-20 dark:bg-dark-20 overflow-y-auto rounded-lg">
 								{
-									data.map((item, index) => (
-										<p key={ index } className="font-medium text-sm text-light-100 dark:text-dark-100">[{ item.time.toLocaleString() }] { item.name }: { item.description }</p>
+									data.map(item => (
+										<p key={ item.id } className="font-medium text-sm text-light-100 dark:text-dark-100">[{ item.time.toLocaleString() }] { item.name }: { item.description }</p>
 									))
 								}
 							</div>

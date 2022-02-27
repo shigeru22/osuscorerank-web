@@ -39,6 +39,7 @@ function updateActiveCountryId(id: number) {
 
 function addLogData(name: string, description: string) {
 	settingsContextValues.logs.push({
+		id: settingsContextValues.logs.length + 1,
 		time: new Date(),
 		name,
 		description
