@@ -1,7 +1,9 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 import Sidebar from "../components/shared/Sidebar";
 import Navbar from "../components/shared/mobile/Navbar";
+import DimBackground from "../components/shared/DimBackground";
+import ErrorDialog from "../components/shared/ErrorDialog";
 import { getSettingsData, setSettingsData } from "../utils/Storage";
 import { Settings, SettingsContext } from "../types/context/Settings";
 import { getAllCountries } from "../utils/api/Countries";
@@ -11,9 +13,11 @@ import _ from "lodash";
 const settingsContextValues: SettingsContext = {
 	settings: getSettingsData(),
 	logs: [],
+	showErrorDialog: false,
 	countries: [],
 	activeCountryId: getSettingsData().defaultCountryId,
 	setSettings: (data: Settings) => updateSettings(data),
+	setShowErrorDialog: (value: boolean) => setShowErrorDialog(value),
 	setActiveCountryId: (id: number) => updateActiveCountryId(id),
 	addLogData: (name: string, description: string) => addLogData(name, description)
 };
@@ -23,6 +27,10 @@ const settingsContext = createContext<SettingsContext>(settingsContextValues);
 function updateSettings(data: Settings) {
 	/* TODO: handle settings data errors */
 	setSettingsData(data);
+}
+
+function setShowErrorDialog(value: boolean) {
+	settingsContextValues.showErrorDialog = value;
 }
 
 function updateActiveCountryId(id: number) {
@@ -45,8 +53,25 @@ function App() {
 	const [ logs ] = useState(settingsContextValues.logs);
 	const [ activeCountryId, setActiveCountryId ] = useState(settingsContextValues.activeCountryId);
 	const [ themeId, setDarkMode ] = useState(settings.themeId);
-
 	const [ countries, setCountries ] = useState<ICountryData[]>(settingsContextValues.countries);
+
+	const [ showErrorDialog, setShowErrorDialog ] = useState(settingsContextValues.showErrorDialog);
+
+	const refErrorDialog = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if(refErrorDialog.current && !refErrorDialog.current.contains(event.target as Element)) {
+				setShowErrorDialog(false);
+			}
+		}
+
+		document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
 	useEffect(() => {
 		async function getCountries() {
@@ -120,11 +145,13 @@ function App() {
 		<Provider value={ {
 			settings,
 			logs,
+			showErrorDialog,
 			countries,
 			activeCountryId,
 			setSettings,
 			setActiveCountryId: setActiveCountryStateId,
-			addLogData
+			addLogData,
+			setShowErrorDialog
 		} }>
 			<div className="flex flex-col lg:flex-row">
 				<div className="lg:hidden h-16">
@@ -136,6 +163,12 @@ function App() {
 				<div className="flex-grow overflow-y-auto">
 					<Outlet />
 				</div>
+				{
+					showErrorDialog &&
+					<DimBackground>
+						<ErrorDialog htmlRef={ refErrorDialog } data={ logs } onCancelClick={ () => setShowErrorDialog(false) } />
+					</DimBackground>
+				}
 			</div>
 		</Provider>
 	);

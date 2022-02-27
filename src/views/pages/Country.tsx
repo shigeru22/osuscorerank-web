@@ -8,7 +8,7 @@ import Dropdown from "../../components/shared/inputs/Dropdown";
 import SearchButton from "../../components/shared/mobile/SearchButton";
 import DimBackground from "../../components/shared/DimBackground";
 import ProfileDialog from "../../components/shared/ProfileDialog";
-import ErrorDialog from "../../components/shared/ErrorDialog";
+import Button from "../../components/shared/inputs/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../App";
@@ -20,14 +20,12 @@ import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
 function Country() {
-	const { settings, logs, countries, activeCountryId, setSettings, addLogData } = useContext(settingsContext);
+	const { settings, countries, activeCountryId, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
 	const [ showProfileDialog, setShowProfileDialog ] = useState(false);
 	const [ selectedUserId, setSelectedUserId ] = useState(0);
-
-	const [ showErrorDialog, setShowErrorDialog ] = useState(true);
 
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(settings.defaultSortingId);
@@ -250,13 +248,11 @@ function Country() {
 												isLoading ? "Loading data..." : "Failed to fetch data.\nTry refreshing the page."
 											}
 										</div>
+										{
+											!isLoading &&
+											<Button label="Error Details" onClick={ () => setShowErrorDialog(true) } />
+										}
 									</div>
-									{
-										showErrorDialog &&
-										<DimBackground>
-											<ErrorDialog data={ logs } onCancelClick={ () => setShowErrorDialog(false) } />
-										</DimBackground>
-									}
 								</div>
 						}
 					</div>

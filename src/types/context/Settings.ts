@@ -12,9 +12,11 @@ export interface Settings {
 export type SettingsContext = {
 	settings: Settings,
 	logs: ILogData[],
+	showErrorDialog: boolean,
 	countries: ICountryData[],
 	activeCountryId: number,
 	setSettings: (data: Settings) => void,
+	setShowErrorDialog: (value: boolean) => void,
 	setActiveCountryId: (id: number) => void,
 	addLogData: (name: string, description: string) => void
 }
