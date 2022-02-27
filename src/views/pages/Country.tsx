@@ -8,6 +8,7 @@ import Dropdown from "../../components/shared/inputs/Dropdown";
 import SearchButton from "../../components/shared/mobile/SearchButton";
 import DimBackground from "../../components/shared/DimBackground";
 import ProfileDialog from "../../components/shared/ProfileDialog";
+import ErrorDialog from "../../components/shared/ErrorDialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../App";
@@ -250,6 +251,12 @@ function Country() {
 											}
 										</div>
 									</div>
+									{
+										showErrorDialog &&
+										<DimBackground>
+											<ErrorDialog data={ logs } onCancelClick={ () => setShowErrorDialog(false) } />
+										</DimBackground>
+									}
 								</div>
 						}
 					</div>
