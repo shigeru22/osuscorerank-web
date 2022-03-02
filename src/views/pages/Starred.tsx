@@ -159,7 +159,6 @@ function Starred() {
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ selectedSortId ]);
-
 	function handleUserClick(id: number) {
 		setSelectedUserId(id);
 		setShowProfileDialog(true);

@@ -134,6 +134,11 @@ function App() {
 		addLogData(LogType.INFO, `Set active country ID to ${ id }.`);
 	}
 
+	function setActiveCountryStateId(id: number) {
+		updateActiveCountryId(id);
+		setActiveCountryId(id);
+	}
+
 	const location = useLocation();
 	const routeSegments = location.pathname.split("/");
 
