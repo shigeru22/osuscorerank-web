@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import DimBackground from "../DimBackground";
 import Dialog from "./Dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../../../views/App";
 import { ICountryData } from "../../../types/data/Country";
 
@@ -147,12 +147,18 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 				<DimBackground>
 					<Dialog htmlRef={ refCountryMenu } title="Country" onCancelClick={ () => setCountrySelectorOpened(false) }>
 						{
-							countries.map(item => (
-								<div key={ item.id } onClick={ () => handleCountryChange(item.id) } className={ `flex items-center gap-x-4 px-4 py-4 ${ item.id === activeCountryId ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-40" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>
-									<ReactCountryFlag countryCode={ item.code } svg className="text-xl rounded-md" />
-									<div className={ `font-medium ${ item.id === activeCountryId ? "text-white" : "text-light-100" } dark:text-dark-100` }>{ item.name }</div>
+							countries.length > 0 ?
+								countries.map(item => (
+									<div key={ item.id } onClick={ () => handleCountryChange(item.id) } className={ `flex items-center gap-x-4 px-4 py-4 ${ item.id === activeCountryId ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-40" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>
+										<ReactCountryFlag countryCode={ item.code } svg className="text-xl rounded-md" />
+										<div className={ `font-medium ${ item.id === activeCountryId ? "text-white" : "text-light-100" } dark:text-dark-100` }>{ item.name }</div>
+									</div>
+								))
+								:
+								<div className="flex flex-col justify-center items-center w-full">
+									<FontAwesomeIcon icon={ faTimes } className="text-5xl text-light-60 dark:text-dark-80" />
+									<div className="font-medium text-center text-light-60 dark:text-dark-80">Failed to retrieve country list.</div>
 								</div>
-							))
 						}
 					</Dialog>
 				</DimBackground>

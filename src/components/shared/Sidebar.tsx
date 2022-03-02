@@ -3,7 +3,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeAmericas, faListOl, faStar, faSlidersH, faQuestionCircle, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faGlobeAmericas, faListOl, faStar, faSlidersH, faQuestionCircle, faChevronRight, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as Shigeru } from "../../assets/shigeru.svg";
 import { settingsContext } from "../../views/App";
 import { ICountryData } from "../../types/data/Country";
@@ -67,14 +67,20 @@ function Sidebar({ active, countries }: { active: string, countries: ICountryDat
 						{
 							isCountrySelectorOpened &&
 							<div ref={ refCountryMenu } className="absolute top-0 left-20 w-max m-2 p-3 bg-light-20 dark:bg-dark-0 rounded-lg">
-								<div className="flex flex-col gap-y-1 max-h-44 overflow-y-scroll">
+								<div className={ `flex flex-col gap-y-1 max-h-44 ${ countries.length > 0 && "overflow-y-scroll" }` }>
 									{
-										countries.map(item => (
-											<div key={ item.id } onClick={ () => handleCountryChange(item.id) } className={ `flex items-center gap-x-2 min-w-48 px-2 py-1 ${ item.id === activeCountryId ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-40" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>
-												<ReactCountryFlag countryCode={ item.code } svg className="text-xl rounded-md" />
-												<div className={ `font-medium ${ item.id === activeCountryId ? "text-white" : "text-light-100" } dark:text-dark-100 whitespace-pre` }>{ item.name }</div>
+										countries.length > 0 ?
+											countries.map(item => (
+												<div key={ item.id } onClick={ () => handleCountryChange(item.id) } className={ `flex items-center gap-x-2 min-w-48 px-2 py-1 ${ item.id === activeCountryId ? "bg-light-60 dark:bg-dark-40 text-white dark:text-dark-40" : "hover:bg-light-40 dark:hover:bg-dark-20 text-light-100 dark:text-dark-100" } rounded-lg cursor-pointer` }>
+													<ReactCountryFlag countryCode={ item.code } svg className="text-xl rounded-md" />
+													<div className={ `font-medium ${ item.id === activeCountryId ? "text-white" : "text-light-100" } dark:text-dark-100 whitespace-pre` }>{ item.name }</div>
+												</div>
+											))
+											:
+											<div className="flex flex-col justify-center items-center w-42 h-42 px-2 py-1">
+												<FontAwesomeIcon icon={ faTimes } className="text-5xl text-light-60 dark:text-dark-80" />
+												<div className="font-medium text-center text-light-60 dark:text-dark-80">Failed to retrieve country list.</div>
 											</div>
-										))
 									}
 								</div>
 							</div>
