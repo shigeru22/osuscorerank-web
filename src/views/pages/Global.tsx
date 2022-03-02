@@ -223,7 +223,7 @@ function Global() {
 									{
 										showProfileDialog &&
 										<DimBackground>
-											<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ _.indexOf(starredUsers, selectedUserId) >= 0 } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
+											<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ _.indexOf(starredUsers, selectedUserId) >= 0 } setOpened={ setShowProfileDialog } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
 										</DimBackground>
 									}
 								</>

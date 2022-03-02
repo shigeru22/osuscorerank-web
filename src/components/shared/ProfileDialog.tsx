@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactCountryFlag from "react-country-flag";
 import Button from "./inputs/Button";
 import { faTimes, faCircleNotch, faStar } from "@fortawesome/free-solid-svg-icons";
+import { settingsContext } from "../../views/App";
 import { numberToSeparatedThousandsString } from "../../utils/Number";
+import { getUserData } from "../../utils/api/Users";
+import { getCountryScores, getGlobalScores } from "../../utils/api/Scores";
 
-function ProfileDialog({ htmlRef, userId, starred, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, onCloseClick: () => void, onStarClick: () => void }) {
+function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, setOpened: React.Dispatch<React.SetStateAction<boolean>>, onCloseClick: () => void, onStarClick: () => void }) {
+	const { addLogData, setShowErrorDialog } = useContext(settingsContext);
+
 	const [ isFetched, setFetched ] = useState(false); // height = 420 - 48px for fetching
+	const [ isLoading, setLoading ] = useState(true);
 
 	const [ userName, setUserName ] = useState("");
+	const [ osuId, setOsuId ] = useState(-1);
 	const [ countryName, setCountryName ] = useState("");
 	const [ countryCode, setCountryCode ] = useState("");
 
@@ -21,25 +29,82 @@ function ProfileDialog({ htmlRef, userId, starred, onCloseClick, onStarClick }: 
 	const [ globalPerformanceRank, setGlobalPerformanceRank ] = useState(0);
 
 	useEffect(() => {
-		setTimeout(() => {
-			setUserName("User 1");
-			setCountryName("Indonesia");
-			setCountryCode("ID");
+		async function getSelectedUserData() {
+			const user = await getUserData(userId);
 
-			setScore(183259761552);
-			setPerformancePoints(5241);
+			if(!_.isUndefined(user.data)) {
+				const score = user.data.score;
 
-			setCountryScoreRank(1);
-			setGlobalScoreRank(129);
-			setCountryPerformanceRank(1);
-			setGlobalPerformanceRank(15242);
+				const countryScoreRanking = await getCountryScores(score.user.country.countryId, 1);
+				const countryPerformanceRanking = await getCountryScores(score.user.country.countryId, 2);
+				const globalScoreRanking = await getGlobalScores(1);
+				const globalPerformanceRanking = await getGlobalScores(2);
 
-			setFetched(true);
-		}, 1000);
+				if(_.isUndefined(countryScoreRanking.data) ||
+					_.isUndefined(countryPerformanceRanking.data) ||
+					_.isUndefined(globalScoreRanking.data) ||
+					_.isUndefined(globalPerformanceRanking.data)
+				) {
+					setLoading(false);
+					return;
+				}
+
+				setUserName(score.user.userName);
+				setOsuId(score.user.osuId);
+				setCountryName(score.user.country.countryName);
+				setCountryCode(score.user.country.countryCode);
+
+				setScore(_.isNumber(score.score) ? score.score : _.parseInt(score.score, 10));
+				setPerformancePoints(score.pp);
+
+				/* TODO: move to WebAssembly? */
+				setCountryScoreRank(
+					_.findIndex(countryScoreRanking.data.rankings,
+						item => item.user.userId === userId
+					) + 1);
+				setCountryPerformanceRank(
+					_.findIndex(countryPerformanceRanking.data.rankings,
+						item => item.user.userId === userId
+					) + 1);
+				setGlobalScoreRank(
+					_.findIndex(globalScoreRanking.data.rankings,
+						item => item.user.userId === userId
+					) + 1);
+				setGlobalPerformanceRank(
+					_.findIndex(globalPerformanceRanking.data.rankings,
+						item => item.user.userId === userId
+					) + 1);
+
+				setLoading(false);
+				setFetched(true);
+
+				addLogData("Info", "Fetch user data success.");
+			}
+			else {
+				addLogData("Error", `Fetch user data failed: ${ user.message }`);
+				setLoading(false);
+			}
+		}
+
+		addLogData("Info", `Fetching user data (ID: ${ userId })...`);
+		getSelectedUserData();
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ userId ]);
 
 	function handleStarClick() {
 		onStarClick();
+	}
+
+	function handleOpenErrorDialog() {
+		if(!_.isUndefined(setOpened)) {
+			setOpened(false);
+		}
+
+		setShowErrorDialog(true);
+	}
+	function handleOpenOsuProfile() {
+		window.open(`https://osu.ppy.sh/users/${ osuId }`, "blank");
 	}
 
 	return (
@@ -56,7 +121,8 @@ function ProfileDialog({ htmlRef, userId, starred, onCloseClick, onStarClick }: 
 							<div className="flex flex-col lg:flex-row items-center gap-4">
 								<div className="flex flex-col items-center gap-y-2">
 									<div className="w-28 h-28 bg-light-40 dark:bg-dark-40 rounded-3xl">
-										<div className="relative h-full">
+										<img src={ `https://a.ppy.sh/${ osuId }` } className="rounded-3xl" />
+										<div className="relative bottom-0 right-0">
 											<button type="button" onClick={ () => handleStarClick() } className="absolute bottom-2 right-2">
 												<FontAwesomeIcon icon={ faStar } className={ `text-xl ${ starred ? "text-light-80 dark:text-dark-80" : "text-white hover:text-light-40 dark:text-dark-20 dark:hover:text-dark-40 stroke-10 stroke-light-80 dark:stroke-dark-80" }` } />
 											</button>
@@ -64,9 +130,9 @@ function ProfileDialog({ htmlRef, userId, starred, onCloseClick, onStarClick }: 
 									</div>
 									<div className="flex items-center gap-x-2">
 										<ReactCountryFlag countryCode={ countryCode } svg alt={ countryName } title={ countryName } className="text-lg rounded-md" />
-										<div className="font-semibold text-lg text-light-100 dark:text-dark-100">{ userName }</div>
+										<div className="font-semibold text-lg text-light-100 dark:text-dark-100 overflow-ellipsis">{ userName }</div>
 									</div>
-									<Button label="osu! profile" />
+									<Button label="osu! profile" onClick={ () => handleOpenOsuProfile() } />
 								</div>
 								<div className="md:flex-grow grid grid-cols-3 gap-x-2 gap-y-1">
 									<div className="font-semibold text-light-100 dark:text-dark-100">Score</div>
@@ -85,9 +151,17 @@ function ProfileDialog({ htmlRef, userId, starred, onCloseClick, onStarClick }: 
 							</div>
 							:
 							<div className="flex justify-center items-center w-full h-93 lg:h-48">
-								<div className="flex flex-col items-center gap-y-2">
-									<FontAwesomeIcon icon={ faCircleNotch } className="text-3xl text-light-60 dark:text-dark-80 animate-spin" />
-									<div className="font-medium text-light-100 dark:text-dark-100">Fetching data...</div>
+								<div className="flex flex-col justify-center items-center gap-y-2">
+									<FontAwesomeIcon icon={ isLoading ? faCircleNotch : faTimes } className={ `text-5xl text-light-60 dark:text-dark-80 ${ isLoading && "animate-spin" }` } />
+									<div className="font-medium text-center text-light-60 dark:text-dark-80 whitespace-pre">
+										{
+											isLoading ? "Loading data..." : "Failed to fetch data.\nTry refreshing the page."
+										}
+									</div>
+									{
+										!isLoading &&
+											<Button label="Error Details" onClick={ () => handleOpenErrorDialog() } />
+									}
 								</div>
 							</div>
 					}
