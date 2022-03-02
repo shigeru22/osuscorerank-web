@@ -16,6 +16,7 @@ import { getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { sortOptions } from "../../utils/Options";
 import { getMultipleUserScores } from "../../utils/api/Scores";
+import { LogType } from "../../utils/Logging";
 import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
@@ -57,7 +58,7 @@ function Starred() {
 		}
 
 		setSearchDebounce(setTimeout(async () => {
-			addLogData("Info", "searchDebounce timeout reached. Searching data...");
+			addLogData(LogType.INFO, "searchDebounce timeout reached. Searching data...");
 
 			const result = await searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
@@ -73,7 +74,7 @@ function Starred() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
-				addLogData("Info", "updateDebounce timeout reached. Updating display row count...");
+				addLogData(LogType.INFO, "updateDebounce timeout reached. Updating display row count...");
 
 				const before = tableRowsPerPage;
 				const after = getTableRowsFromViewport();
@@ -145,14 +146,14 @@ function Starred() {
 				setStarred(scores.data.scores.length);
 				setRecentlyActive(starredUsers.length - scores.data.scores.length); // starred users - returned users
 
-				addLogData("Info", "Fetch starred users ranking success.");
+				addLogData(LogType.INFO, "Fetch starred users ranking success.");
 			}
 			else {
-				addLogData("Error", `Fetch starred users ranking failed: ${ scores.message }`);
+				addLogData(LogType.ERROR, `Fetch starred users ranking failed: ${ scores.message }`);
 			}
 		}
 
-		addLogData("Info", "Fetching starred users data...");
+		addLogData(LogType.INFO, "Fetching starred users data...");
 		setLoading(true);
 		getScores();
 
@@ -186,7 +187,7 @@ function Starred() {
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
 
-		addLogData("Info", `${ added ? "Added" : "Removed" } user ID ${ selectedUserId } to starred users list.`);
+		addLogData(LogType.INFO, `${ added ? "Added" : "Removed" } user ID ${ selectedUserId } to starred users list.`);
 	}
 
 	return (

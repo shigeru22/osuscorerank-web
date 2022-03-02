@@ -9,6 +9,7 @@ import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuin
 import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
 import { getGreetingData } from "../../utils/api/Main";
 import { getMultipleUserScores } from "../../utils/api/Scores";
+import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
 
@@ -54,7 +55,7 @@ function Settings() {
 	}, []);
 
 	useEffect(() => {
-		addLogData("Info", "Settings state changed. Updating local settings...");
+		addLogData(LogType.INFO, "Settings state changed. Updating local settings...");
 
 		const newSettings: SettingsData = {
 			themeId,
@@ -75,14 +76,14 @@ function Settings() {
 
 			if(!_.isUndefined(scores.data)) {
 				setInactiveUsers(scores.data.scores.length);
-				addLogData("Info", "Fetch starred users ranking success.");
+				addLogData(LogType.INFO, "Fetch starred users ranking success.");
 			}
 			else {
-				addLogData("Error", `Fetch country ranking failed: ${ scores.message }`);
+				addLogData(LogType.ERROR, `Fetch country ranking failed: ${ scores.message }`);
 			}
 		}
 
-		addLogData("Info", "Fetching number of inactive users...");
+		addLogData(LogType.INFO, "Fetching number of inactive users...");
 		setInactiveUsers(-1);
 		getScores();
 
@@ -117,16 +118,16 @@ function Settings() {
 				_.isEqual(result[0], items[0]) &&
 				_.isEqual(result[1], items[2])
 			)) {
-				addLogData("Info", "Test result assertion success.");
+				addLogData(LogType.INFO, "Test result assertion success.");
 				setWasmStatus("Passed");
 			}
 			else {
-				addLogData("Error", "Test result assertion failed.");
+				addLogData(LogType.ERROR, "Test result assertion failed.");
 				setWasmStatus("Failed");
 			}
 		}
 		catch {
-			addLogData("Error", "Wasm function failed to run.");
+			addLogData(LogType.ERROR, "Wasm function failed to run. Try updating the browser?");
 			setWasmMessage("Failed");
 			setWasmStatus("Failed");
 		}
@@ -151,23 +152,23 @@ function Settings() {
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
 
-		addLogData("Info", "Settings updated.");
+		addLogData(LogType.INFO, "Settings updated.");
 
 		setShowResetUsersDialog(false);
 	}
 
 	async function handleApiTest() {
-		addLogData("Info", "Checking API status...");
+		addLogData(LogType.INFO, "Checking API status...");
 		setApiOnlineStatus(-1);
 
 		const response = await getGreetingData();
 
 		if(_.isEqual(response.message, "Hello, world!")) {
-			addLogData("Info", "API status normal.");
+			addLogData(LogType.INFO, "API status normal.");
 			setApiOnlineStatus(1);
 		}
 		else {
-			addLogData("Error", `Unable to connect to API: ${ response.message }`);
+			addLogData(LogType.ERROR, `Unable to connect to API: ${ response.message }`);
 			setApiOnlineStatus(0);
 		}
 	}

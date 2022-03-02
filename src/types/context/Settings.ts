@@ -1,5 +1,6 @@
 import { ICountryData } from "../data/Country";
 import { ILogData } from "../Log";
+import { LogType } from "../../utils/Logging";
 
 export interface Settings {
 	themeId: number;
@@ -18,5 +19,5 @@ export type SettingsContext = {
 	setSettings: (data: Settings) => void,
 	setShowErrorDialog: (value: boolean) => void,
 	setActiveCountryId: (id: number) => void,
-	addLogData: (name: string, description: string) => void
+	addLogData: (name: LogType, description: string) => void
 }

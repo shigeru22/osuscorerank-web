@@ -36,6 +36,14 @@ module.exports = {
 			success: {
 				light: "#008f18",
 				dark: "#00b21d"
+			},
+			warn: {
+				light: "#c3b900",
+				dark: "#f6ea00"
+			},
+			debug: {
+				light: "#7b7b7b",
+				dark: "#d4d4d4"
 			}
 		},
 		extend: {

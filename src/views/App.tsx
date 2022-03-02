@@ -7,6 +7,7 @@ import ErrorDialog from "../components/shared/ErrorDialog";
 import { getSettingsData, setSettingsData } from "../utils/Storage";
 import { Settings, SettingsContext } from "../types/context/Settings";
 import { getAllCountries } from "../utils/api/Countries";
+import { LogType } from "../utils/Logging";
 import { ICountryData } from "../types/data/Country";
 import _ from "lodash";
 
@@ -19,7 +20,7 @@ const settingsContextValues: SettingsContext = {
 	setSettings: (data: Settings) => updateSettings(data),
 	setShowErrorDialog: (value: boolean) => setShowErrorDialog(value),
 	setActiveCountryId: (id: number) => updateActiveCountryId(id),
-	addLogData: (name: string, description: string) => addLogData(name, description)
+	addLogData: (name: LogType, description: string) => addLogData(name, description)
 };
 
 const settingsContext = createContext<SettingsContext>(settingsContextValues);
@@ -37,7 +38,7 @@ function updateActiveCountryId(id: number) {
 	settingsContextValues.activeCountryId = id;
 }
 
-function addLogData(name: string, description: string) {
+function addLogData(name: LogType, description: string) {
 	settingsContextValues.logs.push({
 		id: settingsContextValues.logs.length + 1,
 		time: new Date(),
@@ -46,7 +47,7 @@ function addLogData(name: string, description: string) {
 	});
 }
 
-addLogData("Info", "Application started.");
+addLogData(LogType.INFO, "Application started.");
 
 function App() {
 	const [ settings ] = useState<Settings>(settingsContextValues.settings);
@@ -79,7 +80,7 @@ function App() {
 			const countries = await getAllCountries();
 
 			if(_.isUndefined(countries.data)) {
-				addLogData("Error", `Fetch country failed: ${ countries.message }`);
+				addLogData(LogType.ERROR, `Fetch country failed: ${ countries.message }`);
 				return;
 			}
 
@@ -89,17 +90,17 @@ function App() {
 				code: item.countryCode
 			})));
 
-			addLogData("Info", "Fetch country success.");
+			addLogData(LogType.INFO, "Fetch country success.");
 		}
 
-		addLogData("Info", "Fetching country data...");
+		addLogData(LogType.INFO, "Fetching country data...");
 		getCountries();
 	}, []);
 
 	useEffect(() => {
 		if(themeId === 3 || (themeId === 1 && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
 			document.documentElement.classList.add("dark");
-			addLogData("Info", "Dark mode enabled.");
+			addLogData(LogType.INFO, "Dark mode enabled.");
 		}
 		else {
 			const body = document.documentElement;
@@ -107,7 +108,7 @@ function App() {
 			body.classList.remove("dark");
 			body.classList.length <= 0 && body.removeAttribute("class");
 
-			addLogData("Info", "Dark mode disabled.");
+			addLogData(LogType.INFO, "Dark mode disabled.");
 		}
 	}, [ themeId ]);
 
@@ -123,14 +124,14 @@ function App() {
 
 		setDarkMode(data.themeId);
 
-		addLogData("Info", "Settings updated.");
+		addLogData(LogType.INFO, "Settings updated.");
 	}
 
 	function setActiveCountryStateId(id: number) {
 		updateActiveCountryId(id);
 		setActiveCountryId(id);
 
-		addLogData("Info", `Set active country ID to ${ id }.`);
+		addLogData(LogType.INFO, `Set active country ID to ${ id }.`);
 	}
 
 	const location = useLocation();
@@ -139,7 +140,7 @@ function App() {
 	const Provider = settingsContext.Provider;
 
 	useEffect(() => {
-		addLogData("Info", `Route opened: ${ location.pathname }`);
+		addLogData(LogType.INFO, `Route opened: ${ location.pathname }`);
 	}, [ location.pathname ]);
 
 	return (

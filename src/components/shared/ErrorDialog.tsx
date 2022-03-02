@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { ILogData } from "../../types/Log";
+import { LogType } from "../../utils/Logging";
 
 function ErrorDialog({ htmlRef, data, onCancelClick }: { htmlRef?: React.Ref<HTMLDivElement>, data: ILogData[], onCancelClick: () => void }) {
 	const [ isExpanded, setExpanded ] = useState(false);
@@ -9,6 +10,25 @@ function ErrorDialog({ htmlRef, data, onCancelClick }: { htmlRef?: React.Ref<HTM
 	function toggleLogExpansion() {
 		const temp = !isExpanded;
 		setExpanded(temp);
+	}
+
+	function LogElement({ log }: { log: ILogData }) {
+		const logName = [ "DEBUG", "INFO", "WARN", "ERROR" ];
+
+		return (
+			<p className="font-mono font-medium text-sm text-debug-light dark:text-debug-dark">
+				[{ log.time.toLocaleString() }]&nbsp;
+				<span className={
+					log.name === LogType.ERROR
+						? "text-danger-light" :
+						log.name === LogType.WARN
+							? "text-warn-light dark:text-warn-dark" :
+							log.name === LogType.INFO ? "text-black dark:text-white" : ""
+				}>
+					{ logName[log.name] }: { log.description }
+				</span>
+			</p>
+		);
 	}
 
 	return (
@@ -29,7 +49,7 @@ function ErrorDialog({ htmlRef, data, onCancelClick }: { htmlRef?: React.Ref<HTM
 							<div className="flex flex-col max-h-26 px-3 py-1.5 bg-light-20 dark:bg-dark-20 overflow-y-auto rounded-lg">
 								{
 									data.map(item => (
-										<p key={ item.id } className="font-mono font-medium text-sm text-light-100 dark:text-dark-100">[{ item.time.toLocaleString() }] { item.name }: { item.description }</p>
+										<LogElement key={ item.id } log={ item } />
 									))
 								}
 							</div>

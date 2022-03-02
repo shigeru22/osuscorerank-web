@@ -16,6 +16,7 @@ import { getCountryIndexById, getRankingListTotalPages } from "../../utils/Numbe
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { sortOptions } from "../../utils/Options";
 import { getCountryScores } from "../../utils/api/Scores";
+import { LogType } from "../../utils/Logging";
 import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 
@@ -57,7 +58,7 @@ function Country() {
 		}
 
 		setSearchDebounce(setTimeout(async () => {
-			addLogData("Info", "searchDebounce timeout reached. Searching data...");
+			addLogData(LogType.INFO, "searchDebounce timeout reached. Searching data...");
 
 			const result = await searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
@@ -73,7 +74,7 @@ function Country() {
 			}
 
 			setUpdateDebounce(setTimeout(() => {
-				addLogData("Info", "updateDebounce timeout reached. Updating display row count...");
+				addLogData(LogType.INFO, "updateDebounce timeout reached. Updating display row count...");
 
 				const before = tableRowsPerPage;
 				const after = getTableRowsFromViewport();
@@ -148,16 +149,16 @@ function Country() {
 				setRecentlyInactive(scores.data.inactives.recentlyInactive);
 				setTotalInactives(scores.data.total);
 
-				addLogData("Info", "Fetch country ranking success.");
+				addLogData(LogType.INFO, "Fetch country ranking success.");
 			}
 			else {
-				addLogData("Error", `Fetch country ranking failed: ${ scores.message }`);
+				addLogData(LogType.ERROR, `Fetch country ranking failed: ${ scores.message }`);
 			}
 
 			setLoading(false);
 		}
 
-		addLogData("Info", "Fetching country ranking data...");
+		addLogData(LogType.INFO, "Fetching country ranking data...");
 		setLoading(true);
 		getScores();
 
@@ -192,7 +193,7 @@ function Country() {
 		setSettings(newSettings);
 		setStarredUsers([ ...newSettings.starredUserId ]);
 
-		addLogData("Info", `${ added ? "Added" : "Removed" } user ID ${ selectedUserId } to starred users list.`);
+		addLogData(LogType.INFO, `${ added ? "Added" : "Removed" } user ID ${ selectedUserId } to starred users list.`);
 	}
 
 	function getCountryName() {

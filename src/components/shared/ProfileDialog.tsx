@@ -8,6 +8,7 @@ import { settingsContext } from "../../views/App";
 import { numberToSeparatedThousandsString } from "../../utils/Number";
 import { getUserData } from "../../utils/api/Users";
 import { getCountryScores, getGlobalScores } from "../../utils/api/Scores";
+import { LogType } from "../../utils/Logging";
 
 function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, setOpened: React.Dispatch<React.SetStateAction<boolean>>, onCloseClick: () => void, onStarClick: () => void }) {
 	const { addLogData, setShowErrorDialog } = useContext(settingsContext);
@@ -78,15 +79,15 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 				setLoading(false);
 				setFetched(true);
 
-				addLogData("Info", "Fetch user data success.");
+				addLogData(LogType.INFO, "Fetch user data success.");
 			}
 			else {
-				addLogData("Error", `Fetch user data failed: ${ user.message }`);
+				addLogData(LogType.ERROR, `Fetch user data failed: ${ user.message }`);
 				setLoading(false);
 			}
 		}
 
-		addLogData("Info", `Fetching user data (ID: ${ userId })...`);
+		addLogData(LogType.INFO, `Fetching user data (ID: ${ userId })...`);
 		getSelectedUserData();
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
