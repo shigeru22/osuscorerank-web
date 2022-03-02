@@ -12,8 +12,6 @@ import { getMultipleUserScores } from "../../utils/api/Scores";
 import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
-import DimBackground from "../../components/shared/DimBackground";
-import Dialog from "../../components/shared/mobile/Dialog";
 
 function Settings() {
 	const { settings, countries, setSettings, addLogData } = useContext(settingsContext);
