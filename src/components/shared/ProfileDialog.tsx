@@ -83,7 +83,7 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 		<div className="flex h-full justify-center items-center">
 			<div ref={ htmlRef } className="max-w-sm lg:max-w-xl min-h-14 max-h-150 w-4/5 bg-white dark:bg-dark-20 rounded-lg overflow-y-auto">
 				<div className="relative top-0 hidden lg:block w-full">
-					<button type="button" className="absolute top-5 right-5">
+					<button type="button" onClick={ () => onCloseClick() } className="absolute top-5 right-5">
 						<FontAwesomeIcon icon={ faTimes } className="text-xl text-light-40 dark:text-dark-40 hover:text-light-60 dark:hover:text-light-60" />
 					</button>
 				</div>
