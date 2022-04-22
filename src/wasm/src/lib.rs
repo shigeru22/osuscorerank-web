@@ -38,7 +38,7 @@ fn search(list: &Vec<RankingListData>, query: String) -> Vec<&RankingListData> {
 
 #[test]
 fn serde_test() {
-  let input = "{\"id\":1,\"rank\":1,\"userName\":\"User 1\",\"score\":123,\"pp\":12,\"delta\":1}";
+  let input = "{\"id\":1,\"rank\":1,\"userName\":\"User 1\",\"score\":123,\"pp\":12}";
 
   let data: RankingListData = serde_json::from_str(&input).unwrap();
   assert_eq!(1, data.id);
@@ -46,7 +46,6 @@ fn serde_test() {
   assert_eq!("User 1".to_string(), data.username());
   assert_eq!(123, data.score);
   assert_eq!(12, data.pp);
-  assert_eq!(1, data.delta);
 
   let output = serde_json::to_string(&data).unwrap();
   assert_eq!(input, output);
@@ -55,9 +54,9 @@ fn serde_test() {
 #[test]
 fn search_test() {
 	let data: Vec<RankingListData> = vec![
-		RankingListData::new(1, 1, "Rick".to_string(), 13445, 132, 0),
-		RankingListData::new(2, 2, "Morty".to_string(), 12344, 123, 0),
-		RankingListData::new(3, 3, "Tom".to_string(), 11233, 112, 0)
+		RankingListData::new(1, 1, "Rick".to_string(), 13445, 132),
+		RankingListData::new(2, 2, "Morty".to_string(), 12344, 123),
+		RankingListData::new(3, 3, "Tom".to_string(), 11233, 112)
 	];
 
 	let res_one = search(&data, "ort".to_string()); // returns [1]

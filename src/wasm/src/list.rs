@@ -10,19 +10,17 @@ pub struct RankingListData {
 	userName: String,
 	pub score: i64,
 	pub pp: i32,
-	pub delta: i32
 }
 
 #[wasm_bindgen]
 impl RankingListData {
-	pub fn new(id: i32, rank: i32, user_name: String, score: i64, pp: i32, delta: i32) -> RankingListData {
+	pub fn new(id: i32, rank: i32, user_name: String, score: i64, pp: i32) -> RankingListData {
 		RankingListData {
 			id: id,
 			rank: rank,
 			userName: user_name,
 			score: score,
-			pp: pp,
-			delta: delta
+			pp: pp
 		}
 	}
 
