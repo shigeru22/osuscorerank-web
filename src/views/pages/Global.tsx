@@ -138,7 +138,8 @@ function Global() {
 					rank: index + 1,
 					userName: item.user.userName,
 					score: _.isNumber(item.score) ? item.score : _.parseInt(item.score, 10),
-					pp: item.pp
+					pp: item.pp,
+					isActive: item.user.isActive
 				}));
 
 				setRankingData(temp);

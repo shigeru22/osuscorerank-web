@@ -4,4 +4,5 @@ export interface IRankingListData {
   userName: string;
   score: number;
   pp: number;
+  isActive: boolean;
 }
