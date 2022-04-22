@@ -8,7 +8,11 @@ const DEFAULT_SETTINGS: Settings = {
 	dateFormatId: 1,
 	defaultCountryId: 1,
 	defaultSortingId: 1,
-	starredUserId: []
+	starredUserId: [],
+	osuClient: {
+		clientId: -1,
+		clientSecret: ""
+	}
 };
 
 export function getDefaultSettings(): Settings {

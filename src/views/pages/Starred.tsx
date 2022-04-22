@@ -171,7 +171,8 @@ function Starred() {
 			dateFormatId: settings.dateFormatId,
 			defaultCountryId: settings.defaultCountryId,
 			defaultSortingId: settings.defaultSortingId,
-			starredUserId: settings.starredUserId
+			starredUserId: settings.starredUserId,
+			osuClient: settings.osuClient
 		};
 
 		let added = false;

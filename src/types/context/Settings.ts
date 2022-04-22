@@ -8,6 +8,10 @@ export interface Settings {
 	defaultCountryId: number;
 	defaultSortingId: number;
 	starredUserId: number[];
+	osuClient: {
+		clientId: number;
+		clientSecret: string;
+	}
 }
 
 export type SettingsContext = {
