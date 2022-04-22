@@ -7,7 +7,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export async function getUserData(id: number): Promise<IResponseData<IUserResponseData>> {
 	try {
-		const response = await axios.get(`${ API_URL }/scores/user/${ id }`);
+		const response = await axios.get(`${ API_URL }/user/${ id }`);
 
 		const ret = response.data as IResponseData<IUserResponseData>;
 		return ret;

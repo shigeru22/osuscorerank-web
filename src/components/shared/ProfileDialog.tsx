@@ -7,7 +7,7 @@ import { faTimes, faCircleNotch, faStar } from "@fortawesome/free-solid-svg-icon
 import { settingsContext } from "../../views/App";
 import { numberToSeparatedThousandsString } from "../../utils/Number";
 import { getUserData } from "../../utils/api/Users";
-import { getCountryScores, getGlobalScores } from "../../utils/api/Scores";
+import { getCountryScores, getGlobalScores, getUserScore } from "../../utils/api/Scores";
 import { LogType } from "../../utils/Logging";
 
 function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, setOpened: React.Dispatch<React.SetStateAction<boolean>>, onCloseClick: () => void, onStarClick: () => void }) {
@@ -31,50 +31,22 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 
 	useEffect(() => {
 		async function getSelectedUserData() {
-			const user = await getUserData(userId);
+			const userScore = await getUserScore(userId); // TODO: use get user score endpoint
 
-			if(!_.isUndefined(user.data)) {
-				const score = user.data.score;
+			if(!_.isUndefined(userScore.data)) {
+				setUserName(userScore.data.score.user.userName);
+				setOsuId(userScore.data.score.user.osuId);
+				setCountryName(userScore.data.score.user.country.countryName);
+				setCountryCode(userScore.data.score.user.country.countryCode);
 
-				const countryScoreRanking = await getCountryScores(score.user.country.countryId, 1);
-				const countryPerformanceRanking = await getCountryScores(score.user.country.countryId, 2);
-				const globalScoreRanking = await getGlobalScores(1);
-				const globalPerformanceRanking = await getGlobalScores(2);
-
-				if(_.isUndefined(countryScoreRanking.data) ||
-					_.isUndefined(countryPerformanceRanking.data) ||
-					_.isUndefined(globalScoreRanking.data) ||
-					_.isUndefined(globalPerformanceRanking.data)
-				) {
-					setLoading(false);
-					return;
-				}
-
-				setUserName(score.user.userName);
-				setOsuId(score.user.osuId);
-				setCountryName(score.user.country.countryName);
-				setCountryCode(score.user.country.countryCode);
-
-				setScore(_.isNumber(score.score) ? score.score : _.parseInt(score.score, 10));
-				setPerformancePoints(score.pp);
+				setScore(0);
+				setPerformancePoints(0);
 
 				/* TODO: move to WebAssembly? */
-				setCountryScoreRank(
-					_.findIndex(countryScoreRanking.data.rankings,
-						item => item.user.userId === userId
-					) + 1);
-				setCountryPerformanceRank(
-					_.findIndex(countryPerformanceRanking.data.rankings,
-						item => item.user.userId === userId
-					) + 1);
-				setGlobalScoreRank(
-					_.findIndex(globalScoreRanking.data.rankings,
-						item => item.user.userId === userId
-					) + 1);
-				setGlobalPerformanceRank(
-					_.findIndex(globalPerformanceRanking.data.rankings,
-						item => item.user.userId === userId
-					) + 1);
+				setCountryScoreRank(1);
+				setCountryPerformanceRank(1);
+				setGlobalScoreRank(1);
+				setGlobalPerformanceRank(1);
 
 				setLoading(false);
 				setFetched(true);
@@ -82,7 +54,7 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 				addLogData(LogType.INFO, "Fetch user data success.");
 			}
 			else {
-				addLogData(LogType.ERROR, `Fetch user data failed: ${ user.message }`);
+				addLogData(LogType.ERROR, `Fetch user data failed: ${ userScore.message }`);
 				setLoading(false);
 			}
 		}

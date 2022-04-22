@@ -1,14 +1,15 @@
 import { IUserData, IUserCountryData } from "./User";
 
-export interface IScoreData {
+export interface IScoreBaseData {
 	scoreId: number;
-	user: IUserData;
 	score: number | string;
 	pp: number;
-	globalRank: number;
-	delta: number;
 }
 
-export interface IUserScoreData extends IScoreData {
+export interface IUserScoreData extends IScoreBaseData {
+	user: IUserData;
+}
+
+export interface IUserScoreCountryData extends IScoreBaseData {
 	user: IUserCountryData;
 }

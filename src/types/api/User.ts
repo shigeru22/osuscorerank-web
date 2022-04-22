@@ -1,5 +1,9 @@
-import { IUserScoreData } from "../Score";
+import { IUserCountryData } from "../User";
+
+export interface IUserCountryDetailData extends IUserCountryData {
+	userId: number;
+}
 
 export interface IUserResponseData {
-	score: IUserScoreData;
+	user: IUserCountryDetailData;
 }

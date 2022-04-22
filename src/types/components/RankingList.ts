@@ -4,5 +4,4 @@ export interface IRankingListData {
   userName: string;
   score: number;
   pp: number;
-  delta: number;
 }

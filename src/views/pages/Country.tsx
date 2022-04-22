@@ -132,13 +132,12 @@ function Country() {
 			const scores = await getCountryScores(activeCountryId, selectedSortId);
 
 			if(!_.isUndefined(scores.data)) {
-				const temp = scores.data.rankings.map((item, index) => ({
+				const temp = scores.data.scores.map((item, index) => ({
 					id: item.scoreId,
 					rank: index + 1,
 					userName: item.user.userName,
 					score: _.isNumber(item.score) ? item.score : _.parseInt(item.score, 10),
-					pp: item.pp,
-					delta: item.delta
+					pp: item.pp
 				}));
 
 				setRankingData(temp);
@@ -146,8 +145,10 @@ function Country() {
 				/* since this effect is run at page load, set as filtered data */
 				setRankingDataResults(temp);
 
-				setRecentlyInactive(scores.data.inactives.recentlyInactive);
-				setTotalInactives(scores.data.total);
+				const inactives = scores.data.scores.filter(item => !item.user.isActive);
+
+				setRecentlyInactive(0);
+				setTotalInactives(inactives.length);
 
 				addLogData(LogType.INFO, "Fetch country ranking success.");
 			}

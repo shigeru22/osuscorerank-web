@@ -102,13 +102,13 @@ function Settings() {
 
 			const items: IRankingListData[] = [
 				{
-					id: 1, rank: 1,	userName: "Beta",	score: 1223535,	pp: 324, delta: 0
+					id: 1, rank: 1,	userName: "Beta",	score: 1223535,	pp: 324
 				},
 				{
-					id: 2, rank: 2, userName: "Alpha", score: 1123526, pp: 298, delta: 0
+					id: 2, rank: 2, userName: "Alpha", score: 1123526, pp: 298
 				},
 				{
-					id: 3, rank: 3, userName: "Bubba", score: 1098272, pp: 277, delta: 0
+					id: 3, rank: 3, userName: "Bubba", score: 1098272, pp: 277
 				}
 			];
 			const query = "b";

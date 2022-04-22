@@ -1,23 +1,29 @@
 import { ICountryData } from "../Country";
-import { IScoreData, IUserScoreData } from "../Score";
+import { IUserScoreData, IUserScoreCountryData } from "../Score";
+
+export interface IUserScoreDetailData extends IUserScoreData {
+  scoreId: number;
+}
+
+export interface IUserCountryScoreDetailData extends IUserScoreCountryData {
+  scoreId: number;
+}
 
 export interface ICountryScoreResponseData {
   country: ICountryData;
-  rankings: IScoreData[];
-  inactives: {
-    recentlyInactive: number;
-  };
-  total: number;
+  scores: IUserScoreDetailData[];
+  length: number;
 }
 
 export interface IGlobalScoreResponseData {
-  rankings: IUserScoreData[];
-  inactives: {
-    recentlyInactive: number;
-  };
-  total: number;
+  scores: IUserCountryScoreDetailData[];
+  length: number;
+}
+
+export interface IUserScoreResponseData {
+  score: IUserCountryScoreDetailData;
 }
 
 export interface IMultipleUserResponseData {
-  scores: IUserScoreData[];
+  scores: IUserCountryScoreDetailData[];
 }
