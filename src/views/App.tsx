@@ -112,6 +112,16 @@ function App() {
 		}
 	}, [ themeId ]);
 
+	useEffect(() => {
+		if(showErrorDialog) {
+			document.body.classList.add("overflow-y-hidden");
+		}
+		else {
+			document.body.classList.remove("overflow-y-hidden");
+			document.body.classList.length <= 0 && document.body.removeAttribute("class");
+		}
+	}, [ showErrorDialog ]);
+
 	function setSettings(data: Settings) {
 		updateSettings(data);
 

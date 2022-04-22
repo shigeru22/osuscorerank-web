@@ -35,7 +35,7 @@ function ErrorDialog({ htmlRef, data, onCancelClick }: { htmlRef?: React.Ref<HTM
 		<div className="flex justify-center items-center w-full h-full z-20">
 			<div ref={ htmlRef } className="flex flex-col gap-y-4 min-w-48 max-w-md w-5/6 m-2 p-6 bg-white dark:bg-dark-0 rounded-lg">
 				<h3 className="font-semibold text-xl text-light-100 dark:text-dark-100">Error Details</h3>
-				<div className="max-h-4.625 space-y-2 overflow-y-auto">
+				<div className="max-h-80 space-y-2 overflow-y-auto">
 					<p className="font-medium text-light-80 dark:text-dark-80">
 						These logs might be helpful for troubleshooting. If the problem persists, feel free to file an issue along with these logs.
 					</p>
