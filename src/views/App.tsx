@@ -47,10 +47,68 @@ function addLogData(name: LogType, description: string) {
 	});
 }
 
+function validateSettings(settings: Settings) {
+	const tempSettings = { ...settings };
+	let updated = 0;
+
+	if(_.isUndefined(settings.themeId)) {
+		tempSettings.themeId = 1;
+		updated++;
+	}
+
+	if(_.isUndefined(settings.dateFormatId)) {
+		tempSettings.dateFormatId = 1;
+		updated++;
+	}
+
+	if(_.isUndefined(settings.defaultCountryId)) {
+		tempSettings.defaultCountryId = 1;
+		updated++;
+	}
+
+	if(_.isUndefined(settings.defaultSortingId)) {
+		tempSettings.defaultSortingId = 1;
+		updated++;
+	}
+
+	if(_.isUndefined(settings.starredUserId)) {
+		tempSettings.starredUserId = [];
+		updated++;
+	}
+
+	if(_.isUndefined(settings.osuClient)) {
+		tempSettings.osuClient = {
+			clientId: -1,
+			clientSecret: ""
+		};
+		updated++;
+	}
+
+	if(updated > 0) {
+		addLogData(LogType.INFO, "Settings updated. Reflecting new changes...");
+		updateSettings(tempSettings);
+		return tempSettings as Settings;
+	}
+	else return undefined;
+}
+
 addLogData(LogType.INFO, "Application started.");
 
 function App() {
 	const [ settings ] = useState<Settings>(settingsContextValues.settings);
+
+	{
+		const temp = validateSettings(settings);
+
+		if(!_.isUndefined(temp)) {
+			settings.themeId = temp.themeId;
+			settings.dateFormatId = temp.dateFormatId;
+			settings.defaultCountryId = temp.defaultCountryId;
+			settings.defaultSortingId = temp.defaultSortingId;
+			settings.starredUserId = temp.starredUserId;
+			settings.osuClient = temp.osuClient;
+		}
+	}
 
 	const [ logs ] = useState(settingsContextValues.logs);
 	const [ activeCountryId, setActiveCountryId ] = useState(settingsContextValues.activeCountryId);

@@ -12,8 +12,15 @@ import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
 import TextInput from "../../components/shared/inputs/Text";
-import { faCheck, faIdCard, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faIdCard, faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const enum ClientInputError {
+	NOT_SHOWN,
+	NONE,
+	ID,
+	SECRET
+}
 
 function Settings() {
 	const { settings, countries, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
@@ -31,8 +38,12 @@ function Settings() {
 
 	const [ apiOnlineStatus, setApiOnlineStatus ] = useState(-1);
 
-	const [ osuClientId, setOsuClientId ] = useState("");
-	const [ osuClientSecret, setOsuClientSecret ] = useState("");
+	const [ osuClientId, setOsuClientId ] = useState(settings.osuClient.clientId === -1 ? "" : settings.osuClient.clientId.toString());
+	const [ osuClientSecret, setOsuClientSecret ] = useState(settings.osuClient.clientSecret);
+	const [ clientChangesStatus, setClientChangesStatus ] = useState(ClientInputError.NOT_SHOWN);
+	const [ pristine, setPristine ] = useState(true);
+
+	const [ clientInputDebounce, setClientInputDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 	const refResetStarredDialog = useRef<HTMLDivElement>(null);
 
@@ -74,6 +85,53 @@ function Settings() {
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
+
+	useEffect(() => {
+		if(!_.isUndefined(clientInputDebounce)) {
+			clearTimeout(clientInputDebounce);
+		}
+
+		setClientInputDebounce(setTimeout(() => {
+			if(pristine && ((osuClientId === settings.osuClient.clientId.toString() || (osuClientId === "" && settings.osuClient.clientId === -1)) && osuClientSecret === settings.osuClient.clientSecret)) {
+				setPristine(false);
+				return;
+			}
+
+			let tempClientId = -1;
+
+			if(osuClientId !== "") {
+				tempClientId = _.parseInt(osuClientId, 10);
+
+				if(_.isNaN(tempClientId) || tempClientId <= 0) {
+					setClientChangesStatus(ClientInputError.ID);
+					return;
+				}
+			}
+
+			if(osuClientSecret !== "") {
+				if(osuClientSecret.length !== 40) {
+					setClientChangesStatus(ClientInputError.SECRET);
+					return;
+				}
+			}
+
+			const newSettings: SettingsData = {
+				themeId,
+				dateFormatId,
+				defaultCountryId,
+				defaultSortingId,
+				starredUserId: settings.starredUserId,
+				osuClient: {
+					clientId: tempClientId,
+					clientSecret: osuClientSecret
+				}
+			};
+
+			setSettings(newSettings);
+			setClientChangesStatus(ClientInputError.NONE);
+		}, 250));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ osuClientId, osuClientSecret ]);
 
 	async function getWasmGreetMessage() {
 		setWasmMessage("Testing...");
@@ -171,6 +229,32 @@ function Settings() {
 		return str;
 	}
 
+	function ClientInputStatusIcon({ status }: { status: ClientInputError}) {
+		switch(status) {
+			case ClientInputError.NOT_SHOWN: // fallthrough
+			case ClientInputError.NONE:
+				return <FontAwesomeIcon icon={ faCheck } className="text-xl text-light-60 dark:text-dark-60" />;
+			case ClientInputError.ID: // fallthrough
+			case ClientInputError.SECRET:
+				return <FontAwesomeIcon icon={ faTimes } className="text-xl text-danger-light dark:text-danger-dark-active" />;
+		}
+	}
+
+	function getClientInputStatusText(status: ClientInputError): string {
+		switch(status) {
+			case ClientInputError.NOT_SHOWN: // fallthrough
+			case ClientInputError.NONE:
+				return "Changes saved.";
+			case ClientInputError.ID:
+				return "ID must be number.";
+			case ClientInputError.SECRET:
+				return "Secret must be 40 characters long.";
+			default:
+				addLogData(LogType.ERROR, "Invalid ClientInputError status value. Returning empty string.");
+				return "";
+		}
+	}
+
 	return (
 		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
@@ -229,9 +313,9 @@ function Settings() {
 							<TextInput name="osu-client-id" label="Client ID" icon={ faIdCard } value={ osuClientId } setValue={ setOsuClientId } />
 							<TextInput name="osu-client-secret" label="Client Secret" icon={ faKey } type="password" value={ osuClientSecret } setValue={ setOsuClientSecret } />
 						</div>
-						<div className="invisible flex items-center gap-x-2">
-							<FontAwesomeIcon icon={ faCheck } className="text-xl text-light-60 dark:text-dark-60" />
-							<p className="font-medium text-light-60 dark:text-dark-60">Changes saved.</p>
+						<div className={ `${ clientChangesStatus === ClientInputError.NOT_SHOWN ? "invisible" : "" } flex items-center gap-x-2` }>
+							<ClientInputStatusIcon status={ clientChangesStatus } />
+							<p className={ `font-medium ${ clientChangesStatus !== ClientInputError.NONE ? "text-danger-light dark:text-danger-dark-active" : "text-light-60 dark:text-dark-60" }` }>{ getClientInputStatusText(clientChangesStatus) }</p>
 						</div>
 					</div>
 					<div className="space-y-4">
