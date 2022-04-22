@@ -42,7 +42,7 @@ function Country() {
 	const [ rankingDataResults, setRankingDataResults ] = useState<IRankingListData[]>([]);
 	const [ displayedRankingData, setDisplayedRankingData ] = useState<IRankingListData[]>([]);
 
-	const [ recentlyInactive, setRecentlyInactive ] = useState(0);
+	const [ totalUsers, setTotalUsers ] = useState(0);
 	const [ totalInactives, setTotalInactives ] = useState(0);
 
 	const refUserDialog = useRef<HTMLDivElement>(null);
@@ -147,7 +147,7 @@ function Country() {
 
 				const inactives = scores.data.scores.filter(item => !item.user.isActive);
 
-				setRecentlyInactive(0);
+				setTotalUsers(temp.length);
 				setTotalInactives(inactives.length);
 
 				addLogData(LogType.INFO, "Fetch country ranking success.");
@@ -214,8 +214,8 @@ function Country() {
 				<div className="flex flex-col gap-y-6">
 					<h3 className="px-8 pt-2 md:px-0 md:py-0 font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
 					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4 px-8 md:px-0 overflow-x-auto">
-						<StatsCard title="Recently Inactive" data={ recentlyInactive.toString() } subtitle="+ 1 since last month" />
-						<StatsCard title="Total Inactives" data={ totalInactives.toString() } subtitle="+ 2 since last month" />
+						<StatsCard title="Total Users" data={ totalUsers.toString() } subtitle="+ 1 since last update" />
+						<StatsCard title="Total Inactives" data={ totalInactives.toString() } subtitle="+ 2 since last update" />
 					</div>
 				</div>
 				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
