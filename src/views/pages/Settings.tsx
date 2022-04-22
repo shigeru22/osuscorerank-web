@@ -12,7 +12,8 @@ import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
 import TextInput from "../../components/shared/inputs/Text";
-import { faIdCard, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faIdCard, faKey } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Settings() {
 	const { settings, countries, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
@@ -171,7 +172,7 @@ function Settings() {
 	return (
 		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
-			<div className="flex flex-col md:flex-row gap-x-12 gap-y-4 pb-6">
+			<div className="flex flex-col xl:flex-row gap-x-12 gap-y-4 pb-6">
 				<div className="md:w-1/2 lg:w-auto space-y-6">
 					<div className="pt-2 md:pt-0 space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">General</h3>
@@ -222,9 +223,13 @@ function Settings() {
 							<h6 className="font-medium text-light-80 dark:text-dark-80">Intended to prevent rate limits for requesting multiple users.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">These values are only stored on your device. Never expose these credentials to anyone else!</h6>
 						</div>
-						<div className="space-y-2">
+						<div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
 							<TextInput name="osu-client-id" label="Client ID" icon={ faIdCard } value={ osuClientId } setValue={ setOsuClientId } />
 							<TextInput name="osu-client-secret" label="Client Secret" icon={ faKey } type="password" value={ osuClientSecret } setValue={ setOsuClientSecret } />
+						</div>
+						<div className="invisible flex items-center gap-x-2">
+							<FontAwesomeIcon icon={ faCheck } className="text-xl text-light-60 dark:text-dark-60" />
+							<p className="font-medium text-light-60 dark:text-dark-60">Changes saved.</p>
 						</div>
 					</div>
 					<div className="space-y-4">
