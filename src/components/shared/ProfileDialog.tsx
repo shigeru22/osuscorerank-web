@@ -10,7 +10,7 @@ import { getUserScore } from "../../utils/api/Scores";
 import { LogType } from "../../utils/Logging";
 
 function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, setOpened: React.Dispatch<React.SetStateAction<boolean>>, onCloseClick: () => void, onStarClick: () => void }) {
-	const { addLogData, setShowErrorDialog } = useContext(settingsContext);
+	const { settings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ isFetched, setFetched ] = useState(false); // height = 420 - 48px for fetching
 	const [ isLoading, setLoading ] = useState(true);
@@ -90,37 +90,47 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 				<div className="w-full p-6 lg:px-12 lg:py-10 space-y-4">
 					{
 						isFetched ?
-							<div className="flex flex-col lg:flex-row items-center gap-4">
-								<div className="flex flex-col items-center gap-y-2">
-									<div className="w-28 h-28 bg-light-40 dark:bg-dark-40 rounded-3xl">
-										<img src={ `https://a.ppy.sh/${ osuId }` } className="rounded-3xl" />
-										<div className="relative bottom-0 right-0">
-											<button type="button" onClick={ () => handleStarClick() } className="absolute bottom-2 right-2">
-												<FontAwesomeIcon icon={ faStar } className={ `text-xl ${ starred ? "text-light-80 dark:text-dark-80" : "text-white hover:text-light-40 dark:text-dark-20 dark:hover:text-dark-40 stroke-10 stroke-light-80 dark:stroke-dark-80" }` } />
-											</button>
+							<>
+								{
+									(settings.osuClient.clientId === -1 || settings.osuClient.clientSecret === "") &&
+									<div className="w-full px-2 py-1">
+										<h4 className="font-semibold text-center text-light-60 dark:text-dark-60">
+											For current score and pp count, add your client credentials for accessing osu! API.
+										</h4>
+									</div>
+								}
+								<div className="flex flex-col lg:flex-row items-center gap-4">
+									<div className="flex flex-col items-center gap-y-2">
+										<div className="w-28 bg-light-40 dark:bg-dark-40 rounded-3xl">
+											<img src={ `https://a.ppy.sh/${ osuId }` } className="rounded-3xl" />
+											<div className="relative bottom-0 right-0">
+												<button type="button" onClick={ () => handleStarClick() } className="absolute bottom-2 right-2">
+													<FontAwesomeIcon icon={ faStar } className={ `text-xl ${ starred ? "text-light-80 dark:text-dark-80" : "text-white hover:text-light-40 dark:text-dark-20 dark:hover:text-dark-40 stroke-10 stroke-light-80 dark:stroke-dark-80" }` } />
+												</button>
+											</div>
 										</div>
+										<div className="flex items-center gap-x-2">
+											<ReactCountryFlag countryCode={ countryCode } svg alt={ countryName } title={ countryName } className="text-lg rounded-md" />
+											<div className="font-semibold text-lg text-light-100 dark:text-dark-100 overflow-ellipsis">{ userName }</div>
+										</div>
+										<Button label="osu! profile" onClick={ () => handleOpenOsuProfile() } />
 									</div>
-									<div className="flex items-center gap-x-2">
-										<ReactCountryFlag countryCode={ countryCode } svg alt={ countryName } title={ countryName } className="text-lg rounded-md" />
-										<div className="font-semibold text-lg text-light-100 dark:text-dark-100 overflow-ellipsis">{ userName }</div>
+									<div className="md:flex-grow grid grid-cols-3 gap-x-2 gap-y-1">
+										<div className="font-semibold text-light-100 dark:text-dark-100">Score</div>
+										<div className="col-span-2 font-semibold text-right text-light-80 dark:text-dark-80">{ numberToSeparatedThousandsString(score) }</div>
+										<div className="font-medium text-light-60 dark:text-dark-60">Country</div>
+										<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(countryScoreRank) }</div>
+										<div className="font-medium text-light-60 dark:text-dark-60">Global</div>
+										<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(globalScoreRank) }</div>
+										<div className="font-semibold text-light-100 dark:text-dark-100">pp</div>
+										<div className="col-span-2 font-semibold text-right text-light-80 dark:text-dark-80">{ numberToSeparatedThousandsString(performancePoints) }</div>
+										<div className="font-medium text-light-60 dark:text-dark-60">Country</div>
+										<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(countryPerformanceRank) }</div>
+										<div className="font-medium text-light-60 dark:text-dark-60">Global</div>
+										<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(globalPerformanceRank) }</div>
 									</div>
-									<Button label="osu! profile" onClick={ () => handleOpenOsuProfile() } />
 								</div>
-								<div className="md:flex-grow grid grid-cols-3 gap-x-2 gap-y-1">
-									<div className="font-semibold text-light-100 dark:text-dark-100">Score</div>
-									<div className="col-span-2 font-semibold text-right text-light-80 dark:text-dark-80">{ numberToSeparatedThousandsString(score) }</div>
-									<div className="font-medium text-light-60 dark:text-dark-60">Country</div>
-									<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(countryScoreRank) }</div>
-									<div className="font-medium text-light-60 dark:text-dark-60">Global</div>
-									<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(globalScoreRank) }</div>
-									<div className="font-semibold text-light-100 dark:text-dark-100">pp</div>
-									<div className="col-span-2 font-semibold text-right text-light-80 dark:text-dark-80">{ numberToSeparatedThousandsString(performancePoints) }</div>
-									<div className="font-medium text-light-60 dark:text-dark-60">Country</div>
-									<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(countryPerformanceRank) }</div>
-									<div className="font-medium text-light-60 dark:text-dark-60">Global</div>
-									<div className="col-span-2 font-medium text-right text-light-80 dark:text-dark-80"># { numberToSeparatedThousandsString(globalPerformanceRank) }</div>
-								</div>
-							</div>
+							</>
 							:
 							<div className="flex justify-center items-center w-full h-93 lg:h-48">
 								<div className="flex flex-col justify-center items-center gap-y-2">
