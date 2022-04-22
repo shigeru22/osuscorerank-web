@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./assets/index.css";
 import App from "./views/App";
@@ -10,7 +10,8 @@ import Settings from "./views/pages/Settings";
 import Help from "./views/pages/Help";
 import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<div>
@@ -27,8 +28,7 @@ ReactDOM.render(
 				</Routes>
 			</div>
 		</BrowserRouter>
-	</React.StrictMode>,
-	document.getElementById("root")
+	</React.StrictMode>
 );
 
 /*
