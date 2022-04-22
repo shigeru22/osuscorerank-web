@@ -219,7 +219,7 @@ function Settings() {
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">osu! API</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80 dark:text-dark-80">This enables you to retrieve scores for users not in database, also retrieve additional rankings in users&apos; profile dialog.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">This enables you to retrieve scores for users not in database, also retrieve additional rankings in users&apos; profile dialog. Obtain them <a href="https://osu.ppy.sh/home/account/edit" target="_blank" rel="noreferrer" className="text-light-100 dark:text-dark-100 underline">here</a> in OAuth section.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">Intended to prevent rate limits for requesting multiple users.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">These values are only stored on your device. Never expose these credentials to anyone else!</h6>
 						</div>
