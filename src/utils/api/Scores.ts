@@ -9,8 +9,9 @@ export async function getCountryScores(countryId: number, sort: number, inactive
 	try {
 		const response = await axios.get(`${ API_URL }/scores/country/${ countryId }`, {
 			params: {
-				sort: sort,
-				active: inactiveOnly ? "false" : "all"
+				sort: sort === 1 ? 2 : 3,
+				active: inactiveOnly ? "false" : "all",
+				desc: true
 			}
 		});
 
@@ -36,8 +37,9 @@ export async function getGlobalScores(sort: number, inactiveOnly: boolean): Prom
 	try {
 		const response = await axios.get(`${ API_URL }/scores`, {
 			params: {
-				sort: sort,
-				active: inactiveOnly ? "false" : "all"
+				sort: sort === 1 ? 2 : 3,
+				active: inactiveOnly ? "false" : "all",
+				desc: true
 			}
 		});
 
