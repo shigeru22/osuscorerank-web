@@ -10,17 +10,19 @@ pub struct RankingListData {
 	userName: String,
 	pub score: i64,
 	pub pp: i32,
+	pub isActive: bool
 }
 
 #[wasm_bindgen]
 impl RankingListData {
-	pub fn new(id: i32, rank: i32, user_name: String, score: i64, pp: i32) -> RankingListData {
+	pub fn new(id: i32, rank: i32, user_name: String, score: i64, pp: i32, is_active: bool) -> RankingListData {
 		RankingListData {
 			id: id,
 			rank: rank,
 			userName: user_name,
 			score: score,
-			pp: pp
+			pp: pp,
+			isActive: is_active
 		}
 	}
 
