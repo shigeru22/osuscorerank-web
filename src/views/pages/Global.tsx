@@ -20,9 +20,10 @@ import { LogType } from "../../utils/Logging";
 import { IRankingListData } from "../../types/components/RankingList";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import Checkbox from "../../components/shared/inputs/Checkbox";
+import { dateToDateString } from "../../utils/DateFormat";
 
 function Global() {
-	const { settings, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
+	const { settings, updateData, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
@@ -193,12 +194,21 @@ function Global() {
 		addLogData(LogType.INFO, `Added user ID ${ selectedUserId } to starred users list.`);
 	}
 
+	function getUpdateDate() {
+		if(_.isNull(updateData)) {
+			return "-";
+		}
+
+		const date = _.isString(updateData.date) ? new Date(updateData.date) : updateData.date;
+		return dateToDateString(date, settings.dateFormatId);
+	}
+
 	return (
 		<div className="px-0 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<div className="hidden md:block space-y-6">
 				<div className="flex justify-between items-start">
 					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Global</h1>
-					<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: 2022/01/27</h2>
+					<h2 className="font-semibold text-light-60 dark:text-dark-80">Last updated: { getUpdateDate() }</h2>
 				</div>
 			</div>
 			<div className="2xl:flex 2xl:justify-between 2xl:gap-x-6 gap-y-6 space-y-6 2xl:space-y-0">

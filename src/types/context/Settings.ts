@@ -1,5 +1,6 @@
 import { ICountryData } from "../data/Country";
 import { ILogData } from "../Log";
+import { IUpdateData } from "../Update";
 import { LogType } from "../../utils/Logging";
 
 export interface Settings {
@@ -15,6 +16,7 @@ export type SettingsContext = {
 	logs: ILogData[],
 	showErrorDialog: boolean,
 	countries: ICountryData[],
+	updateData: IUpdateData | null;
 	activeCountryId: number,
 	setSettings: (data: Settings) => void,
 	setShowErrorDialog: (value: boolean) => void,

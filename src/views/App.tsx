@@ -9,13 +9,16 @@ import { Settings, SettingsContext } from "../types/context/Settings";
 import { getAllCountries } from "../utils/api/Countries";
 import { LogType } from "../utils/Logging";
 import { ICountryData } from "../types/data/Country";
-import _ from "lodash";
+import _, { isUndefined } from "lodash";
+import { IUpdateData } from "../types/Update";
+import { getLatestUpdate } from "../utils/api/Updates";
 
 const settingsContextValues: SettingsContext = {
 	settings: getSettingsData(),
 	logs: [],
 	showErrorDialog: false,
 	countries: [],
+	updateData: null,
 	activeCountryId: getSettingsData().defaultCountryId,
 	setSettings: (data: Settings) => updateSettings(data),
 	setShowErrorDialog: (value: boolean) => setShowErrorDialog(value),
@@ -105,6 +108,7 @@ function App() {
 	const [ activeCountryId, setActiveCountryId ] = useState(settingsContextValues.activeCountryId);
 	const [ themeId, setDarkMode ] = useState(settings.themeId);
 	const [ countries, setCountries ] = useState<ICountryData[]>(settingsContextValues.countries);
+	const [ updateData, setUpdateData ] = useState<IUpdateData | null>(null);
 
 	const [ showErrorDialog, setShowErrorDialog ] = useState(settingsContextValues.showErrorDialog);
 
@@ -125,7 +129,8 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		async function getCountries() {
+		async function getCountriesAndUpdateData() {
+			addLogData(LogType.INFO, "Fetching country data...");
 			const countries = await getAllCountries();
 
 			if(_.isUndefined(countries.data)) {
@@ -140,10 +145,21 @@ function App() {
 			})));
 
 			addLogData(LogType.INFO, "Fetch country success.");
+
+			addLogData(LogType.INFO, "Fetching latest update data...");
+			const update = await getLatestUpdate();
+
+			if(isUndefined(update.data)) {
+				addLogData(LogType.ERROR, `Fetch update data failed: ${ update.message }`);
+				return;
+			}
+
+			setUpdateData(update.data.updateData);
+
+			addLogData(LogType.INFO, "Fetch update data success.");
 		}
 
-		addLogData(LogType.INFO, "Fetching country data...");
-		getCountries();
+		getCountriesAndUpdateData();
 	}, []);
 
 	useEffect(() => {
@@ -208,6 +224,7 @@ function App() {
 			logs,
 			showErrorDialog,
 			countries,
+			updateData,
 			activeCountryId,
 			setSettings,
 			setActiveCountryId: setActiveCountryStateId,
