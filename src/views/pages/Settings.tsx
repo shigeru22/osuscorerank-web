@@ -8,10 +8,11 @@ import { settingsContext } from "../App";
 import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
 import { getGreetingData } from "../../utils/api/Main";
-import { getMultipleUserScores } from "../../utils/api/Scores";
 import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
+import TextInput from "../../components/shared/inputs/Text";
+import { faIdCard, faKey } from "@fortawesome/free-solid-svg-icons";
 
 function Settings() {
 	const { settings, countries, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
@@ -24,11 +25,13 @@ function Settings() {
 	const [ wasmMessage, setWasmMessage ] = useState("Testing...");
 	const [ wasmStatus, setWasmStatus ] = useState("Testing...");
 
-	const [ inactiveUsers, setInactiveUsers ] = useState(-1);
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 	const [ showResetUsersDialog, setShowResetUsersDialog ] = useState(false);
 
 	const [ apiOnlineStatus, setApiOnlineStatus ] = useState(-1);
+
+	const [ osuClientId, setOsuClientId ] = useState("");
+	const [ osuClientSecret, setOsuClientSecret ] = useState("");
 
 	const refResetStarredDialog = useRef<HTMLDivElement>(null);
 
@@ -69,26 +72,6 @@ function Settings() {
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
-
-	useEffect(() => {
-		async function getScores() {
-			const scores = await getMultipleUserScores(settings.starredUserId, 1); // well, any sort works
-
-			if(!_.isUndefined(scores.data)) {
-				setInactiveUsers(scores.data.scores.length);
-				addLogData(LogType.INFO, "Fetch starred users ranking success.");
-			}
-			else {
-				addLogData(LogType.ERROR, `Fetch country ranking failed: ${ scores.message }`);
-			}
-		}
-
-		addLogData(LogType.INFO, "Fetching number of inactive users...");
-		setInactiveUsers(-1);
-		getScores();
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ starredUsers ]);
 
 	async function getWasmGreetMessage() {
 		setWasmMessage("Testing...");
@@ -207,11 +190,10 @@ function Settings() {
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Starred</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user: { inactiveUsers >= 0 ? inactiveUsers : "Checking..." }</h6>
-							<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user (including active): { starredUsers.length }</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Starred ranking list coming soon. You&apos;re able to star users at users&apos; profile dialog.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user: { starredUsers.length }</h6>
 							<Button type="danger" label="Reset all users" onClick={ () => setShowResetUsersDialog(true) } />
 						</div>
-						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
 					</div>
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Logging</h3>
@@ -220,6 +202,7 @@ function Settings() {
 							<h6 className="font-medium text-light-80 dark:text-dark-80">If any problems are found, feel free to submit feedbacks to GitHub issues along with these logs.</h6>
 							<Button label="Error Details" onClick={ () => setShowErrorDialog(true) } />
 						</div>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
 					</div>
 				</div>
 				<div className="md:w-1/2 lg:w-auto space-y-6">
@@ -231,6 +214,18 @@ function Settings() {
 							<Button type="primary" label="Check Status" onClick={ () => handleApiTest() } />
 						</div>
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api 1.0.0</h6>
+					</div>
+					<div className="space-y-4">
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">osu! API</h3>
+						<div className="space-y-2">
+							<h6 className="font-medium text-light-80 dark:text-dark-80">This enables you to retrieve scores for users not in database, also retrieve additional rankings in users&apos; profile dialog.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Intended to prevent rate limits for requesting multiple users.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">These values are only stored on your device. Never expose these credentials to anyone else!</h6>
+						</div>
+						<div className="space-y-2">
+							<TextInput name="osu-client-id" label="Client ID" icon={ faIdCard } value={ osuClientId } setValue={ setOsuClientId } />
+							<TextInput name="osu-client-secret" label="Client Secret" icon={ faKey } type="password" value={ osuClientSecret } setValue={ setOsuClientSecret } />
+						</div>
 					</div>
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
