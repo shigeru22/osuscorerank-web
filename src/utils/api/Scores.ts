@@ -5,11 +5,12 @@ import { IResponseData } from "../../types/api/Response";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export async function getCountryScores(countryId: number, sort: number): Promise<IResponseData<ICountryScoreResponseData>> {
+export async function getCountryScores(countryId: number, sort: number, inactiveOnly: boolean): Promise<IResponseData<ICountryScoreResponseData>> {
 	try {
 		const response = await axios.get(`${ API_URL }/scores/country/${ countryId }`, {
 			params: {
-				sort: sort
+				sort: sort,
+				active: inactiveOnly ? "false" : "all"
 			}
 		});
 
@@ -31,11 +32,12 @@ export async function getCountryScores(countryId: number, sort: number): Promise
 	}
 }
 
-export async function getGlobalScores(sort: number): Promise<IResponseData<IGlobalScoreResponseData>> {
+export async function getGlobalScores(sort: number, inactiveOnly: boolean): Promise<IResponseData<IGlobalScoreResponseData>> {
 	try {
 		const response = await axios.get(`${ API_URL }/scores`, {
 			params: {
-				sort: sort
+				sort: sort,
+				active: inactiveOnly ? "false" : "all"
 			}
 		});
 

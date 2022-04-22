@@ -9,6 +9,7 @@ import SearchButton from "../../components/shared/mobile/SearchButton";
 import DimBackground from "../../components/shared/DimBackground";
 import ProfileDialog from "../../components/shared/ProfileDialog";
 import Button from "../../components/shared/inputs/Button";
+import Checkbox from "../../components/shared/inputs/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../App";
@@ -30,6 +31,7 @@ function Country() {
 
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ selectedSortId, setSelectedSortId ] = useState(settings.defaultSortingId);
+	const [ showInactiveOnly, setShowInactiveOnly ] = useState(false);
 	const [ tableRowsPerPage, setTableRowsPerPage ] = useState(getTableRowsFromViewport());
 
 	const [ updateDebounce, setUpdateDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -129,7 +131,7 @@ function Country() {
 
 	useEffect(() => {
 		async function getScores() {
-			const scores = await getCountryScores(activeCountryId, selectedSortId);
+			const scores = await getCountryScores(activeCountryId, selectedSortId, showInactiveOnly);
 
 			if(!_.isUndefined(scores.data)) {
 				const temp = scores.data.scores.map((item, index) => ({
@@ -165,7 +167,7 @@ function Country() {
 
 	/* addLogData should not be its dependency */
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ activeCountryId, selectedSortId ]);
+	}, [ activeCountryId, selectedSortId, showInactiveOnly ]);
 
 	function handleUserClick(id: number) {
 		setSelectedUserId(id);
@@ -220,7 +222,10 @@ function Country() {
 				</div>
 				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
 					<div className="flex md:hidden justify-between items-center w-full px-8">
-						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
+						<div className="flex gap-x-4">
+							<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
+							<Checkbox name="inactiveOnly" label="Inactive" value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
+						</div>
 						<SearchButton value={ searchQuery } setValue={ setSearchQuery } />
 					</div>
 					<div className="flex-grow flex flex-col md:items-left gap-y-4 w-full md:w-auto">
@@ -261,6 +266,7 @@ function Country() {
 					<div className="hidden md:flex 2xl:hidden flex-col gap-y-4 pt-1.25">
 						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
 						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
+						<Checkbox name="inactiveOnly" label="Show only inactives" value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
 					</div>
 					<div className="flex justify-center md:hidden w-full">
 						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
