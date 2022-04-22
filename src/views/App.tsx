@@ -76,14 +76,6 @@ function validateSettings(settings: Settings) {
 		updated++;
 	}
 
-	if(_.isUndefined(settings.osuClient)) {
-		tempSettings.osuClient = {
-			clientId: -1,
-			clientSecret: ""
-		};
-		updated++;
-	}
-
 	if(updated > 0) {
 		addLogData(LogType.INFO, "Settings updated. Reflecting new changes...");
 		updateSettings(tempSettings);
@@ -106,7 +98,6 @@ function App() {
 			settings.defaultCountryId = temp.defaultCountryId;
 			settings.defaultSortingId = temp.defaultSortingId;
 			settings.starredUserId = temp.starredUserId;
-			settings.osuClient = temp.osuClient;
 		}
 	}
 

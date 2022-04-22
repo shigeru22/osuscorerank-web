@@ -177,8 +177,7 @@ function Global() {
 			dateFormatId: settings.dateFormatId,
 			defaultCountryId: settings.defaultCountryId,
 			defaultSortingId: settings.defaultSortingId,
-			starredUserId: settings.starredUserId,
-			osuClient: settings.osuClient
+			starredUserId: settings.starredUserId
 		};
 
 		if(_.indexOf(settings.starredUserId, selectedUserId) < 0) {

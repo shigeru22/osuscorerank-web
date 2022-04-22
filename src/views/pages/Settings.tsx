@@ -11,16 +11,6 @@ import { getGreetingData } from "../../utils/api/Main";
 import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
-import TextInput from "../../components/shared/inputs/Text";
-import { faCheck, faTimes, faIdCard, faKey } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const enum ClientInputError {
-	NOT_SHOWN,
-	NONE,
-	ID,
-	SECRET
-}
 
 function Settings() {
 	const { settings, countries, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
@@ -37,13 +27,6 @@ function Settings() {
 	const [ showResetUsersDialog, setShowResetUsersDialog ] = useState(false);
 
 	const [ apiOnlineStatus, setApiOnlineStatus ] = useState(-1);
-
-	const [ osuClientId, setOsuClientId ] = useState(settings.osuClient.clientId === -1 ? "" : settings.osuClient.clientId.toString());
-	const [ osuClientSecret, setOsuClientSecret ] = useState(settings.osuClient.clientSecret);
-	const [ clientChangesStatus, setClientChangesStatus ] = useState(ClientInputError.NOT_SHOWN);
-	const [ pristine, setPristine ] = useState(true);
-
-	const [ clientInputDebounce, setClientInputDebounce ] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 	const refResetStarredDialog = useRef<HTMLDivElement>(null);
 
@@ -77,61 +60,13 @@ function Settings() {
 			dateFormatId,
 			defaultCountryId,
 			defaultSortingId,
-			starredUserId: settings.starredUserId,
-			osuClient: settings.osuClient
+			starredUserId: settings.starredUserId
 		};
 
 		setSettings(newSettings);
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ themeId, dateFormatId, defaultCountryId, defaultSortingId, settings.starredUserId, setSettings ]);
-
-	useEffect(() => {
-		if(!_.isUndefined(clientInputDebounce)) {
-			clearTimeout(clientInputDebounce);
-		}
-
-		setClientInputDebounce(setTimeout(() => {
-			if(pristine && ((osuClientId === settings.osuClient.clientId.toString() || (osuClientId === "" && settings.osuClient.clientId === -1)) && osuClientSecret === settings.osuClient.clientSecret)) {
-				setPristine(false);
-				return;
-			}
-
-			let tempClientId = -1;
-
-			if(osuClientId !== "") {
-				tempClientId = _.parseInt(osuClientId, 10);
-
-				if(_.isNaN(tempClientId) || tempClientId <= 0) {
-					setClientChangesStatus(ClientInputError.ID);
-					return;
-				}
-			}
-
-			if(osuClientSecret !== "") {
-				if(osuClientSecret.length !== 40) {
-					setClientChangesStatus(ClientInputError.SECRET);
-					return;
-				}
-			}
-
-			const newSettings: SettingsData = {
-				themeId,
-				dateFormatId,
-				defaultCountryId,
-				defaultSortingId,
-				starredUserId: settings.starredUserId,
-				osuClient: {
-					clientId: tempClientId,
-					clientSecret: osuClientSecret
-				}
-			};
-
-			setSettings(newSettings);
-			setClientChangesStatus(ClientInputError.NONE);
-		}, 250));
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ osuClientId, osuClientSecret ]);
 
 	async function getWasmGreetMessage() {
 		setWasmMessage("Testing...");
@@ -187,8 +122,7 @@ function Settings() {
 			dateFormatId: settings.dateFormatId,
 			defaultCountryId: settings.defaultCountryId,
 			defaultSortingId: settings.defaultSortingId,
-			starredUserId: settings.starredUserId,
-			osuClient: settings.osuClient
+			starredUserId: settings.starredUserId
 		};
 
 		newSettings.starredUserId = [];
@@ -229,32 +163,6 @@ function Settings() {
 		return str;
 	}
 
-	function ClientInputStatusIcon({ status }: { status: ClientInputError}) {
-		switch(status) {
-			case ClientInputError.NOT_SHOWN: // fallthrough
-			case ClientInputError.NONE:
-				return <FontAwesomeIcon icon={ faCheck } className="text-xl text-light-60 dark:text-dark-60" />;
-			case ClientInputError.ID: // fallthrough
-			case ClientInputError.SECRET:
-				return <FontAwesomeIcon icon={ faTimes } className="text-xl text-danger-light dark:text-danger-dark-active" />;
-		}
-	}
-
-	function getClientInputStatusText(status: ClientInputError): string {
-		switch(status) {
-			case ClientInputError.NOT_SHOWN: // fallthrough
-			case ClientInputError.NONE:
-				return "Changes saved.";
-			case ClientInputError.ID:
-				return "ID must be number.";
-			case ClientInputError.SECRET:
-				return "Secret must be 40 characters long.";
-			default:
-				addLogData(LogType.ERROR, "Invalid ClientInputError status value. Returning empty string.");
-				return "";
-		}
-	}
-
 	return (
 		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
@@ -287,7 +195,7 @@ function Settings() {
 						<div className="space-y-2">
 							<h6 className="font-medium text-light-80 dark:text-dark-80">These logs are stored locally for debugging purposes and never leave your browser.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">If any problems are found, feel free to submit feedbacks to GitHub issues along with these logs.</h6>
-							<Button label="Error Details" onClick={ () => setShowErrorDialog(true) } />
+							<Button label="Open Logs" onClick={ () => setShowErrorDialog(true) } />
 						</div>
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
 					</div>
@@ -301,22 +209,6 @@ function Settings() {
 							<Button type="primary" label="Check Status" onClick={ () => handleApiTest() } />
 						</div>
 						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api 1.0.0</h6>
-					</div>
-					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">osu! API</h3>
-						<div className="space-y-2">
-							<h6 className="font-medium text-light-80 dark:text-dark-80">This enables you to retrieve scores for users not in database, also retrieve additional rankings in users&apos; profile dialog. Obtain them <a href="https://osu.ppy.sh/home/account/edit" target="_blank" rel="noreferrer" className="text-light-100 dark:text-dark-100 underline">here</a> in OAuth section.</h6>
-							<h6 className="font-medium text-light-80 dark:text-dark-80">Intended to prevent rate limits for requesting multiple users.</h6>
-							<h6 className="font-medium text-light-80 dark:text-dark-80">These values are only stored on your device. Never expose these credentials to anyone else!</h6>
-						</div>
-						<div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
-							<TextInput name="osu-client-id" label="Client ID" icon={ faIdCard } value={ osuClientId } setValue={ setOsuClientId } />
-							<TextInput name="osu-client-secret" label="Client Secret" icon={ faKey } type="password" value={ osuClientSecret } setValue={ setOsuClientSecret } />
-						</div>
-						<div className={ `${ clientChangesStatus === ClientInputError.NOT_SHOWN ? "invisible" : "" } flex items-center gap-x-2` }>
-							<ClientInputStatusIcon status={ clientChangesStatus } />
-							<p className={ `font-medium ${ clientChangesStatus !== ClientInputError.NONE ? "text-danger-light dark:text-danger-dark-active" : "text-light-60 dark:text-dark-60" }` }>{ getClientInputStatusText(clientChangesStatus) }</p>
-						</div>
 					</div>
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
