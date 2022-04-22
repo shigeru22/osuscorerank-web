@@ -6,8 +6,7 @@ import Button from "./inputs/Button";
 import { faTimes, faCircleNotch, faStar } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../../views/App";
 import { numberToSeparatedThousandsString } from "../../utils/Number";
-import { getUserData } from "../../utils/api/Users";
-import { getCountryScores, getGlobalScores, getUserScore } from "../../utils/api/Scores";
+import { getUserScore } from "../../utils/api/Scores";
 import { LogType } from "../../utils/Logging";
 
 function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, setOpened: React.Dispatch<React.SetStateAction<boolean>>, onCloseClick: () => void, onStarClick: () => void }) {

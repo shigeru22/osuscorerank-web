@@ -1,8 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEquals, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ReactComponent as Triangle } from "../../assets/triangle.svg";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { IRankingListData } from "../../types/components/RankingList";
 import { numberToSeparatedThousandsString } from "../../utils/Number";
 
