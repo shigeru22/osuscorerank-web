@@ -5,7 +5,7 @@ import "./assets/index.css";
 import App from "./views/App";
 import Country from "./views/pages/Country";
 import Global from "./views/pages/Global";
-import Starred from "./views/pages/Starred";
+import StarredSoon from "./views/pages/StarredSoon";
 import Settings from "./views/pages/Settings";
 import Help from "./views/pages/Help";
 import reportWebVitals from "./reportWebVitals";
@@ -20,7 +20,7 @@ root.render(
 						<Route index element={ <Country /> } />
 						<Route path="/country" element={ <Country /> } />
 						<Route path="/global" element={ <Global /> } />
-						<Route path="/starred" element={ <Starred /> } />
+						<Route path="/starred" element={ <StarredSoon /> } />
 						<Route path="/settings" element={ <Settings /> } />
 						<Route path="/help" element={ <Help /> } />
 						<Route path="*" element={ <>404?</> } />
