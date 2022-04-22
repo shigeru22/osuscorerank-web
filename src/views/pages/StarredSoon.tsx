@@ -4,8 +4,8 @@ import { faInfo } from "@fortawesome/free-solid-svg-icons";
 
 function StarredSoon() {
 	return (
-		<div className="flex flex-col h-third md:h-full px-0 py-0 md:px-14 md:py-12">
-			<div className="hidden md:block">
+		<div className="flex flex-col h-third lg:h-screen px-0 py-0 md:px-14 md:py-12">
+			<div className="hidden lg:block">
 				<div className="flex justify-between items-start">
 					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">Starred</h1>
 				</div>

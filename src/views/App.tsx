@@ -159,10 +159,10 @@ function App() {
 				<div className="lg:hidden h-16">
 					<Navbar active={ routeSegments[1] } countries={ countries } />
 				</div>
-				<div className="hidden lg:block">
+				<div className="hidden fixed lg:block">
 					<Sidebar active={ routeSegments[1] } countries={ countries } />
 				</div>
-				<div className="flex-grow overflow-y-auto">
+				<div className="flex-grow overflow-y-auto lg:pl-32">
 					<Outlet />
 				</div>
 				{
