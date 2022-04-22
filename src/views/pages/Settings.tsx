@@ -12,8 +12,13 @@ import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
 
+const enum VersionType {
+	WEB_VERSION = 1,
+	API_VERSION
+}
+
 function Settings() {
-	const { settings, countries, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
+	const { settings, countries, updateData, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ themeId, setThemeId ] = useState(settings.themeId);
 	const [ dateFormatId, setDateFormatId ] = useState(settings.dateFormatId);
@@ -163,6 +168,19 @@ function Settings() {
 		return str;
 	}
 
+	function getUpdateVersionString(type: VersionType) {
+		let str = "";
+
+		if(!_.isNull(updateData)) {
+			switch(type) {
+				case VersionType.API_VERSION: str = updateData.apiVersion; break;
+				case VersionType.WEB_VERSION: str = updateData.webVersion; break;
+			}
+		}
+
+		return str;
+	}
+
 	return (
 		<div className="px-8 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<h1 className="hidden md:inline font-semibold text-3xl text-light-100 dark:text-dark-100">Settings</h1>
@@ -183,9 +201,9 @@ function Settings() {
 						</div>
 					</div>
 					<div className="space-y-4">
-						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Starred</h3>
+						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Starred Users</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80 dark:text-dark-80">Starred ranking list coming soon. You&apos;re able to star users at users&apos; profile dialog.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">Starred ranking list coming soon. Right now, you&apos;re able to star users at users&apos; profile dialog.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">Total starred user: { starredUsers.length }</h6>
 							<Button type="danger" label="Reset all users" onClick={ () => setShowResetUsersDialog(true) } />
 						</div>
@@ -193,11 +211,11 @@ function Settings() {
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">Logging</h3>
 						<div className="space-y-2">
-							<h6 className="font-medium text-light-80 dark:text-dark-80">These logs are stored locally for debugging purposes and never leave your browser.</h6>
+							<h6 className="font-medium text-light-80 dark:text-dark-80">These logs are stored locally for debugging purposes and never leave your browser. All logs will be automatically deleted upon closing.</h6>
 							<h6 className="font-medium text-light-80 dark:text-dark-80">If any problems are found, feel free to submit feedbacks to GitHub issues along with these logs.</h6>
 							<Button label="Open Logs" onClick={ () => setShowErrorDialog(true) } />
 						</div>
-						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score 1.0.0</h6>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
 					</div>
 				</div>
 				<div className="xl:basis-1/2 md:w-1/2 lg:w-auto space-y-6">
@@ -208,7 +226,7 @@ function Settings() {
 							<h6 className="font-medium text-light-80 dark:text-dark-80">API Status: { getApiStatusString() }</h6>
 							<Button type="primary" label="Check Status" onClick={ () => handleApiTest() } />
 						</div>
-						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api 1.0.0</h6>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api { getUpdateVersionString(VersionType.API_VERSION) }</h6>
 					</div>
 					<div className="space-y-4">
 						<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
@@ -218,7 +236,7 @@ function Settings() {
 							<h6 className="font-medium text-light-80 dark:text-dark-80">Search test: { wasmStatus }</h6>
 							<Button type="primary" label="Test Again" onClick={ () => getWasmGreetMessage() } />
 						</div>
-						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-wasm 1.0.0</h6>
+						<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-wasm { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
 					</div>
 				</div>
 			</div>
@@ -226,7 +244,7 @@ function Settings() {
 				showResetUsersDialog &&
 					<DimBackground>
 						<Dialog htmlRef={ refResetStarredDialog } title="Reset All Users" onCancelClick={ () => setShowResetUsersDialog(false) } onOkayClick={ handleResetStarredUsers }>
-							<div className="font-medium text-light-80 dark:text-dark-80">Remove all starred users? This also resets total (including active) users count!</div>
+							<div className="font-medium text-light-80 dark:text-dark-80">Remove all starred users?</div>
 						</Dialog>
 					</DimBackground>
 			}
