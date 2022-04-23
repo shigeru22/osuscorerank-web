@@ -34,14 +34,14 @@ function RankingList({ data, onUserClick, onDeleteClick }: { data: IRankingListD
 							? data.map(item => (
 								!_.isUndefined(item) &&
 								<tr key={ item.id } onClick={ () => !_.isUndefined(onUserClick) && onUserClick(item.id) } className={ `group group-hover:bg-light-20 dark:group-hover:bg-dark-40 ${ !_.isUndefined(onUserClick) && "cursor-pointer" }` }>
-									<td className={ `pl-4 pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } rounded-l-lg cursor-default` }>{ item.rank }</td>
-									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } cursor-default` }>{ item.userName }</td>
-									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } cursor-default` }>{ numberToSeparatedThousandsString(item.score) }</td>
-									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } cursor-default` }>{ item.isActive ? numberToSeparatedThousandsString(item.pp) : "-" }</td>
+									<td className={ `pl-4 pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } rounded-l-lg` }>{ item.rank }</td>
+									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" }` }>{ item.userName }</td>
+									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" }` }>{ numberToSeparatedThousandsString(item.score) }</td>
+									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } ${ _.isUndefined(onDeleteClick) ? "rounded-r-lg" : "" }` }>{ item.isActive ? numberToSeparatedThousandsString(item.pp) : "-" }</td>
 									{
 										!_.isUndefined(onDeleteClick) &&
-										<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 ${ !_.isUndefined(onDeleteClick) && "rounded-r-lg" } cursor-default` }>
-											<FontAwesomeIcon icon={ faTrash } onClick={ () => onDeleteClick(item.id) } className="text-danger-light active:text-danger-light-active cursor-pointer" />
+										<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 ${ !_.isUndefined(onDeleteClick) && "rounded-r-lg" }` }>
+											<FontAwesomeIcon icon={ faTrash } onClick={ () => onDeleteClick(item.id) } className="text-danger-light active:text-danger-light-active" />
 										</td>
 									}
 								</tr>
