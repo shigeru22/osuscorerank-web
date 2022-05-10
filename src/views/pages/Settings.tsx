@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import _ from "lodash";
+import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
 import DimBackground from "../../components/shared/DimBackground";
 import Dialog from "../../components/shared/mobile/Dialog";
 import { settingsContext } from "../App";
-import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
-import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
-import { getGreetingData } from "../../utils/api/Main";
-import { LogType } from "../../utils/Logging";
 import { Settings as SettingsData } from "../../types/context/Settings";
 import { IRankingListData } from "../../types/components/RankingList";
+import { getGreetingData } from "../../utils/api/Main";
+import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
+import { LogType } from "../../utils/Logging";
 
 const enum VersionType {
 	WEB_VERSION = 1,

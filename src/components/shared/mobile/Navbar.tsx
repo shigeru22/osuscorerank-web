@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 import ReactCountryFlag from "react-country-flag";
-import { Link } from "react-router-dom";
-import DimBackground from "../DimBackground";
-import Dialog from "./Dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { settingsContext } from "../../../views/App";
+import DimBackground from "../DimBackground";
+import Dialog from "./Dialog";
 import { ICountryData } from "../../../types/data/Country";
+import { settingsContext } from "../../../views/App";
 
 function Navbar({ active, countries }: { active: string, countries: ICountryData[] }) {
 	const { activeCountryId, setActiveCountryId } = useContext(settingsContext);

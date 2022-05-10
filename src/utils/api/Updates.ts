@@ -1,7 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
-import { IUpdateResponseData } from "../../types/api/Update";
 import { IResponseData } from "../../types/api/Response";
+import { IUpdateResponseData } from "../../types/api/Update";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

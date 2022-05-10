@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
-import DimBackground from "../DimBackground";
-import Dialog from "./Dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import DimBackground from "../DimBackground";
+import Dialog from "./Dialog";
 
 function SearchButton({ value, setValue }: { value: string; setValue?: React.Dispatch<React.SetStateAction<string>> }) {
 	const [ isOpened, setOpened ] = useState(false);

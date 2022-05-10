@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import DimBackground from "../DimBackground";
 import Dialog from "../mobile/Dialog";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { IDropdownData } from "../../../types/components/Dropdown";
 
 function Dropdown({ name, label, data, value, setValue }: { name: string, label: string, data: IDropdownData[], value: number, setValue?: React.Dispatch<React.SetStateAction<number>> }) {

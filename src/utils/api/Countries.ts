@@ -1,7 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
-import { ICountryInactiveResponseData } from "../../types/api/Country";
 import { IResponseData } from "../../types/api/Response";
+import { ICountryInactiveResponseData } from "../../types/api/Country";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

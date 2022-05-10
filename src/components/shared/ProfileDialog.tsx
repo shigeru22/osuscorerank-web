@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import _ from "lodash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactCountryFlag from "react-country-flag";
-import Button from "./inputs/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCircleNotch, faStar } from "@fortawesome/free-solid-svg-icons";
+import Button from "./inputs/Button";
 import { settingsContext } from "../../views/App";
-import { numberToSeparatedThousandsString } from "../../utils/Number";
-import { getCountryScores, getGlobalScores, getUserScore } from "../../utils/api/Scores";
-import { LogType } from "../../utils/Logging";
 import { IResponseData } from "../../types/api/Response";
 import { ICountryScoreResponseData, IGlobalScoreResponseData } from "../../types/api/Score";
+import { getCountryScores, getGlobalScores, getUserScore } from "../../utils/api/Scores";
+import { numberToSeparatedThousandsString } from "../../utils/Number";
+import { LogType } from "../../utils/Logging";
 
 function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onStarClick }: { htmlRef?: React.Ref<HTMLDivElement>, userId: number, starred: boolean, setOpened: React.Dispatch<React.SetStateAction<boolean>>, onCloseClick: () => void, onStarClick: () => void }) {
 	const { addLogData, setShowErrorDialog } = useContext(settingsContext);

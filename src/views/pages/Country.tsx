@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import _ from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { settingsContext } from "../App";
 import StatsCard from "../../components/shared/StatsCard";
 import RankingList from "../../components/shared/RankingList";
 import Pagination from "../../components/shared/Pagination";
@@ -10,16 +13,13 @@ import DimBackground from "../../components/shared/DimBackground";
 import ProfileDialog from "../../components/shared/ProfileDialog";
 import Button from "../../components/shared/inputs/Button";
 import Checkbox from "../../components/shared/inputs/Checkbox";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { settingsContext } from "../App";
+import { IRankingListData } from "../../types/components/RankingList";
+import { Settings as SettingsData } from "../../types/context/Settings";
+import { getCountryScores } from "../../utils/api/Scores";
 import { getCountryIndexById, getRankingListTotalPages } from "../../utils/Number";
 import { getTableRowsFromViewport, getTableHeight, searchFromTableData } from "../../utils/RankingList";
 import { sortOptions } from "../../utils/Options";
-import { getCountryScores } from "../../utils/api/Scores";
 import { LogType } from "../../utils/Logging";
-import { IRankingListData } from "../../types/components/RankingList";
-import { Settings as SettingsData } from "../../types/context/Settings";
 import { dateToDateString } from "../../utils/DateFormat";
 
 function Country() {

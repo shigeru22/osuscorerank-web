@@ -1,17 +1,17 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
+import _, { isUndefined } from "lodash";
 import Sidebar from "../components/shared/Sidebar";
 import Navbar from "../components/shared/mobile/Navbar";
 import DimBackground from "../components/shared/DimBackground";
 import ErrorDialog from "../components/shared/ErrorDialog";
-import { getSettingsData, setSettingsData } from "../utils/Storage";
 import { Settings, SettingsContext } from "../types/context/Settings";
-import { getAllCountries } from "../utils/api/Countries";
-import { LogType } from "../utils/Logging";
 import { ICountryData } from "../types/data/Country";
-import _, { isUndefined } from "lodash";
 import { IUpdateData } from "../types/Update";
+import { getAllCountries } from "../utils/api/Countries";
 import { getLatestUpdate } from "../utils/api/Updates";
+import { getSettingsData, setSettingsData } from "../utils/Storage";
+import { LogType } from "../utils/Logging";
 
 const settingsContextValues: SettingsContext = {
 	settings: getSettingsData(),

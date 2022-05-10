@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import _ from "lodash";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas, faListOl, faStar, faSlidersH, faQuestionCircle, faChevronRight, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { ReactComponent as LogoIcon } from "../../assets/logo.svg";
 import { settingsContext } from "../../views/App";
 import { ICountryData } from "../../types/data/Country";
+import { ReactComponent as LogoIcon } from "../../assets/logo.svg";
 
 function Sidebar({ active, countries }: { active: string, countries: ICountryData[] }) {
 	const { activeCountryId, setActiveCountryId } = useContext(settingsContext);
