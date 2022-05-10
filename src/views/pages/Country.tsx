@@ -220,7 +220,7 @@ function Country() {
 	}
 
 	return (
-		<div className="px-0 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
+		<div className="md:h-screen px-0 py-0 md:px-14 md:py-8 lg:py-12 md:space-y-6">
 			<div className="hidden md:block space-y-6">
 				<div className="md:flex justify-between items-start">
 					<h1 className="font-semibold text-3xl text-light-100 dark:text-dark-100">{ getCountryName() }</h1>
