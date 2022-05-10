@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import isUndefined from "lodash/isUndefined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import DimBackground from "../DimBackground";
@@ -53,7 +54,7 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 	}
 
 	function handleSearch(value: string) {
-		if(!_.isUndefined(setValue)) {
+		if(!isUndefined(setValue)) {
 			setValue(value);
 		}
 
@@ -63,7 +64,7 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 	return (
 		<>
 			<button type="button" ref={ refButton } onClick={ () => openDialog() } className="flex justify-center items-center group w-8 h-8 active:bg-light-40 dark:active:bg-dark-80 rounded-lg">
-				<FontAwesomeIcon icon={ faSearch } className={ `${ !_.isEmpty(value) ? "text-light-80 dark:text-dark-80" : "text-light-40 dark:text-dark-60" } group-active:text-light-20` } />
+				<FontAwesomeIcon icon={ faSearch } className={ `${ !isEmpty(value) ? "text-light-80 dark:text-dark-80" : "text-light-40 dark:text-dark-60" } group-active:text-light-20` } />
 			</button>
 			{
 				isOpened &&
@@ -72,7 +73,7 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 						<div className="flex group">
 							<label htmlFor="search">
 								<div className="py-1.5 pl-3 bg-light-20 dark:bg-dark-40 rounded-l-md">
-									<FontAwesomeIcon icon={ faSearch } className={ `my-auto ${ !_.isEmpty(searchQuery) ? "text-light-80 dark:text-dark-80" : "text-light-40 dark:text-dark-60 group-hover:text-light-80 dark:group-hover:text-dark-80" }` } />
+									<FontAwesomeIcon icon={ faSearch } className={ `my-auto ${ !isEmpty(searchQuery) ? "text-light-80 dark:text-dark-80" : "text-light-40 dark:text-dark-60 group-hover:text-light-80 dark:group-hover:text-dark-80" }` } />
 								</div>
 							</label>
 							<div className="flex-grow">

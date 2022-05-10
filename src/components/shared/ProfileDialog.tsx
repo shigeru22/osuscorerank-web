@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import _ from "lodash";
+import isUndefined from "lodash/isUndefined";
+import isString from "lodash/isString";
+import findIndex from "lodash/findIndex";
+import parseInt from "lodash/parseInt";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCircleNotch, faStar } from "@fortawesome/free-solid-svg-icons";
@@ -34,7 +37,7 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 		async function getSelectedUserData() {
 			const userScore = await getUserScore(userId); // TODO: use get user score endpoint
 
-			if(!_.isUndefined(userScore.data)) {
+			if(!isUndefined(userScore.data)) {
 				let rankings: (IResponseData<ICountryScoreResponseData> | IResponseData<IGlobalScoreResponseData>)[] = [];
 				{
 					const requests = [];
@@ -51,25 +54,25 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 				setCountryName(userScore.data.score.user.country.countryName);
 				setCountryCode(userScore.data.score.user.country.countryCode);
 
-				setScore(_.isString(userScore.data.score.score) ? _.parseInt(userScore.data.score.score, 10) : userScore.data.score.score);
+				setScore(isString(userScore.data.score.score) ? parseInt(userScore.data.score.score, 10) : userScore.data.score.score);
 				setPerformancePoints(userScore.data.score.user.isActive ? userScore.data.score.pp : -1);
 
 				/* [0]: country score, [1]: country pp, [2]: global score, [3]: global pp */
 
-				if(!_.isUndefined(rankings[0].data)) {
-					setCountryScoreRank(rankings[0].data.scores.findIndex(score => score.user.userId === userId) + 1);
+				if(!isUndefined(rankings[0].data)) {
+					setCountryScoreRank(findIndex(rankings[0].data.scores, score => score.user.userId === userId) + 1);
 				}
 
-				if(!_.isUndefined(rankings[1].data)) {
-					setCountryPerformanceRank(rankings[1].data.scores.findIndex(score => score.user.userId === userId) + 1);
+				if(!isUndefined(rankings[1].data)) {
+					setCountryPerformanceRank(findIndex(rankings[1].data.scores, score => score.user.userId === userId) + 1);
 				}
 
-				if(!_.isUndefined(rankings[2].data)) {
-					setGlobalScoreRank(rankings[2].data.scores.findIndex(score => score.user.userId === userId) + 1);
+				if(!isUndefined(rankings[2].data)) {
+					setGlobalScoreRank(findIndex(rankings[2].data.scores, score => score.user.userId === userId) + 1);
 				}
 
-				if(!_.isUndefined(rankings[3].data)) {
-					setGlobalPerformanceRank(rankings[3].data.scores.findIndex(score => score.user.userId === userId) + 1);
+				if(!isUndefined(rankings[3].data)) {
+					setGlobalPerformanceRank(findIndex(rankings[3].data.scores, score => score.user.userId === userId) + 1);
 				}
 
 				setLoading(false);
@@ -94,7 +97,7 @@ function ProfileDialog({ htmlRef, userId, starred, setOpened, onCloseClick, onSt
 	}
 
 	function handleOpenErrorDialog() {
-		if(!_.isUndefined(setOpened)) {
+		if(!isUndefined(setOpened)) {
 			setOpened(false);
 		}
 

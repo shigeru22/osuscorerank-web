@@ -1,5 +1,5 @@
 import axios from "axios";
-import _ from "lodash";
+import isError from "lodash/isError";
 import { IResponseMessage } from "../../types/api/Response";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -14,7 +14,7 @@ export async function getGreetingData() {
 	catch (e) {
 		let message = "Unknown error occurred.";
 
-		if(axios.isAxiosError(e) || _.isError(e)) {
+		if(axios.isAxiosError(e) || isError(e)) {
 			message = e.message;
 		}
 

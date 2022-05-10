@@ -1,5 +1,5 @@
 import React from "react";
-import _ from "lodash";
+import isUndefined from "lodash/isUndefined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { IRankingListData } from "../../types/components/RankingList";
@@ -14,7 +14,7 @@ function RankingList({ data, onUserClick, onDeleteClick }: { data: IRankingListD
 						<th className="w-20 xl:w-28 2xl:w-32 pl-4 font-medium pr-2 text-light-80 dark:text-dark-80 cursor-default">Rank</th>
 						<th className="w-48 xl:w-52 pr-2 font-medium text-light-80 dark:text-dark-80 cursor-default">Username</th>
 						{
-							!_.isUndefined(onDeleteClick) ?
+							!isUndefined(onDeleteClick) ?
 								<>
 									<th className="w-56 xl:w-64 pr-2 font-medium text-light-80 dark:text-dark-80 cursor-default">Score</th>
 									<th className="w-36 xl:w-42 pr-2 font-medium text-light-80 dark:text-dark-80 cursor-default">pp</th>
@@ -32,15 +32,15 @@ function RankingList({ data, onUserClick, onDeleteClick }: { data: IRankingListD
 					{
 						data.length > 0
 							? data.map(item => (
-								!_.isUndefined(item) &&
-								<tr key={ item.id } onClick={ () => !_.isUndefined(onUserClick) && onUserClick(item.id) } className={ `group group-hover:bg-light-20 dark:group-hover:bg-dark-40 ${ !_.isUndefined(onUserClick) && "cursor-pointer" }` }>
+								!isUndefined(item) &&
+								<tr key={ item.id } onClick={ () => !isUndefined(onUserClick) && onUserClick(item.id) } className={ `group group-hover:bg-light-20 dark:group-hover:bg-dark-40 ${ !isUndefined(onUserClick) && "cursor-pointer" }` }>
 									<td className={ `pl-4 pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } rounded-l-lg` }>{ item.rank }</td>
 									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" }` }>{ item.userName }</td>
 									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" }` }>{ numberToSeparatedThousandsString(item.score) }</td>
-									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } ${ _.isUndefined(onDeleteClick) ? "rounded-r-lg" : "" }` }>{ item.isActive ? numberToSeparatedThousandsString(item.pp) : "-" }</td>
+									<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium ${ item.isActive ? "text-light-100 dark:text-dark-100" : "text-light-80 dark:text-dark-80" } ${ isUndefined(onDeleteClick) ? "rounded-r-lg" : "" }` }>{ item.isActive ? numberToSeparatedThousandsString(item.pp) : "-" }</td>
 									{
-										!_.isUndefined(onDeleteClick) &&
-										<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 ${ !_.isUndefined(onDeleteClick) && "rounded-r-lg" }` }>
+										!isUndefined(onDeleteClick) &&
+										<td className={ `pr-2 group-hover:bg-light-20 dark:group-hover:bg-dark-40 font-medium text-light-100 dark:text-dark-100 ${ !isUndefined(onDeleteClick) && "rounded-r-lg" }` }>
 											<FontAwesomeIcon icon={ faTrash } onClick={ () => onDeleteClick(item.id) } className="text-danger-light active:text-danger-light-active" />
 										</td>
 									}

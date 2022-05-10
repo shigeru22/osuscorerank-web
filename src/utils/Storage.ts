@@ -1,4 +1,5 @@
-import _ from "lodash";
+import isError from "lodash/isError";
+import isNull from "lodash/isNull";
 import { Settings } from "../types/context/Settings";
 
 const SETTINGS_KEY = "osuinactive-settings";
@@ -21,7 +22,7 @@ export function getSettingsData(): Settings {
 	let ret: Settings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
 	const rawSettings = localStorage.getItem(SETTINGS_KEY);
 
-	if(_.isNull(rawSettings)) {
+	if(isNull(rawSettings)) {
 		setSettingsData(ret);
 		return ret;
 	}
@@ -39,7 +40,7 @@ export function setSettingsData(data: Settings) {
 		return temp.length;
 	}
 	catch (err) {
-		if(_.isError(err)) {
+		if(isError(err)) {
 			return -1; // quota exceeded error
 		}
 		else {

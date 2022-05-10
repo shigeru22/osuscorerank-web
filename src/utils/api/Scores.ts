@@ -1,5 +1,5 @@
 import axios from "axios";
-import _ from "lodash";
+import isError from "lodash/isError";
 import { IResponseData } from "../../types/api/Response";
 import { ICountryScoreResponseData, IGlobalScoreResponseData, IMultipleUserResponseData, IUserScoreResponseData } from "../../types/api/Score";
 
@@ -21,7 +21,7 @@ export async function getCountryScores(countryId: number, sort: number, inactive
 	catch (e) {
 		let message = "Unknown error occurred.";
 
-		if(axios.isAxiosError(e) || _.isError(e)) {
+		if(axios.isAxiosError(e) || isError(e)) {
 			message = e.message;
 		}
 
@@ -49,7 +49,7 @@ export async function getGlobalScores(sort: number, inactiveOnly: boolean): Prom
 	catch (e) {
 		let message = "Unknown error occurred.";
 
-		if(axios.isAxiosError(e) || _.isError(e)) {
+		if(axios.isAxiosError(e) || isError(e)) {
 			message = e.message;
 		}
 
@@ -71,7 +71,7 @@ export async function getUserScore(id: number) {
 	catch (e) {
 		let message = "Unknown error occurred.";
 
-		if(axios.isAxiosError(e) || _.isError(e)) {
+		if(axios.isAxiosError(e) || isError(e)) {
 			message = e.message;
 		}
 
@@ -98,7 +98,7 @@ export async function getMultipleUserScores(id: number[], sort: number): Promise
 	catch (e) {
 		let message = "Unknown error occurred.";
 
-		if(axios.isAxiosError(e) || _.isError(e)) {
+		if(axios.isAxiosError(e) || isError(e)) {
 			message = e.message;
 		}
 

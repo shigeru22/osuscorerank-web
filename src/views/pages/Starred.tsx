@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import isUndefined from "lodash/isUndefined";
+import isNumber from "lodash/isNumber";
+import parseInt from "lodash/parseInt";
+import indexOf from "lodash/indexOf";
+import filter from "lodash/filter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCircleNotch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { settingsContext } from "../App";
@@ -48,12 +53,12 @@ function Starred() {
 	const refUserDialog = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		if(_.isEmpty(searchQuery)) {
+		if(isEmpty(searchQuery)) {
 			setRankingDataResults(rankingData);
 			return;
 		}
 
-		if(!_.isUndefined(searchDebounce)) {
+		if(!isUndefined(searchDebounce)) {
 			clearTimeout(searchDebounce);
 		}
 
@@ -69,7 +74,7 @@ function Starred() {
 
 	useEffect(() => {
 		function updateWindowDimensions() {
-			if(!_.isUndefined(updateDebounce)) {
+			if(!isUndefined(updateDebounce)) {
 				clearTimeout(updateDebounce);
 			}
 
@@ -103,7 +108,7 @@ function Starred() {
 
 		setDisplayedRankingData(temp);
 
-		if(!_.isUndefined(updateDebounce)) {
+		if(!isUndefined(updateDebounce)) {
 			clearTimeout(updateDebounce);
 			setUpdateDebounce(undefined);
 		}
@@ -130,12 +135,12 @@ function Starred() {
 		async function getScores() {
 			const scores = await getMultipleUserScores(starredUsers, selectedSortId);
 
-			if(!_.isUndefined(scores.data)) {
+			if(!isUndefined(scores.data)) {
 				const temp = scores.data.scores.map((item, index) => ({
 					id: item.scoreId,
 					rank: index + 1,
 					userName: item.user.userName,
-					score: _.isNumber(item.score) ? item.score : _.parseInt(item.score, 10),
+					score: isNumber(item.score) ? item.score : parseInt(item.score, 10),
 					pp: item.pp,
 					isActive: item.user.isActive
 				}));
@@ -176,12 +181,12 @@ function Starred() {
 
 		let added = false;
 
-		if(_.indexOf(settings.starredUserId, selectedUserId) < 0) {
+		if(indexOf(settings.starredUserId, selectedUserId) < 0) {
 			newSettings.starredUserId.push(selectedUserId);
 			added = true;
 		}
 		else {
-			newSettings.starredUserId = _.filter(newSettings.starredUserId, id => id !== selectedUserId);
+			newSettings.starredUserId = filter(newSettings.starredUserId, id => id !== selectedUserId);
 		}
 
 		setSettings(newSettings);
@@ -225,7 +230,7 @@ function Starred() {
 									{
 										showProfileDialog &&
 										<DimBackground>
-											<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ _.indexOf(starredUsers, selectedUserId) >= 0 } setOpened={ setShowProfileDialog } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
+											<ProfileDialog htmlRef={ refUserDialog } userId={ selectedUserId } starred={ indexOf(starredUsers, selectedUserId) >= 0 } setOpened={ setShowProfileDialog } onCloseClick={ () => setShowProfileDialog(false) } onStarClick={ () => handleUserStarClick() } />
 										</DimBackground>
 									}
 								</>

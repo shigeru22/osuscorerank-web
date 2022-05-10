@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import _ from "lodash";
+import isFinite from "lodash/isFinite";
+import parseInt from "lodash/parseInt";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -51,18 +52,18 @@ function Pagination({ active, total, setValue }: { active: number, total: number
 	}
 
 	function handlePageInputChange(value: string) {
-		const page = _.parseInt(value, 10);
+		const page = parseInt(value, 10);
 
-		if(_.isFinite(page)) {
+		if(isFinite(page)) {
 			setPageError(false);
 			setPageInput(value);
 		}
 	}
 
 	function handlePageInputSubmit() {
-		const page = _.parseInt(pageInput, 10);
+		const page = parseInt(pageInput, 10);
 
-		if(_.isFinite(page) && (page > 0 && page <= total)) {
+		if(isFinite(page) && (page > 0 && page <= total)) {
 			setValue(page);
 			setOpened(false);
 		}

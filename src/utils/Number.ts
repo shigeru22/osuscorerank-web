@@ -1,4 +1,4 @@
-import _ from "lodash";
+import findIndex from "lodash/findIndex";
 import { IRankingListData } from "../types/components/RankingList";
 import { ICountryData } from "../types/data/Country";
 
@@ -16,5 +16,5 @@ export function getRankingListTotalPages(data: IRankingListData[], itemsPerPage:
 }
 
 export function getCountryIndexById(data: ICountryData[], id: number) {
-	return _.findIndex(data, country => country.id === id);
+	return findIndex(data, country => country.id === id);
 }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import findIndex from "lodash/findIndex";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas, faListOl, faStar, faSlidersH, faQuestionCircle, faChevronRight, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -33,8 +34,8 @@ function Sidebar({ active, countries }: { active: string, countries: ICountryDat
 	const routes = [ "country", "global", "starred", "settings", "help" ];
 
 	let index = 0;
-	if(!_.isEmpty(active)) {
-		index = _.findIndex(routes, item => item === active);
+	if(!isEmpty(active)) {
+		index = findIndex(routes, item => item === active);
 	}
 
 	function handleCountryChange(id: number) {
@@ -43,7 +44,7 @@ function Sidebar({ active, countries }: { active: string, countries: ICountryDat
 	}
 
 	function getCountryCodeById(id: number) {
-		const index = _.findIndex(countries, country => country.id === id);
+		const index = findIndex(countries, country => country.id === id);
 
 		if(index >= 0) {
 			return countries[index].code;

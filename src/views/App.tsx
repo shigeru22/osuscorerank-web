@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
-import _, { isUndefined } from "lodash";
+import isUndefined from "lodash/isUndefined";
 import Sidebar from "../components/shared/Sidebar";
 import Navbar from "../components/shared/mobile/Navbar";
 import DimBackground from "../components/shared/DimBackground";
@@ -54,27 +54,27 @@ function validateSettings(settings: Settings) {
 	const tempSettings = { ...settings };
 	let updated = 0;
 
-	if(_.isUndefined(settings.themeId)) {
+	if(isUndefined(settings.themeId)) {
 		tempSettings.themeId = 1;
 		updated++;
 	}
 
-	if(_.isUndefined(settings.dateFormatId)) {
+	if(isUndefined(settings.dateFormatId)) {
 		tempSettings.dateFormatId = 1;
 		updated++;
 	}
 
-	if(_.isUndefined(settings.defaultCountryId)) {
+	if(isUndefined(settings.defaultCountryId)) {
 		tempSettings.defaultCountryId = 1;
 		updated++;
 	}
 
-	if(_.isUndefined(settings.defaultSortingId)) {
+	if(isUndefined(settings.defaultSortingId)) {
 		tempSettings.defaultSortingId = 1;
 		updated++;
 	}
 
-	if(_.isUndefined(settings.starredUserId)) {
+	if(isUndefined(settings.starredUserId)) {
 		tempSettings.starredUserId = [];
 		updated++;
 	}
@@ -95,7 +95,7 @@ function App() {
 	{
 		const temp = validateSettings(settings);
 
-		if(!_.isUndefined(temp)) {
+		if(!isUndefined(temp)) {
 			settings.themeId = temp.themeId;
 			settings.dateFormatId = temp.dateFormatId;
 			settings.defaultCountryId = temp.defaultCountryId;
@@ -133,7 +133,7 @@ function App() {
 			addLogData(LogType.INFO, "Fetching country data...");
 			const countries = await getAllCountries();
 
-			if(_.isUndefined(countries.data)) {
+			if(isUndefined(countries.data)) {
 				addLogData(LogType.ERROR, `Fetch country failed: ${ countries.message }`);
 				return;
 			}

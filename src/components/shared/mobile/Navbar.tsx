@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import findIndex from "lodash/findIndex";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faChevronDown, faGlobeAmericas, faStar, faSlidersH, faQuestionCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -52,8 +53,8 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 	const routes = [ "Country", "Global", "Starred", "Settings", "Help" ];
 
 	let index = 0;
-	if(!_.isEmpty(active)) {
-		index = _.findIndex(routes, item => item.toLowerCase() === active);
+	if(!isEmpty(active)) {
+		index = findIndex(routes, item => item.toLowerCase() === active);
 	}
 
 	function handleMenuClick(menu: number) {
@@ -68,7 +69,7 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 	}
 
 	function getCountryCodeById(id: number) {
-		const index = _.findIndex(countries, country => country.id === id);
+		const index = findIndex(countries, country => country.id === id);
 
 		if(index >= 0) {
 			return countries[index].code;

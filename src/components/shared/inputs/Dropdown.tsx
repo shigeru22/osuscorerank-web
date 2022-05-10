@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import _ from "lodash";
+import isUndefined from "lodash/isUndefined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import DimBackground from "../DimBackground";
@@ -68,7 +68,7 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 	}
 
 	function handleValueChange(value: number) {
-		if(!_.isUndefined(setValue)) {
+		if(!isUndefined(setValue)) {
 			setValue(value);
 		}
 
@@ -76,7 +76,7 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 	}
 
 	function getValueFromData(value?: number) {
-		if(!_.isUndefined(value)) {
+		if(!isUndefined(value)) {
 			const len = data.length;
 			for(let i = 0; i < len; i++) {
 				if(data[i].id === value) {

@@ -1,5 +1,5 @@
 import React from "react";
-import _ from "lodash";
+import isUndefined from "lodash/isUndefined";
 
 function StatsCard({ title, data, subtitle }: { title: string, data: string, subtitle?: string }) {
 	return (
@@ -7,7 +7,7 @@ function StatsCard({ title, data, subtitle }: { title: string, data: string, sub
 			<h3 className="inline-block min-w-28 font-medium text-light-80 group-hover:text-light-100 dark:text-dark-80 dark:group-hover:text-dark-100 whitespace-nowrap">{ title }</h3>
 			<div className="text-2xl font-semibold text-light-100 dark:text-dark-100">{ data }</div>
 			{
-				!_.isUndefined(subtitle) &&
+				!isUndefined(subtitle) &&
 				<p className="inline-block min-w-28 text-xs font-semibold text-light-80 group-hover:text-light-100 dark:text-dark-60 dark:group-hover:text-dark-80 whitespace-nowrap">{ subtitle }</p>
 			}
 		</div>

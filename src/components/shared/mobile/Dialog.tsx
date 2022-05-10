@@ -1,5 +1,5 @@
 import React from "react";
-import _ from "lodash";
+import isUndefined from "lodash/isUndefined";
 
 function Dialog({ htmlRef, title, children, onOkayClick, onCancelClick }: { htmlRef?: React.Ref<HTMLDivElement>, title: string, children: JSX.Element | JSX.Element[], onOkayClick?: () => void, onCancelClick: () => void }) {
 	return (
@@ -11,7 +11,7 @@ function Dialog({ htmlRef, title, children, onOkayClick, onCancelClick }: { html
 				</div>
 				<div className="flex justify-end gap-x-2">
 					{
-						!_.isUndefined(onOkayClick) &&
+						!isUndefined(onOkayClick) &&
 						<button type="button" onClick={ () => onOkayClick() } className="px-3 py-1 font-medium active:bg-light-40 dark:active:bg-dark-60 text-light-80 dark:text-dark-80 rounded-lg">OK</button>
 					}
 					<button type="button" onClick={ () => onCancelClick() } className="px-3 py-1 font-medium active:bg-light-40 dark:active:bg-dark-60 text-light-80 dark:text-dark-80 rounded-lg">Cancel</button>

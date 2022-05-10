@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import _ from "lodash";
+import isNull from "lodash/isNull";
+import isEqual from "lodash/isEqual";
 import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
@@ -98,8 +99,8 @@ function Settings() {
 
 			const result: IRankingListData[] = JSON.parse(searchObject(items, query));
 			if(result.length === 2 && (
-				_.isEqual(result[0], items[0]) &&
-				_.isEqual(result[1], items[2])
+				isEqual(result[0], items[0]) &&
+				isEqual(result[1], items[2])
 			)) {
 				addLogData(LogType.INFO, "Test result assertion success.");
 				setWasmStatus("Passed");
@@ -146,7 +147,7 @@ function Settings() {
 
 		const response = await getGreetingData();
 
-		if(_.isEqual(response.message, "Hello, world!")) {
+		if(isEqual(response.message, "Hello, world!")) {
 			addLogData(LogType.INFO, "API status normal.");
 			setApiOnlineStatus(1);
 		}
@@ -171,7 +172,7 @@ function Settings() {
 	function getUpdateVersionString(type: VersionType) {
 		let str = "";
 
-		if(!_.isNull(updateData)) {
+		if(!isNull(updateData)) {
 			switch(type) {
 				case VersionType.API_VERSION: str = updateData.apiVersion; break;
 				case VersionType.WEB_VERSION: str = updateData.webVersion; break;
