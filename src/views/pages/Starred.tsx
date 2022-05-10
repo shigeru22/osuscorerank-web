@@ -67,6 +67,7 @@ function Starred() {
 
 			const result = await searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
+			setDisplayedRankingData(result);
 			setRankingPage(1);
 		}, 250));
 	// eslint-disable-next-line react-hooks/exhaustive-deps
