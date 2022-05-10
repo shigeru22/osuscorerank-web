@@ -62,10 +62,10 @@ function Starred() {
 			clearTimeout(searchDebounce);
 		}
 
-		setSearchDebounce(setTimeout(async () => {
+		setSearchDebounce(setTimeout(() => {
 			addLogData(LogType.INFO, "searchDebounce timeout reached. Searching data...");
 
-			const result = await searchFromTableData(rankingData, searchQuery);
+			const result = searchFromTableData(rankingData, searchQuery);
 			setRankingDataResults(result);
 			setDisplayedRankingData(result);
 			setRankingPage(1);

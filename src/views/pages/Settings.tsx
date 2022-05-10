@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import isNull from "lodash/isNull";
 import isEqual from "lodash/isEqual";
-import init, { greet, search_object as searchObject } from "../../wasm/pkg/osuinactivescore_wasm";
 import Dropdown from "../../components/shared/inputs/Dropdown";
 import Button from "../../components/shared/inputs/Button";
 import DimBackground from "../../components/shared/DimBackground";
 import Dialog from "../../components/shared/mobile/Dialog";
 import { settingsContext } from "../App";
 import { Settings as SettingsData } from "../../types/context/Settings";
-import { IRankingListData } from "../../types/components/RankingList";
 import { getGreetingData } from "../../utils/api/Main";
 import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
 import { LogType } from "../../utils/Logging";
@@ -27,9 +25,6 @@ function Settings() {
 	const [ dateFormatId, setDateFormatId ] = useState(settings.dateFormatId);
 	const [ defaultCountryId, setDefaultCountryId ] = useState(settings.defaultCountryId);
 	const [ defaultSortingId, setDefaultSortingId ] = useState(settings.defaultSortingId);
-
-	const [ wasmMessage, setWasmMessage ] = useState("Testing...");
-	const [ wasmStatus, setWasmStatus ] = useState("Testing...");
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 	const [ showResetUsersDialog, setShowResetUsersDialog ] = useState(false);
@@ -53,7 +48,6 @@ function Settings() {
 	}, []);
 
 	useEffect(() => {
-		getWasmGreetMessage(); // TODO: refactor into different functions
 		handleApiTest();
 
 	/* disable since only be run once */
@@ -85,49 +79,6 @@ function Settings() {
 			document.body.classList.length <= 0 && document.body.removeAttribute("class");
 		}
 	}, [ showResetUsersDialog ]);
-
-	async function getWasmGreetMessage() {
-		setWasmMessage("Testing...");
-		setWasmStatus("Testing...");
-
-		try {
-			await init();
-
-			const message = greet();
-			setWasmMessage(message);
-
-			const items: IRankingListData[] = [
-				{
-					id: 1, rank: 1,	userName: "Beta",	score: 1223535,	pp: 324, isActive: true
-				},
-				{
-					id: 2, rank: 2, userName: "Alpha", score: 1123526, pp: 298, isActive: false
-				},
-				{
-					id: 3, rank: 3, userName: "Bubba", score: 1098272, pp: 277, isActive: true
-				}
-			];
-			const query = "b";
-
-			const result: IRankingListData[] = JSON.parse(searchObject(items, query));
-			if(result.length === 2 && (
-				isEqual(result[0], items[0]) &&
-				isEqual(result[1], items[2])
-			)) {
-				addLogData(LogType.INFO, "Test result assertion success.");
-				setWasmStatus("Passed");
-			}
-			else {
-				addLogData(LogType.ERROR, "Test result assertion failed.");
-				setWasmStatus("Failed");
-			}
-		}
-		catch {
-			addLogData(LogType.ERROR, "Wasm function failed to run. Try updating the browser?");
-			setWasmMessage("Failed");
-			setWasmStatus("Failed");
-		}
-	}
 
 	function handleResetStarredUsers() {
 		if(settings.starredUserId.length <= 0) {
@@ -257,10 +208,17 @@ function Settings() {
 						<div className="space-y-4">
 							<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
 							<div className="space-y-2">
-								<h6 className="font-medium text-light-80 dark:text-dark-80">This runs greet() function and does a simple search test using compiled Wasm module.</h6>
-								<h6 className="font-medium text-light-80 dark:text-dark-80">Message: { wasmMessage }</h6>
-								<h6 className="font-medium text-light-80 dark:text-dark-80">Search test: { wasmStatus }</h6>
-								<Button type="primary" label="Test Again" onClick={ () => getWasmGreetMessage() } />
+								<h6 className="font-medium text-light-80 dark:text-dark-80">
+									{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
+									WebAssembly is temporarily disabled. See <a href="https://github.com/shigeru22/osuscorerank-web/issues/7" target="_blank" rel="external" className="text-light-100 dark:text-dark-100">this issue</a> for details.
+								</h6>
+								{ /*
+									 * <h6 className="font-medium text-light-80 dark:text-dark-80">This runs greet() function and does a simple search test using compiled Wasm module.</h6>
+									 * <h6 className="font-medium text-light-80 dark:text-dark-80">Message: { wasmMessage }</h6>
+									 * <h6 className="font-medium text-light-80 dark:text-dark-80">Search test: { wasmStatus }</h6>
+									 * <Button type="primary" label="Test Again" onClick={ () => getWasmGreetMessage() } />
+									 */
+								}
 							</div>
 							<div className="flex items-center gap-x-4">
 								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-web/src/wasm { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
