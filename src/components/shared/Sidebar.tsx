@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas, faListOl, faStar, faSlidersH, faQuestionCircle, faChevronRight, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { ReactComponent as Shigeru } from "../../assets/shigeru.svg";
+import { ReactComponent as LogoIcon } from "../../assets/logo.svg";
 import { settingsContext } from "../../views/App";
 import { ICountryData } from "../../types/data/Country";
 
@@ -107,7 +107,7 @@ function Sidebar({ active, countries }: { active: string, countries: ICountryDat
 					</div>
 					<div className="w-16 h-1 border-b-1 border-light-80" />
 					<div className="flex flex-col items-center">
-						<Shigeru className="w-8 h-8 fill-light-100 dark:fill-dark-100" />
+						<LogoIcon className="w-8 h-8 fill-light-100 dark:fill-dark-100" />
 					</div>
 				</div>
 			</div>
