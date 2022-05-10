@@ -53,6 +53,10 @@ function Country() {
 	useEffect(() => {
 		if(_.isEmpty(searchQuery)) {
 			setRankingDataResults(rankingData);
+			if(!_.isUndefined(searchDebounce)) {
+				clearTimeout(searchDebounce);
+			}
+
 			return;
 		}
 
