@@ -12,6 +12,8 @@ import { IRankingListData } from "../../types/components/RankingList";
 import { getGreetingData } from "../../utils/api/Main";
 import { themeOptions, dateFormatOptions, sortOptions } from "../../utils/Options";
 import { LogType } from "../../utils/Logging";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const enum VersionType {
 	WEB_VERSION = 1,
@@ -227,7 +229,13 @@ function Settings() {
 								<h6 className="font-medium text-light-80 dark:text-dark-80">If any problems are found, feel free to submit feedbacks to GitHub issues along with these logs.</h6>
 								<Button label="Open Logs" onClick={ () => setShowErrorDialog(true) } />
 							</div>
-							<h6 className="font-medium text-light-40 dark:text-dark-60">osu-inactive-score { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
+							<div className="flex items-center gap-x-4">
+								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-web { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
+								{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
+								<a href="https://github.com/shigeru22/osuscorerank-web" target="_blank" rel="external" className="opacity-40 hover:opacity-60">
+									<FontAwesomeIcon icon={ faGithub } className="text-2xl text-black dark:text-white" />
+								</a>
+							</div>
 						</div>
 					</div>
 					<div className="xl:basis-1/2 md:w-1/2 lg:w-auto space-y-6">
@@ -238,7 +246,13 @@ function Settings() {
 								<h6 className="font-medium text-light-80 dark:text-dark-80">API Status: { getApiStatusString() }</h6>
 								<Button type="primary" label="Check Status" onClick={ () => handleApiTest() } />
 							</div>
-							<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactive-api { getUpdateVersionString(VersionType.API_VERSION) }</h6>
+							<div className="flex items-center gap-x-4">
+								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-server { getUpdateVersionString(VersionType.API_VERSION) }</h6>
+								{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
+								<a href="https://github.com/shigeru22/osuscorerank-server" target="_blank" rel="external" className="opacity-40 hover:opacity-60">
+									<FontAwesomeIcon icon={ faGithub } className="text-2xl text-black dark:text-white" />
+								</a>
+							</div>
 						</div>
 						<div className="space-y-4">
 							<h3 className="font-semibold text-2xl text-light-100 dark:text-dark-100">WebAssembly</h3>
@@ -248,7 +262,13 @@ function Settings() {
 								<h6 className="font-medium text-light-80 dark:text-dark-80">Search test: { wasmStatus }</h6>
 								<Button type="primary" label="Test Again" onClick={ () => getWasmGreetMessage() } />
 							</div>
-							<h6 className="font-medium text-light-40 dark:text-dark-60">osuinactivescore-wasm { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
+							<div className="flex items-center gap-x-4">
+								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-web/src/wasm { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
+								{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
+								<a href="https://github.com/shigeru22/osuscorerank-web/tree/main/src/wasm" target="_blank" rel="external" className="opacity-40 hover:opacity-60">
+									<FontAwesomeIcon icon={ faGithub } className="text-2xl text-black dark:text-white" />
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
