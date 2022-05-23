@@ -99,8 +99,8 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 						<div className="flex flex-col justify-end gap-y-2 p-4 bg-light-20 dark:bg-dark-40 overflow-clip">
 							<LogoIcon className="w-16 h-16 mt-8 fill-light-100 dark:fill-dark-100" />
 							<div className="flex flex-col">
-								<h2 className="font-medium text-light-60 dark:text-dark-80">osu! Scores Rank</h2>
-								<h4 className="font-medium text-light-40 dark:text-dark-60">{ !isNull(updateData) ? updateData.webVersion : "v?.?.?" }</h4>
+								<h2 className="font-medium text-light-60 dark:text-dark-80 cursor-default">osu! Scores Rank</h2>
+								<h4 className="font-medium text-light-40 dark:text-dark-60 cursor-default">{ !isNull(updateData) ? updateData.webVersion : "v?.?.?" }</h4>
 							</div>
 							<div className="relative bottom-0 right-0">
 								<div className="absolute -bottom-24 -right-16">
