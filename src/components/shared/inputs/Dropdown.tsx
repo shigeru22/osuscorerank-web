@@ -6,7 +6,7 @@ import DimBackground from "../DimBackground";
 import Dialog from "../mobile/Dialog";
 import { IDropdownData } from "../../../types/components/Dropdown";
 
-function Dropdown({ name, label, data, value, setValue }: { name: string, label: string, data: IDropdownData[], value: number, setValue?: React.Dispatch<React.SetStateAction<number>> }) {
+function Dropdown({ name, label, data, disabled, value, setValue }: { name: string, label: string, data: IDropdownData[], disabled?: boolean, value: number, setValue?: React.Dispatch<React.SetStateAction<number>> }) {
 	const [ isOpened, setOpened ] = useState(false);
 
 	const refButton = useRef<HTMLButtonElement>(null);
@@ -56,15 +56,17 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 	});
 
 	function toggleDropdown() {
-		if(!isOpened) {
-			document.body.classList.add("overflow-hidden");
-			document.body.classList.add("md:overflow-auto");
-		}
-		else {
-			enableScrolling();
-		}
+		if(isUndefined(disabled) || !disabled) {
+			if(!isOpened) {
+				document.body.classList.add("overflow-hidden");
+				document.body.classList.add("md:overflow-auto");
+			}
+			else {
+				enableScrolling();
+			}
 
-		setOpened(!isOpened);
+			setOpened(!isOpened);
+		}
 	}
 
 	function handleValueChange(value: number) {
@@ -94,7 +96,7 @@ function Dropdown({ name, label, data, value, setValue }: { name: string, label:
 				<label htmlFor={ name } className="font-medium text-light-80 dark:text-dark-80 whitespace-nowrap">{ label }</label>
 			</div>
 			<div className="flex flex-col justify-end">
-				<button type="button" id={ name } onClick={ () => toggleDropdown() } ref={ refButton } className={ `flex flex-row justify-between items-center group max-w-full md:w-full px-3 py-1.5 ${ isOpened ? "bg-light-40 dark:bg-dark-60" : "bg-light-20 dark:bg-dark-40" } rounded-lg` }>
+				<button type="button" id={ name } onClick={ () => toggleDropdown() } ref={ refButton } className={ `flex flex-row justify-between items-center group max-w-full md:w-full px-3 py-1.5 ${ isOpened ? "bg-light-40 dark:bg-dark-60" : "bg-light-20 dark:bg-dark-40" } rounded-lg ${ disabled ? "opacity-50" : "" }` }>
 					<div className="md:min-w-24 font-medium text-left text-light-100 dark:text-dark-100 whitespace-nowrap overflow-ellipsis">{ getValueFromData(value) }</div>
 					<FontAwesomeIcon icon={ faChevronDown } className={ `text-2xl pl-3 ${ isOpened ? "text-light-80 dark:text-dark-100" : "text-light-60 dark:text-dark-80 group-hover:text-light-80 dark:group-hover:text-dark-100" }` } />
 				</button>

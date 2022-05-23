@@ -6,7 +6,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import DimBackground from "../DimBackground";
 import Dialog from "./Dialog";
 
-function SearchButton({ value, setValue }: { value: string; setValue?: React.Dispatch<React.SetStateAction<string>> }) {
+function SearchButton({ disabled, value, setValue }: { disabled?: boolean; value: string; setValue?: React.Dispatch<React.SetStateAction<string>> }) {
 	const [ isOpened, setOpened ] = useState(false);
 	const [ searchQuery, setSearchQuery ] = useState(value);
 
@@ -63,7 +63,7 @@ function SearchButton({ value, setValue }: { value: string; setValue?: React.Dis
 
 	return (
 		<>
-			<button type="button" ref={ refButton } onClick={ () => openDialog() } className="flex justify-center items-center group w-8 h-8 active:bg-light-40 dark:active:bg-dark-80 rounded-lg">
+			<button type="button" ref={ refButton } disabled={ disabled } onClick={ () => openDialog() } className={ `flex justify-center items-center group w-8 h-8 active:bg-light-40 dark:active:bg-dark-80 rounded-lg ${ disabled ? "opacity-50" : "" }` }>
 				<FontAwesomeIcon icon={ faSearch } className={ `${ !isEmpty(value) ? "text-light-80 dark:text-dark-80" : "text-light-40 dark:text-dark-60" } group-active:text-light-20` } />
 			</button>
 			{
