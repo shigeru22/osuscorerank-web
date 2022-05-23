@@ -254,10 +254,10 @@ function Country() {
 				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
 					<div className="flex md:hidden justify-between items-center w-full px-8">
 						<div className="flex gap-x-4">
-							<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
-							<Checkbox name="inactiveOnly" label="Inactive" value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
+							<Dropdown name="sort" label="Sort" data={ sortOptions } disabled={ isLoading } value={ selectedSortId } setValue={ setSelectedSortId } />
+							<Checkbox name="inactiveOnly" label="Inactive" disabled={ isLoading } value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
 						</div>
-						<SearchButton value={ searchQuery } setValue={ setSearchQuery } />
+						<SearchButton disabled={ isLoading } value={ searchQuery } setValue={ setSearchQuery } />
 					</div>
 					<div className="flex-grow flex flex-col md:items-left gap-y-4 w-full md:w-auto">
 						<h3 className="hidden 2xl:block self-start text-left font-semibold text-2xl text-light-100 dark:text-dark-100">Rankings</h3>
@@ -295,9 +295,9 @@ function Country() {
 						}
 					</div>
 					<div className="hidden md:flex 2xl:hidden flex-col gap-y-4 pt-1.25">
-						<TextInput name="search" label="Search player" icon={ faSearch } value={ searchQuery } setValue={ setSearchQuery } />
-						<Dropdown name="sort" label="Sort" data={ sortOptions } value={ selectedSortId } setValue={ setSelectedSortId } />
-						<Checkbox name="inactiveOnly" label="Show only inactives" value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
+						<TextInput name="search" label="Search player" icon={ faSearch } disabled={ isLoading } value={ searchQuery } setValue={ setSearchQuery } />
+						<Dropdown name="sort" label="Sort" data={ sortOptions } disabled={ isLoading } value={ selectedSortId } setValue={ setSelectedSortId } />
+						<Checkbox name="inactiveOnly" label="Show only inactives" disabled={ isLoading } value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
 					</div>
 					<div className="flex justify-center md:hidden w-full">
 						<Pagination active={ rankingPage } total={ getRankingListTotalPages(rankingDataResults, tableRowsPerPage) } setValue={ setRankingPage } />
