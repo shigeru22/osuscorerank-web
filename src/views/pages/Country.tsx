@@ -181,6 +181,8 @@ function Country() {
 			setSearchDebounce(undefined);
 		}
 
+		setRankingData([]);
+
 		addLogData(LogType.INFO, "Fetching country ranking data...");
 		setLoading(true);
 		getScores();
