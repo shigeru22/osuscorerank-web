@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
+import isNull from "lodash/isNull";
 import findIndex from "lodash/findIndex";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,9 +10,10 @@ import DimBackground from "../DimBackground";
 import Dialog from "./Dialog";
 import { ICountryData } from "../../../types/data/Country";
 import { settingsContext } from "../../../views/App";
+import { ReactComponent as LogoIcon } from "../../../assets/logo.svg";
 
 function Navbar({ active, countries }: { active: string, countries: ICountryData[] }) {
-	const { activeCountryId, setActiveCountryId } = useContext(settingsContext);
+	const { updateData, activeCountryId, setActiveCountryId } = useContext(settingsContext);
 
 	const [ isOpened, setOpened ] = useState(false);
 	const [ isCountrySelectorOpened, setCountrySelectorOpened ] = useState(false);
@@ -49,7 +51,6 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);
-
 	const routes = [ "Country", "Global", "Starred", "Settings", "Help" ];
 
 	let index = 0;
@@ -94,8 +95,20 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 			{
 				isOpened &&
 				<DimBackground>
-					<div ref={ refSidebarMenu } className="flex flex-col justify-between max-w-xs w-4/5 h-full p-4 bg-white dark:bg-dark-20">
-						<div className="flex flex-col gap-y-2">
+					<div ref={ refSidebarMenu } className="flex flex-col max-w-xs w-4/5 h-full bg-white dark:bg-dark-20">
+						<div className="flex flex-col justify-end gap-y-2 p-4 bg-light-20 dark:bg-dark-40 overflow-clip">
+							<LogoIcon className="w-16 h-16 mt-8 fill-light-100 dark:fill-dark-100" />
+							<div className="flex flex-col">
+								<h2 className="font-medium text-light-60 dark:text-dark-80">osu! Scores Rank</h2>
+								<h4 className="font-medium text-light-40 dark:text-dark-60">{ !isNull(updateData) ? updateData.webVersion : "v?.?.?" }</h4>
+							</div>
+							<div className="relative bottom-0 right-0">
+								<div className="absolute -bottom-24 -right-16">
+									<LogoIcon className="w-64 h-64 mt-8 fill-light-100 dark:fill-dark-100 opacity-10" />
+								</div>
+							</div>
+						</div>
+						<div className="flex flex-col gap-y-2 p-4">
 							<Link to="/" onClick={ () => handleMenuClick(0) }>
 								<div className={ `flex items-center gap-x-4 p-4 ${ index === 0 ? "bg-light-60 dark:bg-dark-60" : "hover:bg-light-40 dark:hover:bg-dark-40" } rounded-lg` }>
 									<div className="flex justify-center items-center w-6">
@@ -136,9 +149,6 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 									<div className={ `font-semibold text-lg ${ index === 4 ? "text-light-20" : "text-light-100" } dark:text-dark-100` }>Help</div>
 								</div>
 							</Link>
-						</div>
-						<div className="font-medium text-center text-light-40 dark:text-dark-40">
-							osu-inactive-score 1.0.0
 						</div>
 					</div>
 				</DimBackground>
