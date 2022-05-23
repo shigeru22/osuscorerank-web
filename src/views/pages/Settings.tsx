@@ -183,7 +183,7 @@ function Settings() {
 							<div className="flex items-center gap-x-4">
 								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-web { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
 								{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
-								<a href="https://github.com/shigeru22/osuscorerank-web" target="_blank" rel="external" className="opacity-40 hover:opacity-60">
+								<a href="https://github.com/shigeru22/osuscorerank-web" target="_blank" rel="external" className="opacity-40 hover:opacity-60 -z-10">
 									<FontAwesomeIcon icon={ faGithub } className="text-2xl text-black dark:text-white" />
 								</a>
 							</div>
@@ -200,7 +200,7 @@ function Settings() {
 							<div className="flex items-center gap-x-4">
 								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-server { getUpdateVersionString(VersionType.API_VERSION) }</h6>
 								{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
-								<a href="https://github.com/shigeru22/osuscorerank-server" target="_blank" rel="external" className="opacity-40 hover:opacity-60">
+								<a href="https://github.com/shigeru22/osuscorerank-server" target="_blank" rel="external" className="opacity-40 hover:opacity-60 -z-10">
 									<FontAwesomeIcon icon={ faGithub } className="text-2xl text-black dark:text-white" />
 								</a>
 							</div>
@@ -223,7 +223,7 @@ function Settings() {
 							<div className="flex items-center gap-x-4">
 								<h6 className="font-medium text-light-40 dark:text-dark-60">osuscorerank-web/src/wasm { getUpdateVersionString(VersionType.WEB_VERSION) }</h6>
 								{ /* eslint-disable-next-line react/jsx-no-target-blank */ }
-								<a href="https://github.com/shigeru22/osuscorerank-web/tree/main/src/wasm" target="_blank" rel="external" className="opacity-40 hover:opacity-60">
+								<a href="https://github.com/shigeru22/osuscorerank-web/tree/main/src/wasm" target="_blank" rel="external" className="opacity-40 hover:opacity-60 -z-10">
 									<FontAwesomeIcon icon={ faGithub } className="text-2xl text-black dark:text-white" />
 								</a>
 							</div>
