@@ -209,7 +209,7 @@ function Starred() {
 					<h3 className="px-8 pt-2 md:px-0 md:py-0 font-semibold text-2xl text-light-100 dark:text-dark-100">Statistics</h3>
 					<div className="flex 2xl:flex-col items-start gap-x-4 gap-y-4 px-8 md:px-0 overflow-x-auto">
 						<StatsCard title="Starred" data={ starred.toString() } />
-						<StatsCard title="Recently Active" data={ recentlyActive.toString() } subtitle="+ 0 since last month" />
+						<StatsCard title="Recently Active" data={ recentlyActive.toString() } />
 					</div>
 				</div>
 				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
