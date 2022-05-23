@@ -159,6 +159,12 @@ function Starred() {
 			}
 		}
 
+		if(!isUndefined(searchDebounce)) {
+			setSearchQuery("");
+			clearTimeout(searchDebounce);
+			setSearchDebounce(undefined);
+		}
+
 		addLogData(LogType.INFO, "Fetching starred users data...");
 		setLoading(true);
 		getScores();

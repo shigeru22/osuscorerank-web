@@ -172,6 +172,12 @@ function Global() {
 			setLoading(false);
 		}
 
+		if(!isUndefined(searchDebounce)) {
+			setSearchQuery("");
+			clearTimeout(searchDebounce);
+			setSearchDebounce(undefined);
+		}
+
 		addLogData(LogType.INFO, "Fetching global ranking data...");
 		setLoading(true);
 		getScores();

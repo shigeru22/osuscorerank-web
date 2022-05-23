@@ -175,6 +175,12 @@ function Country() {
 			setLoading(false);
 		}
 
+		if(!isUndefined(searchDebounce)) {
+			setSearchQuery("");
+			clearTimeout(searchDebounce);
+			setSearchDebounce(undefined);
+		}
+
 		addLogData(LogType.INFO, "Fetching country ranking data...");
 		setLoading(true);
 		getScores();
