@@ -30,7 +30,7 @@ import { LogType } from "../../utils/Logging";
 import { dateToDateString } from "../../utils/DateFormat";
 
 function Country() {
-	const { settings, countries, updateData, activeCountryId, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
+	const { settings, showMobileSidebar, countries, updateData, activeCountryId, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
@@ -252,7 +252,7 @@ function Country() {
 					</div>
 				</div>
 				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
-					<div className="flex md:hidden justify-between items-center w-full px-8">
+					<div className={ `flex md:hidden justify-between items-center w-full px-8 ${ showMobileSidebar ? "-z-10" : "" }` }>
 						<div className="flex gap-x-4">
 							<Dropdown name="sort" label="Sort" data={ sortOptions } disabled={ isLoading } value={ selectedSortId } setValue={ setSelectedSortId } />
 							<Checkbox name="inactiveOnly" label="Inactive" disabled={ isLoading } value={ showInactiveOnly } setValue={ setShowInactiveOnly } />
@@ -280,7 +280,7 @@ function Country() {
 								:
 								<div className="flex justify-center items-center w-full h-full" style={ { height: getTableHeight(getTableRowsFromViewport()) } }>
 									<div className="flex flex-col justify-center items-center gap-y-2">
-										<FontAwesomeIcon icon={ isLoading ? faCircleNotch : faTimes } className={ `text-5xl text-light-60 dark:text-dark-80 ${ isLoading && "animate-spin" }` } />
+										<FontAwesomeIcon icon={ isLoading ? faCircleNotch : faTimes } className={ `text-5xl text-light-60 dark:text-dark-80 ${ isLoading && "animate-spin" } -z-10` } />
 										<div className="font-medium text-center text-light-60 dark:text-dark-80 whitespace-pre">
 											{
 												isLoading ? "Loading data..." : "Failed to fetch data.\nTry refreshing the page."

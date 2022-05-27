@@ -26,7 +26,7 @@ import { sortOptions } from "../../utils/Options";
 import { LogType } from "../../utils/Logging";
 
 function Starred() {
-	const { settings, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
+	const { settings, showMobileSidebar, setSettings, addLogData, setShowErrorDialog } = useContext(settingsContext);
 
 	const [ starredUsers, setStarredUsers ] = useState(settings.starredUserId);
 
@@ -221,7 +221,7 @@ function Starred() {
 					</div>
 				</div>
 				<div className="2xl:flex-grow flex flex-col md:flex-row items-start gap-x-6 gap-y-4">
-					<div className="flex md:hidden justify-between items-center w-full px-8">
+					<div className={ `flex md:hidden justify-between items-center w-full px-8 ${ showMobileSidebar ? "-z-10" : "" }` }>
 						<Dropdown name="sort" label="Sort" data={ sortOptions } disabled={ isLoading } value={ selectedSortId } setValue={ setSelectedSortId } />
 						<SearchButton disabled={ isLoading } value={ searchQuery } setValue={ setSearchQuery } />
 					</div>
@@ -246,7 +246,7 @@ function Starred() {
 								:
 								<div className="flex justify-center items-center w-full h-full" style={ { height: getTableHeight(getTableRowsFromViewport()) } }>
 									<div className="flex flex-col justify-center items-center gap-y-2">
-										<FontAwesomeIcon icon={ isLoading ? faCircleNotch : faTimes } className={ `text-5xl text-light-60 dark:text-dark-80 ${ isLoading && "animate-spin" }` } />
+										<FontAwesomeIcon icon={ isLoading ? faCircleNotch : faTimes } className={ `text-5xl text-light-60 dark:text-dark-80 ${ isLoading && "animate-spin" } -z-10` } />
 										<div className="font-medium text-center text-light-60 dark:text-dark-80 whitespace-pre">
 											{
 												isLoading ? "Loading data..." : "Failed to fetch data.\nTry refreshing the page."
