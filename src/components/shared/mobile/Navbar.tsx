@@ -13,7 +13,7 @@ import { settingsContext } from "../../../views/App";
 import { ReactComponent as LogoIcon } from "../../../assets/logo.svg";
 
 function Navbar({ active, countries }: { active: string, countries: ICountryData[] }) {
-	const { updateData, activeCountryId, setActiveCountryId } = useContext(settingsContext);
+	const { updateData, activeCountryId, setActiveCountryId, setShowMobileSidebar } = useContext(settingsContext);
 
 	const [ isOpened, setOpened ] = useState(false);
 	const [ isCountrySelectorOpened, setCountrySelectorOpened ] = useState(false);
@@ -51,6 +51,12 @@ function Navbar({ active, countries }: { active: string, countries: ICountryData
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);
+
+	useEffect(() => {
+		setShowMobileSidebar(isOpened);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ isOpened ]);
+
 	const routes = [ "Country", "Global", "Starred", "Settings", "Help" ];
 
 	let index = 0;

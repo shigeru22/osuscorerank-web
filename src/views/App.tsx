@@ -16,11 +16,13 @@ import { LogType } from "../utils/Logging";
 const settingsContextValues: SettingsContext = {
 	settings: getSettingsData(),
 	logs: [],
+	showMobileSidebar: false,
 	showErrorDialog: false,
 	countries: [],
 	updateData: null,
 	activeCountryId: getSettingsData().defaultCountryId,
 	setSettings: (data: Settings) => updateSettings(data),
+	setShowMobileSidebar: (value: boolean) => setShowMobileSidebar(value),
 	setShowErrorDialog: (value: boolean) => setShowErrorDialog(value),
 	setActiveCountryId: (id: number) => updateActiveCountryId(id),
 	addLogData: (name: LogType, description: string) => addLogData(name, description)
@@ -31,6 +33,10 @@ const settingsContext = createContext<SettingsContext>(settingsContextValues);
 function updateSettings(data: Settings) {
 	/* TODO: handle settings data errors */
 	setSettingsData(data);
+}
+
+function setShowMobileSidebar(value: boolean) {
+	settingsContextValues.showMobileSidebar = value;
 }
 
 function setShowErrorDialog(value: boolean) {
@@ -110,6 +116,7 @@ function App() {
 	const [ countries, setCountries ] = useState<ICountryData[]>(settingsContextValues.countries);
 	const [ updateData, setUpdateData ] = useState<IUpdateData | null>(null);
 
+	const [ showMobileSidebar, setShowMobileSidebar ] = useState(settingsContextValues.showMobileSidebar);
 	const [ showErrorDialog, setShowErrorDialog ] = useState(settingsContextValues.showErrorDialog);
 
 	const refErrorDialog = useRef<HTMLDivElement>(null);
@@ -222,6 +229,7 @@ function App() {
 		<Provider value={ {
 			settings,
 			logs,
+			showMobileSidebar,
 			showErrorDialog,
 			countries,
 			updateData,
@@ -229,6 +237,7 @@ function App() {
 			setSettings,
 			setActiveCountryId: setActiveCountryStateId,
 			addLogData,
+			setShowMobileSidebar,
 			setShowErrorDialog
 		} }>
 			<div className="flex flex-col lg:flex-row">

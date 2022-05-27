@@ -14,11 +14,13 @@ export interface Settings {
 export type SettingsContext = {
 	settings: Settings,
 	logs: ILogData[],
+	showMobileSidebar: boolean,
 	showErrorDialog: boolean,
 	countries: ICountryData[],
 	updateData: IUpdateData | null;
 	activeCountryId: number,
 	setSettings: (data: Settings) => void,
+	setShowMobileSidebar: (value: boolean) => void,
 	setShowErrorDialog: (value: boolean) => void,
 	setActiveCountryId: (id: number) => void,
 	addLogData: (name: LogType, description: string) => void
